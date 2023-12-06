@@ -1,0 +1,52 @@
+<header class="bg-dark">
+    <nav class="navbar navbar-expand-lg  navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand h1" href="javascript:void(0)" title="vail alla pagina principale"[routerLink]="['/paginaPrincipale']" ><span>TistyTV</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas">
+                <span class="navbar-toggler-icon" data-bs-target="#navbarOffcanvas"></span>
+            </button>
+            <div class="offcanvas offcanvas-start" data-bs-hideresize="true" id="navbarOffcanvas">
+                <div class="offcanvas-header bg-warning">
+                    <h5 class="offcanvas-title" id="offcanvasLabel">Menu</h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+                </div>
+                <!-- NAVBAR LATO sx-->
+                <div class="offcanvas-body bg-dark">
+                    <ul class="navbar-nav justify-content-end me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0)" title="Vai all pagina chi siamo"
+                                [routerLink]="['/categorie']">Categorie</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0)" title="Vai all pagina chi siamo"
+                                [routerLink]="['/film']">Film</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0)" title="Vai all pagina chi siamo"
+                                [routerLink]="['/serietv']">SerieTv</a>
+                        </li>
+                    </ul>
+
+                    <!-- NAVBAR LATO dx -->
+
+                    <form class="d-flex" role="search">
+                        <input class="form-control form-control-sm me-2 bg-tertiary opacity-50" type="cerca" placeholder="cerca" aria-label="Search">
+                        <a href="javascript:void(0)"><img class="icon" alt="svgImg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIHZpZXdCb3g9IjAsMCwyNTYsMjU2IgpzdHlsZT0iZmlsbDojMDAwMDAwOyI+CjxnIGZpbGw9IiNlYzBjNjUiIGZpbGwtcnVsZT0ibm9uemVybyIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHN0cm9rZS1kYXNoYXJyYXk9IiIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjAiIGZvbnQtZmFtaWx5PSJub25lIiBmb250LXdlaWdodD0ibm9uZSIgZm9udC1zaXplPSJub25lIiB0ZXh0LWFuY2hvcj0ibm9uZSIgc3R5bGU9Im1peC1ibGVuZC1tb2RlOiBub3JtYWwiPjxnIHRyYW5zZm9ybT0ic2NhbGUoOC41MzMzMyw4LjUzMzMzKSI+PHBhdGggZD0iTTEzLDNjLTUuNTExLDAgLTEwLDQuNDg5IC0xMCwxMGMwLDUuNTExIDQuNDg5LDEwIDEwLDEwYzIuMzk2NTEsMCA0LjU5NzM4LC0wLjg1MTAxIDYuMzIyMjcsLTIuMjYzNjdsNS45NzA3LDUuOTcwN2MwLjI1MDgyLDAuMjYxMjQgMC42MjMyNywwLjM2NjQ4IDAuOTczNzEsMC4yNzUxMmMwLjM1MDQ0LC0wLjA5MTM2IDAuNjI0MTEsLTAuMzY1MDMgMC43MTU0NywtMC43MTU0N2MwLjA5MTM2LC0wLjM1MDQ0IC0wLjAxMzg4LC0wLjcyMjg5IC0wLjI3NTEyLC0wLjk3MzcxbC01Ljk3MDcsLTUuOTcwN2MxLjQxMjY2LC0xLjcyNDg4IDIuMjYzNjcsLTMuOTI1NzYgMi4yNjM2NywtNi4zMjIyN2MwLC01LjUxMSAtNC40ODksLTEwIC0xMCwtMTB6TTEzLDVjNC40MzAxMiwwIDgsMy41Njk4OCA4LDhjMCw0LjQzMDEyIC0zLjU2OTg4LDggLTgsOGMtNC40MzAxMiwwIC04LC0zLjU2OTg4IC04LC04YzAsLTQuNDMwMTIgMy41Njk4OCwtOCA4LC04eiI+PC9wYXRoPjwvZz48L2c+Cjwvc3ZnPg==" /></a>
+                    </form>
+                    <ul class="d-flex navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle " href="javascript:void(0)" role="button" data-bs-toggle="dropdown" title="profilo">Profilo</a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark  ">
+                                <li><a href="javascript:void(0)" class="dropdown-item" title="vai alla pagina dati personali">Dati Personali</a></li>
+                                <li><a href="javascript:void(0)" class="dropdown-item" title="vai alla pagina modifica password">Modifica Password</a></li>
+                                <li class="dropdown-divider"></li>
+                                <li><a href="javascript:void(0)" class="dropdown-item" title="vai alla pagina crediti">Crediti</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- FINE NAVBAR -->
+</header>

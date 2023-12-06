@@ -1,0 +1,24 @@
+<header class="bg-black">
+    <nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand mb-0 h1" href="javascript:void(0)" title="Vai alla Home" [routerLink]="['/']">TistyTv</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active " aria-current="page" href="javascript:void(0)" disabled>Pagina iniziale</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <a href="javascript:void(0)" title="Vai alla pagina d'accesso" [routerLink]="['/accedi']" ><button type="button" class="btn btn-primary button-2"
+                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem; background-color:#ec0c65;"
+                            title="Accedi alla tua area personale">Accedi</button></a>
+                </form>
+            </div>
+        </div>
+    </nav>
+</header>

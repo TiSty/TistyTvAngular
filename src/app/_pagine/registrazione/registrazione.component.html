@@ -1,0 +1,99 @@
+<header>
+    <navbar> </navbar>
+</header>
+<main>
+    <section class="backgroun-section opacity-80">
+        <div class="d-flex " style="height: 200px;">
+            <div class="vr me-3">
+            </div>
+        </div>
+
+        <div class="card text-center bg-dark text-white opacity-75">
+            <h5 class="text-white bg-dark">Compila il Form e Accedi</h5>
+            <form id="registrazione-form" method="post" novalidate name="form-registrazione" [formGroup]="reactiveForm"
+                (ngSubmit)="registraDati()">
+                <div class="container text-center pt-3 pb-3">
+                    <div class="row m-0 p-0  text-center g-3">
+                        <div class="col-12 col-xxl-6 col-lg-6 col-md-6 col-sm-3">
+
+                            <input class="form-control form-control-sm col-3 " type="text" placeholder="Nome" id="nome"
+                                required maxlength="24" name="nome" formControlName="nome"
+                                [ngClass]="{'is-invalid':reactiveForm.controls['nome'].errors}">
+
+                        </div>
+                        <div class="col-12 col-xxl-6 col-lg-6 col-md-6 col-sm-3 ">
+
+                            <input class="form-control form-control-sm col-3 " type="text" placeholder="Cognome"
+                                id="cognome" required maxlength="45" name="cognome" formControlName="cognome"
+                                [ngClass]="{'is-invalid':reactiveForm.controls['cognome'].errors}">
+                        </div>
+                    </div>
+
+                    <div class="row m-0 p-0 text-center g-3">
+                        <div class="col-12 col-xxl-6 col-lg-6 col-md-6 col-sm-3 ">
+                            <input class="form-control form-control-sm col-3 " type="text" placeholder="Data di Nascita"
+                                id="dataNascita" required max="10" minlength="8" name="dataNascita"
+                                formControlName="dataNascita"
+                                [ngClass]="{'is-invalid':reactiveForm.controls['dataNascita'].errors}">
+
+                        </div>
+
+                        <div class="col-12 col-xxl-6 col-lg-6 col-md-6 col-sm-3 ">
+                            <select class="form-select form-select-sm" aria-label="Small select example" id="sesso"
+                                name="sesso" formControlName="sesso"
+                                [ngClass]="{'is-invalid':reactiveForm.controls['sesso'].errors}">
+                                <option selected>Sesso</option>
+                                <option value="1">Maschio</option>
+                                <option value="2">Femmina</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="row m-0 p-0  text-center g-3">
+                        <div class="col-12 col-xxl-6 col-lg-6 col-md-6 col-sm-3">
+                            <input class="form-control form-control-sm col-3 " type="text"
+                                placeholder="Citta di residenza" id="residenza" required maxlength="24"
+                                formControlName="residenza"
+                                [ngClass]="{'is-invalid':reactiveForm.controls['residenza'].errors}">
+                        </div>
+
+                        <div class="col-12 col-xxl-6 col-lg-6 col-md-6 col-sm-3 ">
+                            <input class="form-control form-control-sm col-3 " type="text" placeholder="Domicilio"
+                                id="domicilio" required maxlength="45" formControlName="domicilio"
+                                [ngClass]="{'is-invalid':reactiveForm.controls['domicilio'].errors}">
+                        </div>
+                    </div>
+
+                    <div class="row m-0 p-0 text-center g-3">
+                        <div class="col-12 col-xxl-6 col-lg-6 col-md-6 col-sm-3 ">
+                            <input class="form-control form-control-sm col-3 " type="text" placeholder="Cittadinanza"
+                                id="cittadinanza" required max="10" minlength="8" formControlName="cittadinanza"
+                                [ngClass]="{'is-invalid':reactiveForm.controls['cittadinanza'].errors}">
+                        </div>
+                        <div class="col-12 col-xxl-6 col-lg-6 col-md-6 col-sm-3 ">
+                            <select class="form-select form-select-sm" id="ragioneSociale"
+                                formControlName="ragioneSociale"
+                                [ngClass]="{'is-invalid':reactiveForm.controls['ragioneSociale'].errors}">
+                                <option selected>Ragione sociale</option>
+                                <option value="1">Privato</option>
+                                <option value="2">Azienda</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!-- <a href="javascript:void(0)" title="vai avanti" [routerLink]="['/fatturazione']"> -->
+                <button type="submit" class="button-1" id="avanti">
+                    Avanti</button>
+                <!-- </a> -->
+
+            </form>
+        </div>
+
+
+        <div class="d-flex pe-3 " style="height: 200px;">
+            <div class="vr ms-3 ">
+            </div>
+        </div>
+    </section>
+
+</main>

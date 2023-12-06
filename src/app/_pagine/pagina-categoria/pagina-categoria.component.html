@@ -1,0 +1,58 @@
+<header>
+    <menu-principale></menu-principale>
+</header>
+
+
+
+
+<main>
+
+
+
+    <ng-container *ngIf="!(films.length>0)">
+        <div class="spinner-grow text-danger" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </ng-container>
+
+
+
+
+
+    <ng-container *ngIf="films.length>0">
+        <h2>Film</h2>
+        <ul class="row m-2 p-3 pt-0 mt-0">
+            <li *ngFor="let film of films" class="col">
+                <card class="card" [opzioni]="film"></card>
+            </li>
+        </ul>
+    </ng-container>
+
+    <ng-container *ngIf="seriesTv.length>0">
+        <h2>SerieTv</h2>
+        <ul class="row m-2 p-3 pt-0 mt-0">
+            <li *ngFor="let serieTv of seriesTv" class="col">
+                <card class="card" [opzioni]="serieTv"></card>
+            </li>
+        </ul>
+    </ng-container>
+
+
+
+
+
+
+</main>
+
+
+<!--SERVE A VISUALIZZARE LE CATEGORIE
+         <p *ngFor="let valori of dati">{{valori.idCategoria}} - {{valori.nome}}</p>
+     -->
+
+
+<!--SERVE A VISUALIZZARE LA SINGOLA CATEGORIA CLICCANDOCI SOPRA  
+        <ul>
+            <li *ngFor="let valori of dati"><a href="javascript:void(0)" title="vai alla categoria {{valori.nome}}"
+            [routerLink]="['/categorie'+'/'+ valori.idCategoria]">{{valori.nome}}</a></li>
+        </ul> 
+    -->

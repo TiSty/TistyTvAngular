@@ -1,0 +1,54 @@
+<header>
+    <navbar> </navbar>
+</header>
+
+<main>
+    <section class="backgroun-section opacity-80">
+    <div class="d-flex " style="height: 200px;">
+        <div class="vr me-3">
+        </div>
+    </div>
+
+    <div class="card text-center bg-dark text-white opacity-75">
+        <h5 class="text-white bg-dark">Compila il Form e Accedi</h5>
+        <form id="registrazione-form" method="post" novalidate name="form-registrazione" [formGroup]="reactiveForm" (ngSubmit)="registraDati()">
+            <div class="container text-center pt-3 pb-3">
+                <div class="row m-0 p-0  text-center g-3">
+                    <div class="col-12 ">
+                        <input class="form-control form-control-sm col-3 " type="email" id="email"
+                            placeholder="Email" name="user"
+                            formControlName="user" [ngClass]="{'is-invalid':reactiveForm.controls['user'].errors}">
+                    </div>
+                    <div class="col-12 ">
+
+                        <input class="form-control form-control-sm col-3 " type="password" id="password1"
+                            placeholder="Password"  name="password" 
+                            formControlName="password" [ngClass]="{'is-invalid':reactiveForm.controls['password'].errors}">
+
+
+                    </div>
+                    <div class="col-12  ">
+                        <input class="form-control form-control-sm col-3 " type="password" id="password2"
+                            placeholder="Ripeti Password" name="password" 
+                            formControlName="password" [ngClass]="{'is-invalid':reactiveForm.controls['password'].errors}">
+
+                        <button type="button" class="bott" id="toggle" (click)="gestisciPassword()"><img
+                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAABnUlEQVR4nO2VzUoDMRDHg7duZre0vekL6FWxgh93i5dC0bu7mYhIn8FX0CfoWR/F9iQeelZB6SSl9dZLK1ktptuWfgVasH8YSNhkf8nMnwlja/07NXx5RiDeFWDPRRDgm/awMBFsFrqCWvDXiWDX0H6wacHax8MmyGNXczYt2GxqgDhxNWcrm2palrm0hwWXcAPVnjydCF5rJUSe2CMQ9wTimbhoxWHGIO4antx1DlSpqy0C8TiFkR4oFW46gWqIjhTgp+1SBViiXOjHAbKoONb/DiA+TNda7Ka+PFAcv2xoK4iyyXWt9HXm90A/cLMniPLzQSHaIY46kc6S/XTaT54GeT6Qdi4UgdyeAyyqQzXMhb75ZjeYfldS2XIwXHfxNAcYa7OAmxmZHmG42uzgIMoTYGfQtbJot1W7HWouLhIO71AK92cGGykfQwLsWqapGyOxhNr+TS6Rha7yo0u2iBSIyL55fEtjJFPTbDkwN01AO2bPQlA77aPMNsJM1bnTO049drsR15ZjhQBfiIt2HPEYK6bWZs3YH6zFlqRvlazWHxWff7UAAAAASUVORK5CYII=">
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- <a href="javascript:void(0)" title="vai avanti" [routerLink]="['/paginaPrincipale']"> -->
+                <button type="submit" class="button-1" id="accedi" [disabled]="!reactiveForm.valid">Vai al Login</button>
+            <!-- </a> -->
+        </form>
+    </div>
+
+
+    <div class="d-flex pe-3 " style="height: 200px;">
+        <div class="vr ms-3 ">
+        </div>
+    </div>
+</section>
+</main>
+

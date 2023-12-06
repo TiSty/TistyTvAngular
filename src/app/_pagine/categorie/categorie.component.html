@@ -1,0 +1,46 @@
+<header>
+    <menu-principale></menu-principale>
+</header>
+
+<main>
+    <ng-container *ngIf="!(categorie.length>0)">
+        <div class="spinner-grow text-danger" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </ng-container>
+
+
+
+    <ng-container *ngIf="categorie.length>0">
+
+        <ul class="row m-2 p-3 pt-0 mt-0">
+            <li *ngFor="let categoria of categorie" class="col">
+                <card class="card" [opzioni]="categoria"></card>
+            </li>
+        </ul>
+
+        <ul class="row m-2 p-3 pt-0 mt-0">
+            <li *ngFor="let categoria of categorie" class="col">
+                <card class="card" [opzioni]="categoria"></card>
+            </li>
+        </ul>
+
+
+
+        <div class="bott">
+            <button type="button" class="btn btn-primary bottAgg" (click)="aggiungiCategoria()">Aggiungi
+                Categoria</button>
+            <button type="button" class="btn btn-primary bottMod" (click)="modificaCategoria()">Modifica
+                Categoria</button>
+
+        </div>
+
+        <div class="bottDel">
+            <input type="number" class="form-control input" placeholder="id" [(ngModel)]="idCategoria">
+            <button class="btn btn-primary" type="button" id="button-addon2"
+                (click)="eliminaCategoria(idCategoria)">cancella categoria</button>
+        </div>
+
+    
+    </ng-container>
+</main>

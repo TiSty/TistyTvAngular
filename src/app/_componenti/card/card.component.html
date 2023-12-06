@@ -1,0 +1,20 @@
+<div class="card text-left">
+    <img *ngIf="card.immagine!==null && card.immagine!==undefined" [src]="card.immagine.src" class="card-img-top"
+        [alt]="card.immagine.alt">
+    <div class="card-body">
+        <h5 class="card-title">{{card.titolo}}</h5>
+        <p class="card-text">{{card.testo}}</p>
+
+        <a *ngIf="card.bottone!==null && card.bottone!==undefined && card.bottone.emitId!==null 
+            && card.bottone.emitId>0 && card.bottone.link===null" href="javascript:void(0);" class="btn btn-primary"
+            title="{{card.bottone.title}}" (click)="clickButton(card.bottone.emitId)">{{card.bottone.testo}}</a>
+
+
+
+
+
+        <a *ngIf="card.bottone!==null && card.bottone!==undefined && card.bottone.emitId===null && card.bottone.link!==null"
+            href="javascript:void(0)" class="btn btn-primary" title="{{card.bottone.title}}"
+            [routerLink]="[card.bottone.link]">{{card.bottone.testo}}</a>
+    </div>
+</div>

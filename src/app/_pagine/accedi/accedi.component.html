@@ -1,0 +1,61 @@
+<header>
+    <navbar> </navbar>
+</header>
+
+<ng-container *ngIf="(auth|async)?.token===null">
+    <main>
+        <section class="background-section opacity-80">
+            <div class="d-flex " style="height: 200px;">
+                <div class="vr me-3">
+                </div>
+            </div>
+
+            <div class="card text-center bg-dark text-white opacity-75">
+                <h5 class="text-white bg-dark">Login</h5>
+                <form id="registrazione-form" name="form-Login" [formGroup]="reactiveForm" (ngSubmit)="accedi()">
+
+
+                    <div class="container text-center pt-3 pb-3">
+                        <div class="row m-0 p-0  text-center g-3">
+                            <div class="col-12 col-xxl-6 col-lg-6 col-md-6 col-sm-3">
+
+                                <input class="form-control form-control-sm col-3 " type="email" placeholder="E-mail"
+                                    name="user" formControlName="user"
+                                    [ngClass]="{'is-invalid':reactiveForm.controls['user'].errors}" id="E-mail">
+
+                            </div>
+                            <div class="col-12 col-xxl-6 col-lg-6 col-md-6 col-sm-3 ">
+
+                                <input class="form-control form-control-sm col-3 " type="password"
+                                    placeholder="password" name="password" formControlName="password"
+                                    [ngClass]="{'is-invalid':reactiveForm.controls['password'].errors}" id="password">
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <button type="submit" class="button-1" id="entra" [disabled]="!reactiveForm.valid ">Accedi</button>
+
+                </form>
+            </div>
+
+
+            <div class="d-flex pe-3 " style="height: 200px;">
+                <div class="vr ms-3 ">
+                </div>
+            </div>
+        </section>
+    </main>
+</ng-container>
+
+
+
+
+<!--QUA è SE VOGLIO VISUALIZZARE UN ALTRO PEZZO DI PAGINA DOPO IL LOGIN ES: BENVENUTO UTENTE ECC...
+     <ng-container *ngIf="(auth|async)?.token!==null">
+    <a href="javascript:void(0)" title="Entra in piattaforma" [routerLink]="['/paginaPrincipale']">
+        <button type="submit" class="button-1" id="entra" [disabled]="!reactiveForm.valid ">Accedi</button>
+    </a>
+</ng-container> -->
