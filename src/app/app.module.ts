@@ -17,12 +17,13 @@ import { CardComponent } from './_componenti/card/card.component';
 import { FilmComponent } from './_pagine/film/film.component';
 import { SerietvComponent } from './_pagine/serietv/serietv.component';
 import { CategorieComponent } from './_pagine/categorie/categorie.component';
-import { HTTP_INTERCEPTORS, HttpClientModule,  } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, } from '@angular/common/http';
 import { PaginaCategoriaComponent } from './_pagine/pagina-categoria/pagina-categoria.component';
 import { PaginaFilmComponent } from './_pagine/pagina-film/pagina-film.component';
 import { PaginaSerieTvComponent } from './_pagine/pagina-serie-tv/pagina-serie-tv.component';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthIntercept } from './_intercettatori/auth.inteceptor';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,7 @@ import { AuthIntercept } from './_intercettatori/auth.inteceptor';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    
+    CarouselModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthIntercept, multi: true }

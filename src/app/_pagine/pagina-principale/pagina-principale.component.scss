@@ -1,0 +1,74 @@
+.row {
+    overflow: hidden;
+}
+.col{
+    width: 100%;
+}
+.card {
+    margin: 5px;
+    width:100%;
+    height: 320px; /* Altezza fissa della card, puoi regolarla in base alle tue esigenze */
+    display: flex;
+    align-items: stretch; /* I contenuti si estendono per tutta l'altezza della card */
+    perspective: 1000px; /* Aggiunge una prospettiva per migliorare l'effetto di rovesciamento */
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease;
+}
+
+.card:hover {
+    transform: rotateY(180deg);
+}
+
+.card .front,
+.card .back {
+    flex: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    backface-visibility: hidden;
+}
+
+.card .back {
+    transform: rotateY(180deg);
+}
+
+.card img {
+    width: 100%;
+    height: 320px;
+    border-radius: 5px;
+}
+
+.card-content {
+    padding: 15px;
+    text-align: center;
+}
+
+
+
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    text-align: left;
+    padding: 0;
+    overflow: hidden;
+    margin: 0;
+}
+
+
+.imgCarousel {
+    padding: 10px;
+    margin: 10px;
+    width: 99%;
+    height: 700px;
+}
+
+h5{
+    color: #ec0c65;;
+}

@@ -25,6 +25,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
 
   constructor(private api: ApiService) {
     this.elencoCategorie$ = this.api.getCategorie()
+    
   }
 
 
@@ -43,7 +44,7 @@ export class CategorieComponent implements OnInit, OnDestroy {
             alt:elementi[i].alt
           }
           const bott: Bottone = {
-            testo: "Vai al Film",
+            testo: "Vai alla Categoria",
             title: "Visualizza " + elementi[i].nome,
             tipo: "button",
             emitId: null,

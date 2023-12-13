@@ -1,6 +1,6 @@
 import { Component, OnInit, booleanAttribute } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, concatMap, delay, forkJoin, map, pipe } from 'rxjs';
+import { Observable, Subject, concatMap, delay, forkJoin, map, pipe } from 'rxjs';
 import { IRispostaServer } from 'src/app/Interfacce/IRispostaServer';
 import { Bottone } from 'src/app/Type/Bottone.type';
 import { Card } from 'src/app/Type/Card.type';
@@ -18,7 +18,7 @@ export class PaginaCategoriaComponent implements OnInit {
   films: Card[] = []
   seriesTv: Card[] = []
 
-  // elem$!: Observable<IRispostaServer>;
+  private distruggi$ = new Subject<void>()
 
 
   film$! : Observable<IRispostaServer>;
@@ -27,6 +27,7 @@ export class PaginaCategoriaComponent implements OnInit {
   id: string | null = null
 
   constructor(private route: ActivatedRoute, private api: ApiService) {
+
     this.id = this.route.snapshot.paramMap.get("id")
     console.log("ID", this.id)
     if (this.id !== null) {
@@ -121,6 +122,9 @@ export class PaginaCategoriaComponent implements OnInit {
       // Subscribe to the serie$ observable
       serie$.subscribe(this.osservoSeriesTv());
     }
+  }
+  ngOnDestroy(): void {
+    this.distruggi$.next()
   }
 }
   

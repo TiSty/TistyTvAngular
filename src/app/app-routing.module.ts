@@ -23,9 +23,9 @@ const routes: Routes = [
   { path: 'categorie', component:CategorieComponent},
   { path: 'categorie/:id', component:PaginaCategoriaComponent},
   { path: 'film', component:FilmComponent},
-  { path: 'film/:idFilm', component:PaginaFilmComponent},
-  { path: 'serietv', component:SerietvComponent},
-  { path: 'serietv/:idSerieTv', component:PaginaSerieTvComponent},
+  { path: 'film/:id', component:PaginaFilmComponent},
+  { path: 'serieTv', component:SerietvComponent},
+  { path: 'serieTv/:id', component:PaginaSerieTvComponent},
 
   { path: '**', component:ErroreComponent},
 ];

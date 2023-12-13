@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Card } from 'src/app/Type/Card.type';
+import { FilmVisualizzato } from 'src/app/Type/FilmVisualizzato.type';
 
 @Component({
   selector: 'card',
@@ -9,6 +10,9 @@ import { Card } from 'src/app/Type/Card.type';
 export class CardComponent implements OnInit{
  
   @Input('opzioni') card!:Card;
+  
+  @Input('optzFilm') film!:FilmVisualizzato;
+
 
   ngOnInit() {
     

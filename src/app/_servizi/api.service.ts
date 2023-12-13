@@ -96,11 +96,6 @@ export class ApiService {
         const risorsa: string[] = ["categorie"]
         return this.richiestaGenerica(risorsa, "GET")
     }
-
-
-
-
-    
     /**
      * funzione per chiamare la singola risorsa
      * 
@@ -141,13 +136,24 @@ export class ApiService {
         const risorsa:(string|number)[]=["film", "categoria", idCategoria]
         return this.richiestaGenerica(risorsa, "GET")
     }
+
+    //DATA 6/12/23 FARE RICHIAMO PER FUNZIONE GET FILM DA CATEGORIA FILM cioe prendere il film da categoria film
+    public getFilmDaCategoriaFilm(idFilm: number): Observable<IRispostaServer> {          
+        const risorsa:(string|number)[]=["categoria", "film", idFilm]
+        return this.richiestaGenerica(risorsa, "GET")
+    }
+
+
+
+
+
 //-------------------------------------------------------
     /**
     * Funzione per richiamare l'elenco di categorie
     * @returns  observable
     */
     public getSeriesTv(): Observable<IRispostaServer> {
-        const risorsa: string[] = ["serieTV"]
+        const risorsa: string[] = ["serieTv"]
         return this.richiestaGenerica(risorsa, "GET")
     }
     /**
@@ -222,6 +228,13 @@ export class ApiService {
 
     public deleteCategorie(id: string): Observable<IRispostaServer> {
         const risorsa: string[] = ["categorie", id]
+        return this.richiestaGenerica(risorsa, "DELETE")
+    }
+
+
+
+    public deleteFilm(id: string): Observable<IRispostaServer> {
+        const risorsa: string[] = ["film", id]
         return this.richiestaGenerica(risorsa, "DELETE")
     }
 
