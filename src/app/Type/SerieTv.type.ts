@@ -9,5 +9,5 @@ export type SerieTv={
     anno:number;
     trama:string;
     trailer?:string;
-    fotoAnteprima?:string;
+    src?:string;
 }

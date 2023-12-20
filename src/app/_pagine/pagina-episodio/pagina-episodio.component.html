@@ -1,0 +1,68 @@
+<header>
+    <menu-principale></menu-principale>
+</header>
+
+<main>
+
+    <ng-container *ngIf="!(episodi.length>0)">
+        <div class="spinner-grow text-danger" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </ng-container>
+
+
+    <ng-container *ngIf="episodi.length>0">
+        <div *ngFor="let episodio of episodi" class="card text-white bg-dark">
+            <img [src]="episodio.src" class="card-img m-0 p-4" alt="film.alt">
+            <div class="card-img-overlay">
+                <h5 class="card-title mt-5 ms-5">{{episodio.titolo}}</h5>
+                <p class="card-text mt-3 ms-5"><small>SerieTv:{{episodio.serieTv}}</small></p>
+                <p class="card-text mt-3 ms-5"><small>Durata:{{episodio.durata}}min <br>
+                        Anno:{{episodio.anno}}</small></p>
+                <p class="card-text mt-3 ms-5">Trama: {{episodio.trama}}<br></p>
+                <p class="card-text mt-3 ms-5">
+                    <small>Stagione: {{episodio.stagione}}</small><br>
+                    <small>Episodio x Stagione: {{episodio.datiEp}}</small><br>
+                </p>
+            </div>
+        </div>
+
+        <div class="ms-5 mt-2">
+            <button type="button" class="button-1 m-1">Riproduci</button>
+            <button type="button" class="button-2  m-1">Modifica</button>
+            <button type="button" class="button-2">Elimina</button>
+
+            <div class="form-check text-white">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                    <small> facendo clic su riproduci accetti i nostri Termini di
+                        utilizzo.</small>
+                </label>
+            </div>
+
+        </div>
+
+    </ng-container>
+
+
+
+    <ng-container *ngIf="elencoEpisodi.length > 0">
+        <div class="text-white mt-3">
+            <hr>
+            <h2 class="text-white ms-4 mt-4">Episodi</h2>
+            <ul class="row m-2 p-3 pt-0 mt-0">
+                <li *ngFor="let elencoEpisodio of elencoEpisodi" class="col">
+                    <card class="card" [opzioni]="elencoEpisodio"></card>
+                </li>
+            </ul>
+        </div>
+
+
+    </ng-container>
+
+
+
+
+
+
+</main>

@@ -1,5 +1,6 @@
 main{
     background-color: black;
+    margin: 0;
 }
 .icon {
     width: 15px;
@@ -19,14 +20,37 @@ span {
     color: white;
     width: 120px;
     height: 38px;
-
 }
+.button-1:hover{
+    background-color:#ec0c65;
+    color: black;
+}
+
+.button-2 {
+    background-color: #ffc107;
+    border-radius: 5px;
+    border: none;
+    color: black;
+    width: 120px;
+    height: 38px;
+}
+.button-2:hover{
+    background-color:#ffc107;
+    color: rgb(203, 5, 203);
+}
+
+
+
 
 .icon-1 {
     width: 15px;
     height: 15px;
     padding-left: 3px;
 }
+.icon-1:hover {
+    color: black;
+}
+
 
 .icon-2,
 .icon-3 {
@@ -36,12 +60,17 @@ span {
     padding-bottom: 3px;
 }
 
+
+
 .card-img-overlay {
     background: linear-gradient(to bottom left, transparent, black);
 }
 
-.titolo {
-    color: white !important;
+h5{
+    font-size: 3em;
+}
+p{
+    font-size: 1em;
 }
 
 
@@ -67,4 +96,9 @@ li{
     padding: 0;
     overflow: hidden;
     margin: 0;
+}
+
+.trailer{
+    padding: 50%;
+    width: 50%;
 }

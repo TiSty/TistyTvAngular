@@ -26,7 +26,7 @@ export class PaginaFilmComponent implements OnInit {
     console.log("ID", this.id)
     if (this.id !== null) {
       console.log("SONO NEL RAMO IF")
-      const film$ = this.api.getFilmDaCategoria(parseInt(this.id));
+      // const film$ = this.api.getFilmDaCategoria(parseInt(this.id));
     }
 
   }
@@ -37,31 +37,31 @@ export class PaginaFilmComponent implements OnInit {
     return {
       next: (rit: IRispostaServer) => {
         const elementi = rit.data
-        for (let i = 0; i < elementi.length; i++) {
+        // for (let i = 0; i < elementi.length; i++) {
           const tmpImg: Immagine = {
-            src: elementi[i].src,
-            alt: elementi[i].alt,
+            src: elementi.src,
+            alt: elementi.alt,
           }
           //SE SERVE DECOMMENTA AL BOTTONE
           const bott: Bottone = {
             testo: "Vai al Film",
-            title: "Visualizza " + elementi[i].nome,
+            title: "Visualizza" + elementi.nome,
             tipo: "button",
             emitId: null,
-            link: "/film/" + elementi[i].idCategoria
+            link: "/film/" + elementi.idFilm
           }
           const card: FilmVisualizzato = {
-            titolo: elementi[i].titolo,
-            durata: elementi[i].durata,
-            regista: elementi[i].regista,
-            categoria: elementi[i].categoria,
-            anno: elementi[i].anno,
-            trama: elementi[i].trama,
-            trailer: elementi[i].trailer,
-            src: elementi[i].src,
+            titolo: elementi.titolo,
+            durata: elementi.durata,
+            regista: elementi.regista,
+            categoria: elementi.categoria,
+            anno: elementi.anno,
+            trama: elementi.trama,
+            trailer: elementi.trailer,
+            src: elementi.src,
           }
           this.films.push(card)
-        }
+        // }
       },
       errore: (err: any) => console.error("ERRORE in osservoFilm", err),
       complete: () => console.log("%c COMPLETATO Film", "color:#00aa00")
@@ -72,7 +72,7 @@ export class PaginaFilmComponent implements OnInit {
   ngOnInit(): void {
     if (this.id !== null) {
       console.log("SONO NEL RAMO IF di ngONINit")
-    const film$ = this.api.getFilmDaCategoria(parseInt(this.id));
+    const film$ = this.api.getFilm(this.id);
     film$.subscribe(this.osservoFilm());
     }
     this.elencoFilm$.pipe(delay(1000)).subscribe(this.osservoFilms())

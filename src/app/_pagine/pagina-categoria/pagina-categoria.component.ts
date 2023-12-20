@@ -55,7 +55,7 @@ export class PaginaCategoriaComponent implements OnInit {
             title: "Visualizza " + elementi[i].nome,
             tipo: "button",
             emitId: null,
-            link: "/film/" + elementi[i].idCategoria    
+            link: "/film/" + elementi[i].idFilm    
           }
           const card: Card = {
             immagine: tmpImg,
@@ -87,7 +87,7 @@ export class PaginaCategoriaComponent implements OnInit {
             title: "Visualizza " + elementi[i].nome,
             tipo: "button",
             emitId: null,
-            link: "/serieTv/" + elementi[i].idCategoria    
+            link: "/serieTv/" + elementi[i].idSerieTv   
           }
           const card: Card = {
             immagine: tmpImg,

@@ -23,31 +23,44 @@
                     <small>regista: {{film.regista}}</small><br>
                     <small> genere: {{film.categoria}}</small><br>
                 </p>
-            </div>
-
-            <div class="ms-5">
-                <button type="button" class="button-1">Riproduci<img class="icon-1"
-                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAE50lEQVR4nO2b328VVRDH1x+IQIshlArhQZAo8UWJ0QcVidVWeTOYmPgnaDStAYSGJ/8EJZqYCGgxxvikAkah8kvbWo2hgpoY7Y8/QH5ITKBXiB9z0jFZprN7z+6evXfvtd/kvrRzzszO2fOdmXNmo2gBCygVwDJgK7AHGALGgSngIlCT30X5m/vfe8Ag0AcsjVoRwBpgOzAC/E1+OOecBgaAVVHVAfQAnwPXCQ/nyE+BzVHVAPQCozQOp4DHq/Dga4GPPQz+BXgXeAnYAmwE7pA5OoEVwL3yBr0IHJAxafgHOAjc2ayHfwG4nGLgWaAfWF9Ax93ATuDHFD2OQLeFfboUALcD76QYdBh4LAoM4Angs5S34U3gttB6b4B7bYGTCUa4EPZoVDLc3ge+T7DhGNBRluJuYMJQegXYAdxSimLblptF56xhj3NOVxkrP2EomwYeCKosm133A78nOKEj5J4/aSj5GlgZREkx+1YBY4Z9R4NwAjbhHXcpblQRAEtk/2u8ESLUaThvL0kZ87Tk9VMSwspl5htrjlEjOmwrkuRcVhNO1cvJhRfi+A14Nu+DZbR5hdio84TsyRLzMzzHuJs8xiXhK0daeR8ug90PAleV7qE8ub3Ga55j03BdOKXUyg541dgK/kUU81n1Bxd7Pcf64M8y+cHlJMAZpfOE7+Aew2DvyotsKI0fgEcMffVTdObq+TiOZFScB6XwA/CF0vOJz0nONTWoJ6PSvAjOD27FjUOV5DSZufw6jrM5lBZFUH4AflLzv5ImPKKEd+dQGApB+AHYpeY9niTYYRxgrm+iA4LwA7BOzXfVzGSBZ/QK5FRYBgrxAzCp5nvKEtqjhN6vkAMK8YOcR8axyxIaUkIvV9ABufjBEZ8av98SGldCWyvsgEz8YKT2I5bQjBLa2AIO8OIHYIMaM2UJnVdCeQmnWXD80JdgU5eS/cMSqimhzhZzgMNkgk2LldysjwOW/t8ccF4JrW7BLdBbZAvMKKH72pgEpy2hb5VQbxuFQddsEceoTyI0UGEHuMuQ5wskQgd8UuH9bZwKD/oUQ5NtXAz1Jl0s1JTghjYsh2cTQzzwjRLe2YYHIqfShLcr4V+BmxrsgL+A113yUvThxZ5zav7+NOHVxqFopmakih2Kun6kONyJV3e9QUfUoKMZlVbpWFzfGB/y7cXR8O75oToXI5sNfX5vM/PJ0HV8LfIc2/B9nnA1NuFNfhrAk4bRXhGhIpejO4zL0S1ZJ/nIiJ8PeYxLwolG9BM5G43mqYN5JlojqWccM/X6gprcINFl6L+Ut7SPXMFhrOR4WgeWVF7T8mt0i8x3hr3PFZ34bWPS4Yo1SS0TmzT2hph8sXSFWW9C03v45bW3Vn442NsHLDc6LpAqqy4xlgXgYWPP/9fR0llGq+wZQ1lN9nojW2VvlVBXS3j47rIUL0/YDkjiUfrXHJLhJbXPDwdf+QROeItkfJk56fAvbFz7axL2NirixEOkzhPiOCe1+F1RscMMN8fPKXouFQ51eSHJ0ofUhyPLfe7GWfKEe1xC5VZMfivlb30is884xsJIbz/IneSEBHMVpOsebxROl7HNQu3Tw8ahSgi4OQ9V4msxz5A5ICtlfdXhi1n5RK6/tNBWNtwJrOztQfkcbkw6ui/EPp29IH8bE5nW/nR2AVHr4F/7XvbAOefVaAAAAABJRU5ErkJggg=="></button>
-                <button type="button" class="btn btn-outline-warning">modifica<img class="icon-2"
-                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAB10lEQVR4nM2XP0sDMRiHU+m9abWgg4KD/QB2VXFyUFD3asUv4CSIs+AX8AvoLA5SqItT6XBvrqKLUATxE1gXnXX8yfVqr/bfJdccepDlEvI87y/hLhHiPz2AmIBHBTAVwVTSbIt24CqTB9MdlIRZo4+hc7piBuzsQclDeNnV0ZXzD5xeoWQFSpb1Gh0PLkhugOntlyzTFe5Ftn+wR4UOvCamY8cYwreh5NeQxGp9EvDXPBhQSRbeSaKKR+F0C5TaneUx4VuR8FDiyKpAC87yU3vzsry1JmBUedcyWBEwrjwUOBlbIDZcyQaqYmosAbDcjFe5fIKbm+2ZjIwErMJNBazDTQQSgesKJAbXEQh+LDHhXm5u0JymAo3E4FECgEgZV68Tu7aAm11IFB4pwHLdZuzgzBqYLvzTUtfLUQnIA5trDpbXwXgq6gmwPNMQeIE7OR8Fb80XHOV8gZKegJI3EfCG9m6PJcB0HvTROxQ9QNElFJ3Cc/ZRd5bwLEgXHk8AIgVX5EwgcQSKtg6lGgKVdqI74UvLx/LRFxVqBgmkV8IO/2KiqN6Opml2MdFulRBOymf2RJPJQ5Fn/M03/keQ8r+ugyOCmICbXja4mOo3j3Zbc/dW/tfPN8j9NL1o4vQhAAAAAElFTkSuQmCC"></button>
-                <button type="button" class="btn btn-outline-warning">elimina<img class="icon-3"
-                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAADyElEQVR4nO1aTWxNQRQeknvOfV3pjv5sLGohXWDpJyGEjYj4C4naIKELifhJV7pCCIkEibCgVi0JCVEJ8Wbee3aPDRIkEkKw0aYaoSSOzPQq7955P6adue/pfMnZnTMz33fPz9z7HmMeHh4eHh5WQSJsJ47XieNnEkgVTfpwvEEFmMf+I/KfqhJPCjEkY1mjg+ST/1fyf2yANTqolrQvnwUjrNFBMVJT7V/3oOkgAOVZM+WDRcTDLhJ4XNYucSwSxy+TqP/fZfCdOLwiAfdIwAXisI+yuJLyOJeIzUyBJGwiDodJQF9EcmTSJM3tmxKH4y0lPMfdSpxCpmXqBRCpkTQyL8BUg6Z7Bnh4jOOv0fZV3deVwfuoGz+LJkOROBSi0XUv6tIDanLIUaYMz0QjU1qvmixyxMlOrizsiiaOtLWqu2fDJWoSjdt8NQqlFTItakplWchsgwS8Tru+yxqHN/YF4FisXwGwaF8AAYOpEy1rMOhCgL46LoGrDgTAU3VcAqcdCAA9dVwCPQ4EwJ1l1L9N9zOtlM20kcA7VZ7UGHE4pMaXNDUCcaxKTPX1s7jLgQCwTr95pu2PT9hepVYPJ9ZVb5gVYmpZn8N6+wLkwsXazYssKBWqUqo2zUmsm22aXSmmxPcpA61fLlzsQADo0D8hNqtWAcquXasA8tanFQA6bHKvvPn9TKszAcb7QNIvz5qZbRCxGeozVRX1rQpQgHkanx/ybDa5T4AEfEg2oGCBMwFEsDDpAx+ZK5DAJ8keEC4xIWMSQzxcqvF5YpNzCUjAA80BVrvrAbhGkwEPmCuQwH7NATaYkDGJoRxs1Pj02+RcAuJwNtkDwi53PSDckdwfzjJXIPkFJ9EDcI8JGZMY4rhX49Nrk3MJSGC3pgQOuMsAOKjx6WauQCLYoknBIyZkTGK0GciDzTY5l4AErkgeAE84LIGTmv2XM1cgHnRqSuCcCRmTGBJwXpMBnTY5V39z43DZoQBXkk24aTZzBSqygDj+jKXgNRMyJjGJv93Is8Rex62DBA5X+iJrVwC4GxNgyCZXLUjgy5gAOYclkI8J8IK5BnF4GDvEIxMyJjEk8HGs/xRsctWCON6MCfDcYQ94Edv7JnMN4nApVgJvTciYxJCAd7EMuGiTqxbE8VilRmS5BEobMMejzDWIw/7YIcZMyJjEJD7Jcdhvk6sW0V/iqC4sG25nrkEiXJY68YkMCJe6F+Cp+nEidhlKxYblWZwLIEE82Ja6ANlgK0sTxHFVdDMbdUh8VN485d6pkvfw8PDw8PBgjYxfJF3HzbggfNIAAAAASUVORK5CYII="></button>
-                <p class="card-text mt-3 ms-5"><small> facendo clic su riproduci accetti i nostri Termini di
-                        utilizzo.</small></p>
+                <p class="card-text mt-5 ms-5">Trailer:</p>
+                <video controls class="trailer p-3 ps-5" src="{{film.trailer}}"></video>
             </div>
         </div>
+
+        <div class="ms-5 mt-2">
+            <button type="button" class="button-1 m-1">Riproduci</button>
+            <button type="button" class="button-2  m-1">Modifica</button>
+            <button type="button" class="button-2">Elimina</button>
+
+            <div class="form-check text-white">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                    <small> facendo clic su riproduci accetti i nostri Termini di
+                        utilizzo.</small>
+                </label>
+            </div>
+
+        </div>
+
     </ng-container>
 
 
 
 
     <ng-container *ngIf="elencofilms.length > 0">
-        <h2>ALTRI FILM</h2>
-        <ul class="row m-2 p-3 pt-0 mt-0">
-            <li *ngFor="let elencoFilm of elencofilms" class="col">
-                <card class="cardSotto" [opzioni]="elencoFilm"></card>
-            </li>
-        </ul>
+        <div class="text-white m-3 mt-3">
+            <hr>
+            <div class="mt-3 ms-5 text-white">
+                <h2>ALTRI FILM</h2>
+                <ul class="row m-2 p-3 pt-0 mt-0 ">
+                    <li *ngFor="let elencoFilm of elencofilms" class="col">
+                        <card class="cardSotto" [opzioni]="elencoFilm"></card>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
     </ng-container>
 
 

@@ -24,6 +24,8 @@ import { PaginaSerieTvComponent } from './_pagine/pagina-serie-tv/pagina-serie-t
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthIntercept } from './_intercettatori/auth.inteceptor';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { PaginaProfiloComponent } from './_pagine/pagina-profilo/pagina-profilo.component';
+import { PaginaEpisodioComponent } from './_pagine/pagina-episodio/pagina-episodio.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,9 @@ import { CarouselModule } from 'ngx-bootstrap/carousel';
     CategorieComponent,
     PaginaCategoriaComponent,
     PaginaFilmComponent,
-    PaginaSerieTvComponent
+    PaginaSerieTvComponent,
+    PaginaProfiloComponent,
+    PaginaEpisodioComponent
   ],
   imports: [
     BrowserModule,

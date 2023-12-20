@@ -12,6 +12,8 @@ import { CategorieComponent } from './_pagine/categorie/categorie.component';
 import { PaginaCategoriaComponent } from './_pagine/pagina-categoria/pagina-categoria.component';
 import { PaginaFilmComponent } from './_pagine/pagina-film/pagina-film.component';
 import { PaginaSerieTvComponent } from './_pagine/pagina-serie-tv/pagina-serie-tv.component';
+import { PaginaProfiloComponent } from './_pagine/pagina-profilo/pagina-profilo.component';
+import { PaginaEpisodioComponent } from './_pagine/pagina-episodio/pagina-episodio.component';
 
 const routes: Routes = [
   { path: '', component:HomeComponent},
@@ -19,6 +21,7 @@ const routes: Routes = [
   { path: 'accedi', component:AccediComponent},
   { path: 'registrazione', component:RegistrazioneComponent},
   { path: 'credenziali', component:CredenzialiComponent},
+  { path: 'paginaProfilo', component:PaginaProfiloComponent},
   { path: 'paginaPrincipale', component:PaginaPrincipaleComponent},
   { path: 'categorie', component:CategorieComponent},
   { path: 'categorie/:id', component:PaginaCategoriaComponent},
@@ -26,6 +29,8 @@ const routes: Routes = [
   { path: 'film/:id', component:PaginaFilmComponent},
   { path: 'serieTv', component:SerietvComponent},
   { path: 'serieTv/:id', component:PaginaSerieTvComponent},
+  { path: 'episodio/:id', component:PaginaEpisodioComponent},
+
 
   { path: '**', component:ErroreComponent},
 ];

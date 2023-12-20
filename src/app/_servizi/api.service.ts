@@ -121,7 +121,7 @@ export class ApiService {
    * @returns  observable
    */
     public getFilm(id: string): Observable<IRispostaServer> {
-        const risorsa: string[] = ["film ", id]
+        const risorsa: string[] = ["film", id]
         return this.richiestaGenerica(risorsa, "GET")
     }
 
@@ -132,14 +132,14 @@ export class ApiService {
      * @param idCategoria ID DELLA CATEGORIA SCELTA
      * @returns OBSERVABLE
      */
-    public getFilmDaCategoria(idCategoria: number): Observable<IRispostaServer> {          
-        const risorsa:(string|number)[]=["film", "categoria", idCategoria]
+    public getFilmDaCategoria(idCategoria: number): Observable<IRispostaServer> {
+        const risorsa: (string | number)[] = ["film", "categoria", idCategoria]
         return this.richiestaGenerica(risorsa, "GET")
     }
 
     //DATA 6/12/23 FARE RICHIAMO PER FUNZIONE GET FILM DA CATEGORIA FILM cioe prendere il film da categoria film
-    public getFilmDaCategoriaFilm(idFilm: number): Observable<IRispostaServer> {          
-        const risorsa:(string|number)[]=["categoria", "film", idFilm]
+    public getFilmDaCategoriaFilm(idFilm: number): Observable<IRispostaServer> {
+        const risorsa: (string | number)[] = ["categoria", "film", idFilm]
         return this.richiestaGenerica(risorsa, "GET")
     }
 
@@ -147,7 +147,7 @@ export class ApiService {
 
 
 
-//-------------------------------------------------------
+    //-------------------------------------------------------
     /**
     * Funzione per richiamare l'elenco di categorie
     * @returns  observable
@@ -161,19 +161,48 @@ export class ApiService {
     * @returns  observable
     */
     public getSerieTv(id: string): Observable<IRispostaServer> {
-        const risorsa: string[] = ["serieTv ", id]
+        const risorsa: string[] = ["serieTv", id]
         return this.richiestaGenerica(risorsa, "GET")
     }
 
-     /**
-     * FUNZIONE CHE RICHIAMA/RITORNA I FILM APPARTENENTI AD UNA CATEGORIA PASSATA
-     * @param idCategoria ID DELLA CATEGORIA SCELTA
-     * @returns OBSERVABLE
-     */
-     public getSerieTvDaCategoria(idCategoria: number): Observable<IRispostaServer> {          
-        const risorsa:(string|number)[]=["serieTv", "categoria", idCategoria]
+    /**
+    * FUNZIONE CHE RICHIAMA/RITORNA I FILM APPARTENENTI AD UNA CATEGORIA PASSATA
+    * @param idCategoria ID DELLA CATEGORIA SCELTA
+    * @returns OBSERVABLE
+    */
+    public getSerieTvDaCategoria(idCategoria: number): Observable<IRispostaServer> {
+        const risorsa: (string | number)[] = ["serieTv", "categoria", idCategoria]
         return this.richiestaGenerica(risorsa, "GET")
     }
+
+    //-------------------------------------------------------
+
+    public getEpisodi(): Observable<IRispostaServer> {
+        const risorsa: string[] = ["episodi"]
+        return this.richiestaGenerica(risorsa, "GET")
+    }
+
+    public getEpisodio(id:string): Observable<IRispostaServer> {
+        const risorsa: string[] = ["episodi", id]
+        return this.richiestaGenerica(risorsa, "GET")
+    }
+
+
+    public getEpisodiDaSerie(idSerieTv: number): Observable<IRispostaServer> {
+        const risorsa: (string | number)[] = ["serieTv", "episodio", idSerieTv]
+        return this.richiestaGenerica(risorsa, "GET")
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     // RICHIESTE POST  --------------------------------------------------
 
@@ -186,6 +215,7 @@ export class ApiService {
         const risorsa: string[] = ["categorie"]
         return this.richiestaGenerica(risorsa, "POST", parametri)
     }
+
 
     /**
      * 
@@ -237,7 +267,10 @@ export class ApiService {
         const risorsa: string[] = ["film", id]
         return this.richiestaGenerica(risorsa, "DELETE")
     }
-
+    public deleteSerieTv(id: string): Observable<IRispostaServer> {
+        const risorsa: string[] = ["serieTv", id]
+        return this.richiestaGenerica(risorsa, "DELETE")
+    }
 
     //FASI DI LOGIN ------------------------------------------------------------    PER ME STESSO, EMAIL E HASHEMAIL sono per rino UTENTE E HASHUTENTE
 

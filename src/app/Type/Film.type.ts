@@ -10,5 +10,5 @@ export type Film={
     anno:number;
     trama:string;
     trailer?:string;
-    fotoAnteprima?:Immagine;
+    src?:string;
 }
