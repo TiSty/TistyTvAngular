@@ -84,9 +84,9 @@ export class SerietvComponent implements OnInit, OnDestroy {
     this.distruggi$.next()
   }
 
-  //PER AGGIUNGERE UNA SERIETV
+  //PER AGGIUNGERE UNA Film
   aggiungiSerieTv() {
-    console.log("Aggiungi SerieTv")
+    console.log("Aggiungi Film", this.titolo)
     const parametro: Partial<SerieTv> = {
       titolo: this.titolo,
       durata: this.durata,
@@ -110,45 +110,26 @@ export class SerietvComponent implements OnInit, OnDestroy {
     )
   }
   private osservatore = {
-    next: (ritorno: SerieTv) => console.log(ritorno),
+    next: (ritorno: SerieTv) => {
+      console.log(ritorno);
+      if (ritorno.src !== undefined) {
+        const newCard: Card = {
+          titolo: ritorno.titolo,
+          testo: ritorno.trama,
+          immagine: { src: ritorno.src, alt: '' }
+        }
+        this.seriesTv.push(newCard)
+      } else {
+        console.error('Impossibile creare serieTv')
+      }
+    },
     error: (err: string) => console.error(err),
     complete: () => console.log("Completato"),
   }
 
-  //PER MODIFICARE UNA SERIETV
-  modificaSerieTv() {
-    console.log("Modifica Film")
-    const parametro: Partial<SerieTv> = {
-      titolo: this.titolo,
-      durata: this.durata,
-      stagioni: this.stagioni,
-      episodi: this.episodi,
-      regista: this.regista,
-      categoria: this.categoria,
-      anno: this.anno,
-      trama: this.trama,
-      trailer: this.trailer,
-      src: this.src
-    }
-    const id: number = this.idSerieTv
-    //funzione che sottoscrive un osservable 
-    this.obsModificaSerieTv(id, parametro).subscribe(this.osservatoreMod)
-  }
-  //funzione per creare un osservatore per modifica SerieTv
-  obsModificaSerieTv(id: number, dati: Partial<SerieTv>) {
-    return this.api.putSerieTv(id, dati).pipe(
-      take(1),
-      tap(x => console.log("OBS ", x)),
-      map(x => x.data),
-      takeUntil(this.distruggi$)
-    )
-  }
 
-  private osservatoreMod = {
-    next: () => console.log('SerieTv Modificata!'),
-    error: (err: string) => console.error(err),
-    complete: () => console.log("Completato"),
-  }
+
+
 
   //PER ELIMINARE UNA SERIETV
   eliminaSerieTv(id: number | null) {
@@ -175,8 +156,8 @@ export class SerietvComponent implements OnInit, OnDestroy {
 
 
 
-   //FUNZIONI PER UTILIZZARE LA MODAL OFFCANVAS
-   open(content: TemplateRef<any>) {
+  //FUNZIONI PER UTILIZZARE LA MODAL OFFCANVAS
+  open(content: TemplateRef<any>) {
     this.offcanvasService.open(content, { ariaLabelledBy: 'offcanvas-basic-title' }).result.then(
       (result) => {
         this.closeResult = `Closed with: ${result}`;
@@ -203,3 +184,51 @@ export class SerietvComponent implements OnInit, OnDestroy {
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //PER MODIFICARE UNA SERIETV     TOLTO PERCHE RITENUTO INUTILE, LA MODIFICA SU PUò ESEGUIRE DA DENTRO LA PAGINA DI VISUALIZZAZIONE DEL FILM
+  // modificaSerieTv() {
+  //   console.log("Modifica Serie")
+  //   const parametro: Partial<SerieTv> = {
+  //     titolo: this.titolo,
+  //     durata: this.durata,
+  //     stagioni: this.stagioni,
+  //     episodi: this.episodi,
+  //     regista: this.regista,
+  //     categoria: this.categoria,
+  //     anno: this.anno,
+  //     trama: this.trama,
+  //     trailer: this.trailer,
+  //     src: this.src
+  //   }
+  //   const id: number = this.idSerieTv
+  //   //funzione che sottoscrive un osservable 
+  //   this.obsModificaSerieTv(id, parametro).subscribe(this.osservatoreMod)
+  // }
+  // //funzione per creare un osservatore per modifica SerieTv
+  // obsModificaSerieTv(id: number, dati: Partial<SerieTv>) {
+  //   return this.api.putSerieTv(id, dati).pipe(
+  //     take(1),
+  //     tap(x => console.log("OBS ", x)),
+  //     map(x => x.data),
+  //     takeUntil(this.distruggi$)
+  //   )
+  // }
+
+  // private osservatoreMod = {
+  //   next: () => console.log('SerieTv Modificata!'),
+  //   error: (err: string) => console.error(err),
+  //   complete: () => console.log("Completato"),
+  // }
+

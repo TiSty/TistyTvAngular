@@ -18,6 +18,7 @@ export class PaginaEpisodioComponent implements OnInit {
   id: string | null = null
   episodio$!: Observable<IRispostaServer>;
   episodi: EpisodioVisualizzato[]=[]
+  card!:EpisodioVisualizzato
 
   constructor(private route: ActivatedRoute, private api: ApiService) {
     this.id = this.route.snapshot.paramMap.get("id")
@@ -26,7 +27,7 @@ export class PaginaEpisodioComponent implements OnInit {
   }
 
 
-  //OBSERVER
+  //OBSERVER PER IL SINGOLO EPISODIO
   private osservoEpisodio() {
     console.log("SONO IN OSSERVO EPISODIO")
     return {
@@ -45,7 +46,7 @@ export class PaginaEpisodioComponent implements OnInit {
           emitId: null,
           link: "/episodio/" + elementi.idEpisodio
         }
-        const card: EpisodioVisualizzato = {
+        this.card = {
           titolo: elementi.titolo,
           durata: elementi.durata,
           serieTv: elementi.serieTv,
@@ -56,8 +57,6 @@ export class PaginaEpisodioComponent implements OnInit {
           trailer: elementi.trailer,
           src: elementi.src,
         }
-        this.episodi.push(card)
-
       },
       errore: (err: any) => console.error("ERRORE in osservoepisodio", err),
       complete: () => console.log("%c COMPLETATO episodio", "color:#00aa00")
@@ -83,7 +82,7 @@ export class PaginaEpisodioComponent implements OnInit {
 
   elencoEpisodi: Card[] = []
   elencoEpisodio$!: Observable<IRispostaServer>;
-  //OBSERVER
+  //OBSERVER PER TUTTI GLI EPISODI
   private osservoEpisodi() {
     return {
       next: (rit: IRispostaServer) => {

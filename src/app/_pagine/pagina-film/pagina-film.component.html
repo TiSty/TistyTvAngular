@@ -4,62 +4,141 @@
 
 <main>
 
-    <ng-container *ngIf="!(films.length>0)">
+
+    <!-- 
+                    CONTINUA A CARICARE ALL'INFINITO
+         <ng-container *ngIf="!(films.length>0)">
         <div class="spinner-grow text-danger" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
-    </ng-container>
+    </ng-container> -->
 
 
-    <ng-container *ngIf="films.length>0">
-        <div *ngFor="let film of films" class="card text-white bg-dark">
-            <img [src]="film.src" class="card-img m-0 p-4" alt="film.alt">
+
+
+
+
+    <ng-container>
+        <div class="card text-white bg-dark">
+            <img [src]=card.src class="card-img m-0 p-4 imgPrinc" alt="card.alt">
             <div class="card-img-overlay">
-                <h5 class="card-title mt-5 ms-5">{{film.titolo}}</h5>
-                <p class="card-text mt-3 ms-5"><small>Durata:{{film.durata}}min <br>
-                        Anno:{{film.anno}}</small></p>
-                <p class="card-text mt-3 ms-5">Trama: {{film.trama}}<br></p>
+                <h2 class="card-title mt-5 ms-5">{{card.titolo}}</h2>
+                <p class="card-text mt-3 ms-5"><small>Durata:{{card.durata}}min <br>
+                        Anno:{{card.anno}}</small></p>
+                <p class="card-text mt-3 ms-5">Trama: {{card.trama}}<br></p>
                 <p class="card-text mt-3 ms-5">
-                    <small>regista: {{film.regista}}</small><br>
-                    <small> genere: {{film.categoria}}</small><br>
+                    <small>regista: {{card.regista}}</small><br>
+                    <small> genere: {{card.categoria}}</small><br>
                 </p>
                 <p class="card-text mt-5 ms-5">Trailer:</p>
-                <video controls class="trailer p-3 ps-5" src="{{film.trailer}}"></video>
+                <video controls class="trailer p-3 ps-5" src="{{card.trailer}}"></video>
             </div>
         </div>
-
-        <div class="ms-5 mt-2">
-            <button type="button" class="button-1 m-1">Riproduci</button>
-            <button type="button" class="button-2  m-1">Modifica</button>
-            <button type="button" class="button-2">Elimina</button>
-
-            <div class="form-check text-white">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault">
-                    <small> facendo clic su riproduci accetti i nostri Termini di
-                        utilizzo.</small>
-                </label>
-            </div>
-
-        </div>
-
     </ng-container>
 
 
+    <div class="ms-4 mt-2">
+        <button type="button" class="button-1 m-1">Riproduci</button>
 
 
-    <ng-container *ngIf="elencofilms.length > 0">
-        <div class="text-white m-3 mt-3">
-            <hr>
-            <div class="mt-3 ms-5 text-white">
-                <h2>ALTRI FILM</h2>
-                <ul class="row m-2 p-3 pt-0 mt-0 ">
-                    <li *ngFor="let elencoFilm of elencofilms" class="col">
-                        <card class="cardSotto" [opzioni]="elencoFilm"></card>
-                    </li>
-                </ul>
+
+        <ng-template #contentModifica let-offcanvas>
+            <div class="offcanvas-header bg-dark">
+                <h4 class="offcanvas-title" id="offcanvas-basic-title">Modifica SerieTv</h4>
+                <button type="button" class="btn-close" aria-label="Close"
+                    (click)="offcanvas.dismiss('Cross click')"></button>
             </div>
+            <div class="offcanvas-body bg-dark">
+                <form>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="titolo" id="floatingInput" placeholder="Titolo"
+                            [(ngModel)]="card.titolo">
+                        <label for="floatingInput SerieTv">Titolo</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="durata" id="floatingInput" placeholder="Durata"
+                            [(ngModel)]="card.durata">
+                        <label for="floatingInput SerieTv">Durata</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="anno" id="floatingInput" placeholder="Anno"
+                            [(ngModel)]="card.anno">
+                        <label for="floatingInput SerieTv">Anno</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="trama" id="floatingInput" placeholder="Trama"
+                            [(ngModel)]="card.trama">
+                        <label for="floatingInput SerieTv">Trama</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="regista" id="floatingInput" placeholder="Regista"
+                            [(ngModel)]="card.regista">
+                        <label for="floatingInput SerieTv">Regista</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="categoria" id="floatingInput"
+                            placeholder="Categoria" [(ngModel)]="card.categoria">
+                        <label for="floatingInput SerieTv">Categoria/Genere</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="trailer" id="floatingInput" placeholder="Trailer"
+                            [(ngModel)]="card.trailer">
+                        <label for="floatingInput SerieTv">Trailer</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="src" id="floatingInput" placeholder="src"
+                            [(ngModel)]="card.src">
+                        <label for="floatingInput SerieTv">src</label>
+                    </div>
+                </form>
+
+                <div class="text-end">
+                    <button type="button" class="btn btn-outline-dark bottInv"
+                        (click)="modificaFilm()">Modifica</button>
+                </div>
+            </div>
+        </ng-template>
+        <button class="button-2  m-1" type="button" (click)="openEnd(contentModifica)">Modifica</button>
+        <button type="button" class="button-2">Elimina</button>
+        <div class="form-check text-white">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+            <label class="form-check-label" for="flexCheckDefault">
+                <small> Facendo clic su riproduci accetti i nostri Termini di
+                    utilizzo.</small>
+            </label>
         </div>
+    </div>
+
+
+
+    <hr>
+
+    
+    <h2 class="text-white ms-5">Altri Film</h2>
+    <ng-container *ngIf="elencofilms.length > 0">
+        <ul class="row m-2 p-3 pt-0 mt-0 mb-0">
+            <li *ngFor="let elencofilm of elencofilms" class="col p-2">
+                <div class="cardSotto">
+                    <div class="front">
+                        <!-- Contenuto frontale della card -->
+                        <img src="{{ elencofilm.immagine?.src }}" alt="{{ elencofilm.immagine?.alt }}" />
+
+                    </div>
+                    <div class="back bg-black text-white">
+                        <!-- Contenuto posteriore della card -->
+                        <div class="cardSotto-content">
+                            <h5>{{ elencofilm.titolo }}</h5>
+                            <!-- <p>{{ elencofilm.testo }}</p> -->
+                            <button routerLink="{{elencofilm.bottone?.link}}"
+                                class="btn btn-danger">{{elencofilm.bottone?.testo}}</button>
+
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
 
     </ng-container>
 

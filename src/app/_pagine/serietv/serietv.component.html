@@ -11,83 +11,110 @@
 
 
     <ng-container *ngIf="seriesTv.length>0">
+
         <ul class="row m-2 p-3 pt-0 mt-0">
-            <li *ngFor="let serieTv of seriesTv" class="col">
-                <card class="card" [opzioni]="serieTv"></card>
+            <li *ngFor="let serieTv of seriesTv" class="col p-2">
+                <div class="card">
+                    <div class="front">
+                        <!-- Contenuto frontale della card -->
+                        <img src="{{ serieTv.immagine?.src }}" alt="{{ serieTv.immagine?.alt }}" />
+
+                    </div>
+                    <div class="back bg-black text-white">
+                        <!-- Contenuto posteriore della card -->
+                        <div class="card-content">
+                            <h5>{{ serieTv.titolo }}</h5>
+                            <p>{{ serieTv.testo }}</p>
+                            <button routerLink="{{serieTv.bottone?.link}}"
+                                class="btn btn-danger">{{serieTv.bottone?.testo}}</button>
+                            <!-- Aggiungi qui il resto del contenuto posteriore della card -->
+                        </div>
+                    </div>
+                </div>
             </li>
         </ul>
 
 
+
         <div class="float-end me-3">
-            <!-- BOTTONE + MODAL PER AGGIUNGERE UNA CATEGORIA -->
+            <!-- BOTTONE + MODAL PER AGGIUNGERE UNA SERIE -->
             <ng-template #contentAggiungi let-offcanvas>
-                <div class="offcanvas-header">
+                <div class="offcanvas-header bg-dark">
                     <h4 class="offcanvas-title" id="offcanvas-basic-title">Aggiungi SerieTv</h4>
                     <button type="button" class="btn-close" aria-label="Close"
                         (click)="offcanvas.dismiss('Cross click')"></button>
                 </div>
-                <div class="offcanvas-body">
+                <div class="offcanvas-body bg-dark">
                     <form>
-                        <div class="mb-3">
-                            <label for="SerieTv">SerieTv da Aggiungere :</label>
-                            <input type="text" name="titolo" placeholder="Titolo" [(ngModel)]="titolo">
-                            <input type="text" name="durata" placeholder="Durata" [(ngModel)]="durata">
-                            <input type="text" name="stagioni" placeholder="Stagioni" [(ngModel)]="stagioni">
-                            <input type="text" name="episodi" placeholder="Episodi" [(ngModel)]="episodi">
-                            <input type="text" name="regista" placeholder="Regista" [(ngModel)]="regista">
-                            <input type="text" name="categoria" placeholder="Categoria" [(ngModel)]="categoria">
-                            <input type="text" name="anno" placeholder="Anno" [(ngModel)]="anno">
-                            <input type="text" name="trama" placeholder="Trama" [(ngModel)]="trama">
-                            <input type="text" name="trailer" placeholder="Trailer" [(ngModel)]="trailer">
-                            <input type="text" name="src" placeholder="Src" [(ngModel)]="src">
 
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" name="titolo" id="floatingInput"
+                                placeholder="titolo" [(ngModel)]="titolo">
+                            <label for="floatingInput SerieTv">Titolo</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" name="regista" id="floatingInput"
+                                placeholder="Regista" [(ngModel)]="regista">
+                            <label for="floatingInput SerieTv">Regista</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" name="durata" id="floatingInput"
+                                placeholder="Durata" [(ngModel)]="durata">
+                            <label for="floatingInput SerieTv">Durata</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" name="stagioni" id="floatingInput"
+                                placeholder="Stagioni" [(ngModel)]="stagioni">
+                            <label for="floatingInput SerieTv">Stagioni</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" name="episodi" id="floatingInput"
+                                placeholder="Episodi" [(ngModel)]="episodi">
+                            <label for="floatingInput SerieTv">Episodi</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" name="categoria" id="floatingInput"
+                                placeholder="Categoria" [(ngModel)]="categoria">
+                            <label for="floatingInput SerieTv">Categoria</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" name="anno" id="floatingInput" placeholder="Anno"
+                                [(ngModel)]="anno">
+                            <label for="floatingInput SerieTv">Anno</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" name="trama" id="floatingInput" placeholder="Trama"
+                                [(ngModel)]="trama">
+                            <label for="floatingInput SerieTv">Trama</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" name="trailer" id="floatingInput"
+                                placeholder="Trailer" [(ngModel)]="trailer">
+                            <label for="floatingInput SerieTv">Trailer</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" name="src" id="floatingInput" placeholder="src"
+                                [(ngModel)]="src">
+                            <label for="floatingInput SerieTv">src</label>
                         </div>
                     </form>
+
                     <div class="text-end">
-                        <button type="button" class="btn btn-outline-dark" (click)="aggiungiSerieTv()">Aggiungi</button>
+                        <button type="button" class="btn btn-outline-dark bottInv"
+                            (click)="aggiungiSerieTv()">Aggiungi</button>
                     </div>
                 </div>
             </ng-template>
-            <button class="btn btn-primary bottAgg" (click)="openEnd(contentAggiungi)">Aggiungi SerieTv</button>
+            <button class="btn btn-danger bottAgg" (click)="openEnd(contentAggiungi)">Aggiungi SerieTv</button>
 
 
 
-            <!-- BOTTONE + MODAL PER MODIFICARE UNA CATEGORIA -->
-            <ng-template #contentModifica let-offcanvas>
-                <div class="offcanvas-header">
-                    <h4 class="offcanvas-title" id="offcanvas-basic-title">Modifica SerieTv</h4>
-                    <button type="button" class="btn-close" aria-label="Close"
-                        (click)="offcanvas.dismiss('Cross click')"></button>
-                </div>
-                <div class="offcanvas-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="SerieTv">SerieTv da Modificare :</label>
-                            <input type="number" name="idSerietv" placeholder="idSerieTv" [(ngModel)]="idSerieTv">
-                            <input type="text" name="titolo" placeholder="Titolo" [(ngModel)]="titolo">
-                            <input type="number" name="durata" placeholder="Durata" [(ngModel)]="durata">
-                            <input type="text" name="stagioni" placeholder="Stagioni" [(ngModel)]="stagioni">
-                            <input type="text" name="episodi" placeholder="Episodi" [(ngModel)]="episodi">
-                            <input type="text" name="regista" placeholder="Regista" [(ngModel)]="regista">
-                            <input type="text" name="categoria" placeholder="Categoria" [(ngModel)]="categoria">
-                            <input type="number" name="anno" placeholder="Anno" [(ngModel)]="anno">
-                            <input type="text" name="trama" placeholder="Trama" [(ngModel)]="trama">
-                            <input type="text" name="trailer" placeholder="Trailer" [(ngModel)]="trailer">
-                            <input type="text" name="src" placeholder="Src" [(ngModel)]="src">
-
-                        </div>
-                    </form>
-                    <div class="text-end">
-                        <button type="button" class="btn btn-outline-dark" (click)="modificaSerieTv()">Modifica</button>
-                    </div>
-                </div>
-            </ng-template>
-            <button class="btn btn-primary bottAgg" (click)="openEnd(contentModifica)">Modifica SerieTv</button>
         </div>
 
         <div class="bottDel">
             <input type="number" class="form-control input" placeholder="id" [(ngModel)]="idSerieTv">
-            <button class="btn btn-primary" type="button" id="button-addon2" (click)="eliminaSerieTv(idSerieTv)">Cancella SerieTv</button>
+            <button class="btn btn-danger" type="button" id="button-addon2"
+                (click)="eliminaSerieTv(idSerieTv)">Cancella SerieTv</button>
         </div>
 
 
@@ -103,6 +130,88 @@
     </ng-container>
 
 
- 
+
 
 </main>
+
+
+
+
+
+
+
+
+
+
+<!-- BOTTONE + MODAL PER MODIFICARE UNA SERIE   TOLTO PERCHE RITENUTO INUTILE, LA MODIFICA SU PUò ESEGUIRE DA DENTRO LA PAGINA DI VISUALIZZAZIONE DELLA SERIE     -->
+<!-- <ng-template #contentModifica let-offcanvas>
+    <div class="offcanvas-header bg-dark">
+        <h4 class="offcanvas-title" id="offcanvas-basic-title">Modifica SerieTv</h4>
+        <button type="button" class="btn-close" aria-label="Close"
+            (click)="offcanvas.dismiss('Cross click')"></button>
+    </div>
+    <div class="offcanvas-body bg-dark">
+        <form>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="idSerieTv" id="floatingInput"
+                    placeholder="ID SerieTv" [(ngModel)]="idSerieTv">
+                <label for="floatingInput SerieTv">ID SerieTv</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="titolo" id="floatingInput"
+                    placeholder="titolo" [(ngModel)]="titolo">
+                <label for="floatingInput SerieTv">Titolo</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="regista" id="floatingInput"
+                    placeholder="Regista" [(ngModel)]="regista">
+                <label for="floatingInput SerieTv">Regista</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="durata" id="floatingInput"
+                    placeholder="Durata" [(ngModel)]="durata">
+                <label for="floatingInput SerieTv">Durata</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="stagioni" id="floatingInput"
+                    placeholder="Stagioni" [(ngModel)]="stagioni">
+                <label for="floatingInput SerieTv">Stagioni</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="episodi" id="floatingInput"
+                    placeholder="Episodi" [(ngModel)]="episodi">
+                <label for="floatingInput SerieTv">Episodi</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="categoria" id="floatingInput"
+                    placeholder="Categoria" [(ngModel)]="categoria">
+                <label for="floatingInput SerieTv">Categoria</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="anno" id="floatingInput" placeholder="Anno"
+                    [(ngModel)]="anno">
+                <label for="floatingInput SerieTv">Anno</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="trama" id="floatingInput" placeholder="Trama"
+                    [(ngModel)]="trama">
+                <label for="floatingInput SerieTv">Trama</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="trailer" id="floatingInput"
+                    placeholder="Trailer" [(ngModel)]="trailer">
+                <label for="floatingInput SerieTv">Trailer</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="src" id="floatingInput" placeholder="src"
+                    [(ngModel)]="src">
+                <label for="floatingInput SerieTv">src</label>
+            </div>
+        </form>
+        <div class="text-end">
+            <button type="button" class="btn btn-outline-dark bottInv"
+                (click)="modificaSerieTv()">Modifica</button>
+        </div>
+    </div>
+</ng-template>
+<button class="btn btn-primary bottAgg" (click)="openEnd(contentModifica)">Modifica SerieTv</button> -->

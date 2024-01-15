@@ -13,80 +13,162 @@
 
     <ng-container *ngIf="categorie.length>0">
 
-        <ul class="row m-2 p-3 pt-0 mt-0">
-            <li *ngFor="let categoria of categorie" class="col">
-                <card class="card" [opzioni]="categoria"></card>
+
+
+
+        <ul class="row m-2 p-3 pt-0 mt-0 mb-0">
+            <li *ngFor="let categoria of categorie" class="col-sm-12 col-md-6 col-lg-4 col-xl-2 p-2">
+                <div class="card">
+                    <div class="front">
+                        <!-- Contenuto frontale della card -->
+                        <img src="{{ categoria.immagine?.src }}" alt="{{ categoria.immagine?.alt }}" />
+
+                    </div>
+                    <div class="back bg-black text-white">
+                        <!-- Contenuto posteriore della card -->
+                        <div class="card-content">
+                            <h5>{{ categoria.titolo }}</h5>
+
+                            <button routerLink="{{categoria.bottone?.link}}"
+                                class="btn btn-danger">{{categoria.bottone?.testo}}
+                            </button>
+
+
+
+
+
+                            <!-- BOTTONE + MODAL PER MODIFICARE UNA CATEGORIA -->
+                            <div class="float-end me-3">
+                                <ng-template #contentAggiungi let-offcanvas>
+                                    <div class="offcanvas-header bg-dark">
+                                        <h4 class="offcanvas-title" id="offcanvas-basic-title">Modifica Categoria</h4>
+                                        <button type="button" class="btn-close" aria-label="Close"
+                                            (click)="offcanvas.dismiss('Cross click')"></button>
+                                    </div>
+                                    <div class="offcanvas-body bg-dark">
+                                        <form>
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" name="idCategoria"
+                                                    id="floatingInput" placeholder="id Categoria"
+                                                    [(ngModel)]="idCategoria">
+                                                <label for="floatingInput Categoria">id Categoria</label>
+                                            </div>
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" name="nomeCategoria"
+                                                    id="floatingInput" placeholder="Nome Categoria"
+                                                    [(ngModel)]="nomeCategoria">
+                                                <label for="floatingInput Categoria">Nome Categoria</label>
+                                            </div>
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" name="srcCategoria"
+                                                    id="floatingInput" placeholder="Src Categoria"
+                                                    [(ngModel)]="srcCategoria">
+                                                <label for="floatingInput srcCategoria">Scr categoria</label>
+                                            </div>
+                                        </form>
+                                        <div class="text-end">
+                                            <button type="button" class="btn btn-outline-dark bottInv"
+                                                (click)="modificaCategoria()">Modifica</button>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                                <button class="btn btn-danger bottAgg mt-1" (click)="openEnd(contentAggiungi)">Modifica
+                                    Categoria</button>
+                                <!-- fine modal per la modifica -->
+
+                                <!-- bottone per l'eliminazione -->
+                                <button class="btn btn-danger mt-1" type="button" id="button-addon2"
+                                    (click)="eliminaCategoria(idCategoria)">Cancella Categoria
+                                </button>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </li>
         </ul>
 
-        <ul class="row m-2 p-3 pt-0 mt-0">
-            <li *ngFor="let categoria of categorie" class="col">
-                <card class="card" [opzioni]="categoria"></card>
-            </li>
-        </ul>
 
 
-        <div class="float-end me-3">
-            <!-- BOTTONE + MODAL PER AGGIUNGERE UNA CATEGORIA -->
-            <ng-template #contentAggiungi let-offcanvas>
-                <div class="offcanvas-header">
-                    <h4 class="offcanvas-title" id="offcanvas-basic-title">Aggiungi Categoria</h4>
-                    <button type="button" class="btn-close" aria-label="Close"
-                        (click)="offcanvas.dismiss('Cross click')"></button>
-                </div>
-                <div class="offcanvas-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="Categoria">Categoria da Aggiungere :</label>
-                            <input type="text" name="nomeCategoria" placeholder="Nome Categoria"
-                                [(ngModel)]="nomeCategoria">
-                            <input type="text" name="srcCategoria" placeholder="src" [(ngModel)]="srcCategoria">
-                        </div>
-                    </form>
-                    <div class="text-end">
-                        <button type="button" class="btn btn-outline-dark"
-                            (click)="aggiungiCategoria()">Aggiungi</button>
+
+
+
+
+        <!-- BOTTONE + MODAL PER AGGIUNGERE UNA CATEGORIA -->
+        <ng-template #contentAggiungi let-offcanvas>
+            <div class="offcanvas-header bg-dark">
+                <h4 class="offcanvas-title" id="offcanvas-basic-title">Aggiungi Categoria</h4>
+                <button type="button" class="btn-close" aria-label="Close"
+                    (click)="offcanvas.dismiss('Cross click')"></button>
+            </div>
+            <div class="offcanvas-body bg-dark">
+                <form>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="nomeCategoria" id="floatingInput"
+                            placeholder="Nome Categoria" [(ngModel)]="nomeCategoria">
+                        <label for="floatingInput Categoria">Nome Categoria</label>
                     </div>
-                </div>
-            </ng-template>
-            <button class="btn btn-primary bottAgg" (click)="openEnd(contentAggiungi)">Aggiungi Categoria</button>
-
-
-
-            <!-- BOTTONE + MODAL PER MODIFICARE UNA CATEGORIA -->
-            <ng-template #contentModifica let-offcanvas>
-                <div class="offcanvas-header ">
-                    <h4 class="offcanvas-title" id="offcanvas-basic-title">Modifica Categoria</h4>
-
-                </div>
-                <div class="offcanvas-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="Categoria">Categoria da Modificare :</label>
-                            <input type="number" name="idCategoria" placeholder="idCategoria" [(ngModel)]="idCategoria">
-                            <input type="text" name="nomeCategoria" placeholder="Nome Categoria"
-                                [(ngModel)]="nomeCategoria">
-                            <input type="text" name="srcCategoria" placeholder="src" [(ngModel)]="srcCategoria">
-                        </div>
-                    </form>
-                    <div class="text-end">
-                        <button type="button" class="btn btn-outline-dark"
-                            (click)="modificaCategoria()">Modifica</button>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="srcCategoria" id="floatingInput"
+                            placeholder="Src Categoria" [(ngModel)]="srcCategoria">
+                        <label for="floatingInput srcCategoria">Scr categoria</label>
                     </div>
+                </form>
+                <div class="text-end">
+                    <button type="button" class="btn btn-outline-dark bottInv"
+                        (click)="aggiungiCategoria()">Aggiungi</button>
                 </div>
-            </ng-template>
-
-            <button class="btn btn-primary bottMod" (click)="openEnd(contentModifica)">Modifica Categoria</button>
+            </div>
+        </ng-template>
+        <div class="bottAgg text-end p-3">
+            <button class="btn btn-danger " (click)="openEnd(contentAggiungi)">Aggiungi Categoria</button>
         </div>
-
-        <div class="bottDel">
-            <input type="number" class="form-control input" placeholder="id" [(ngModel)]="idCategoria">
-            <button class="btn btn-primary" type="button" id="button-addon2"
-                (click)="eliminaCategoria(idCategoria)">Cancella Categoria</button>
-        </div>
-
 
 
 
     </ng-container>
+
 </main>
+
+
+
+
+<!-- 
+ BOTTONE + MODAL PER MODIFICARE UNA CATEGORIA 
+<ng-template #contentModifica let-offcanvas>
+    <div class="offcanvas-header bg-dark">
+        <h4 class="offcanvas-title " id="offcanvas-basic-title">Modifica Categoria</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
+    </div>
+    <div class="offcanvas-body bg-dark">
+        <form>
+
+            <div class="form-floating mb-3">
+                <input type="number" class="form-control" name="idCategoria" id="floatingInput"
+                    placeholder="ID Categoria" [(ngModel)]="cardMod.idCategoria">
+                <label for="floatingInput Categoria">ID Categoria da modificare</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="nome" id="floatingInput" placeholder="Nome Categoria"
+                    [(ngModel)]="cardMod.nome">
+                <label for="floatingInput Categoria">Nome Categoria</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="src" id="floatingInput" placeholder="Src Categoria"
+                    [(ngModel)]="cardMod.src">
+                <label for="floatingInput srcCategoria">Scr categoria</label>
+            </div>
+
+
+        </form>
+
+        <div class="text-end">
+            <button type="button" class="btn btn-outline-dark bottInv" (click)="modificaCategoria()">Modifica</button>
+        </div>
+    </div>
+</ng-template>
+
+<button class="btn btn-primary bottMod" (click)="openEnd(contentModifica)">Modifica
+    Categoria</button> -->

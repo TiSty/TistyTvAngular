@@ -21,11 +21,14 @@ export class CategorieComponent implements OnInit, OnDestroy {
 
   elencoCategorie$: Observable<IRispostaServer>
   categorie: Card[] = []
+  categoria!: Categorie
 
   private distruggi$ = new Subject<void>()
 
   private offcanvasService = inject(NgbOffcanvas);
   closeResult = ''
+
+  cardMod!: Categorie
 
   nomeCategoria: string = ''
   srcCategoria: string = ''
@@ -85,11 +88,6 @@ export class CategorieComponent implements OnInit, OnDestroy {
     this.elencoCategorie$.pipe(
       delay(1000)
     ).subscribe(this.osservoCat())
-
-    //   map(x => x.data)
-    // ).subscribe({
-    //   next: x => this.dati = x
-    // })
   }
 
   ngOnDestroy(): void {
@@ -113,34 +111,43 @@ export class CategorieComponent implements OnInit, OnDestroy {
     )
   }
   private osservatore = {
-    next: (ritorno: Categorie) => console.log(ritorno),
+    next: (ritorno: Categorie) => {
+      console.log(ritorno);
+      if (ritorno.src !== undefined) {
+        const newCard: Card = { titolo: ritorno.nome, immagine: { src: ritorno.src, alt: '' } }
+        this.categorie.push(newCard)
+      } else {
+        console.error('Impossibile creare Categoria')
+      }
+    },
     error: (err: string) => console.error(err),
     complete: () => console.log("Completato"),
   }
 
-  //PER MODIFICARE UNA CATEGORIA
-  modificaCategoria() {
-    console.log("Modifica categoria")
-    const parametro: Partial<Categorie> = { nome: this.nomeCategoria, src: this.srcCategoria }
-    const id: number = this.idCategoria
-    //funzione che sottoscrive un osservable 
-    this.obsModificaCategoria(id, parametro).subscribe(this.osservatoreMod)
-  }
-  //funzione per creare un osservatore per modifica categoria
-  obsModificaCategoria(id: number, dati: Partial<Categorie>) {
-    return this.api.putCategoria(id, dati).pipe(
-      take(1),
-      tap(x => console.log("OBS ", x)),
-      map(x => x.data),
-      takeUntil(this.distruggi$)
-    )
-  }
+    //PER MODIFICARE UNA CATEGORIA
+    modificaCategoria() {
+      console.log("Modifica categoria")
+      const parametro: Partial<Categorie> = { nome: this.nomeCategoria, src: this.srcCategoria }
+      const id: number = this.idCategoria
+      //funzione che sottoscrive un osservable 
+      this.obsModificaCategoria(id, parametro).subscribe(this.osservatoreMod)
+    }
+    //funzione per creare un osservatore per modifica categoria
+    obsModificaCategoria(id: number, dati: Partial<Categorie>) {
+      return this.api.putCategoria(id, dati).pipe(
+        take(1),
+        tap(x => console.log("OBS ", x)),
+        map(x => x.data),
+        takeUntil(this.distruggi$)
+      )
+    }
+  
+    private osservatoreMod = {
+      next: () => console.log('Categoria Modificata!'),
+      error: (err: string) => console.error(err),
+      complete: () => console.log("Completato"),
+    }
 
-  private osservatoreMod = {
-    next: () => console.log('Categoria Modificata!'),
-    error: (err: string) => console.error(err),
-    complete: () => console.log("Completato"),
-  }
 
   //PER ELIMINARE UNA CATEGORIA
   eliminaCategoria(id: number | null) {
@@ -197,3 +204,75 @@ export class CategorieComponent implements OnInit, OnDestroy {
 
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+  //PER MODIFICARE UNA CATEGORIA
+  // modificaCategoria() {
+    //   console.log("Modifica categoria")
+    //   const parametro: Partial<Categorie> = { nome: this.nomeCategoria, src: this.srcCategoria }
+    //   const id: number = this.idCategoria
+    //   //funzione che sottoscrive un osservable 
+    //   this.obsModificaCategoria(id, parametro).subscribe(this.osservatoreMod)
+    //  }
+    // //funzione per creare un osservatore per modifica categoria
+    // obsModificaCategoria(id: number, dati: Partial<Categorie>) {
+    //   return this.api.putCategoria(id, dati).pipe(
+    //     take(1),
+    //     tap(x => console.log("OBS ", x)),
+    //     map(x => x.data),
+    //     takeUntil(this.distruggi$)
+    //   )
+    // }
+  
+    // private osservatoreMod = {
+    //   next: (ritorno: Categorie) => {
+    //     console.log('Categoria Modificata!')
+    //     const catMod: Categorie = { idCategoria: ritorno.idCategoria, nome: ritorno.nome }
+    //     this.categorie.push(catMod)
+    //   },
+    //   error: (err: string) => console.error(err),
+    //   complete: () => console.log("Completato"),
+    // }
+  
+  
+  
+    //PER MODIFICARE UNA CATEGORIA
+    // modificaCategoria() {
+    //   console.log("Modifica categoria")
+    //   const parametro: Partial<Categorie> = {idCategoria:this.cardMod.idCategoria, nome: this.cardMod.nome, src: this.cardMod.src }
+    //   const id: number = this.idCategoria
+    //   //funzione che sottoscrive un osservable 
+    //   this.obsModificaCategoria(id, parametro).subscribe(this.osservatoreMod)
+    // }
+    // //funzione per creare un osservatore per modifica categoria
+    // obsModificaCategoria(id: number, dati: Partial<Categorie>) {
+    //   return this.api.putCategoria(id, dati).pipe(
+    //     take(1),
+    //     tap(x => console.log("OBS ", x)),
+    //     map(x => x.data),
+    //     takeUntil(this.distruggi$)
+    //   )
+    // }
+    // private osservatoreMod = {
+    //   next: (ritorno:Categorie) => {
+    //     console.log('Categoria Modificata!')
+    //     if (ritorno.src !== undefined) {
+    //       const cardMod: Card = { titolo: ritorno.nome, immagine: { src: ritorno.src, alt: '' } }
+    //       this.categorie.push(cardMod)
+    //     } else {
+    //       console.error('Impossibile modificare Categoria')
+    //     }
+    //   },
+    //   error: (err: string) => console.error(err),
+    //   complete: () => console.log("Completato"),
+    // }

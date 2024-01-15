@@ -4,25 +4,26 @@
 
 <main>
 
-    <ng-container *ngIf="!(episodi.length>0)">
+    <!-- CARICA ALL'INFINITO  
+        <ng-container *ngIf="!(episodi.length>0)">
         <div class="spinner-grow text-danger" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
-    </ng-container>
+    </ng-container>-->
 
 
-    <ng-container *ngIf="episodi.length>0">
-        <div *ngFor="let episodio of episodi" class="card text-white bg-dark">
-            <img [src]="episodio.src" class="card-img m-0 p-4" alt="film.alt">
+    <ng-container >
+        <div class="card text-white bg-dark">
+            <img [src]="card.src" class="card-img m-0 p-4" alt="film.alt">
             <div class="card-img-overlay">
-                <h5 class="card-title mt-5 ms-5">{{episodio.titolo}}</h5>
-                <p class="card-text mt-3 ms-5"><small>SerieTv:{{episodio.serieTv}}</small></p>
-                <p class="card-text mt-3 ms-5"><small>Durata:{{episodio.durata}}min <br>
-                        Anno:{{episodio.anno}}</small></p>
-                <p class="card-text mt-3 ms-5">Trama: {{episodio.trama}}<br></p>
+                <h5 class="card-title mt-5 ms-5">{{card.titolo}}</h5>
+                <p class="card-text mt-3 ms-5"><small>SerieTv:{{card.serieTv}}</small></p>
+                <p class="card-text mt-3 ms-5"><small>Durata:{{card.durata}}min <br>
+                        Anno:{{card.anno}}</small></p>
+                <p class="card-text mt-3 ms-5">Trama: {{card.trama}}<br></p>
                 <p class="card-text mt-3 ms-5">
-                    <small>Stagione: {{episodio.stagione}}</small><br>
-                    <small>Episodio x Stagione: {{episodio.datiEp}}</small><br>
+                    <small>Stagione: {{card.stagione}}</small><br>
+                    <small>Episodi x Stagione: {{card.datiEp}}</small><br>
                 </p>
             </div>
         </div>
@@ -43,6 +44,9 @@
         </div>
 
     </ng-container>
+
+
+
 
 
 

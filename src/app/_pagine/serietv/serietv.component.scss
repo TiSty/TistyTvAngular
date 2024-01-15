@@ -1,16 +1,61 @@
 main{
-    background-color: rgb(80, 80, 80);
+    background-color: black;
     margin: 0;
     padding: 0;
-
+    height: 600px;
 }
 .row{
     overflow: hidden;
 }
-.card{
-    margin: 10px;
-    width: 18rem;
+//PER LE CARD   
+.card {
+    margin: 5px;
+    width:100%;
+    height: 320px; /* Altezza fissa della card, puoi regolarla in base alle tue esigenze */
+    display: flex;
+    align-items: stretch; /* I contenuti si estendono per tutta l'altezza della card */
+    perspective: 1000px; /* Aggiunge una prospettiva per migliorare l'effetto di rovesciamento */
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease;
 }
+
+.card:hover {
+    transform: rotateY(180deg);
+}
+
+.card .front,
+.card .back {
+    flex: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    backface-visibility: hidden;
+}
+
+.card .back {
+    transform: rotateY(180deg);
+}
+
+.card img {
+    width: 100%;
+    height: 320px;
+    border-radius: 5px;
+}
+
+.card-content {
+    padding: 15px;
+    text-align: center;
+}
+.card img{
+    width: 100%;
+    height: 100%;
+}
+//FINE CARD
+
+
+
 ul{
     list-style: none;
    padding: 0;
@@ -29,6 +74,7 @@ li{
    text-align: right;
    .bottAgg{
     margin: 10px;
+    
 } 
 }
 
@@ -43,4 +89,19 @@ li{
     max-width: 180px;
 }
 
-
+h4{
+    color: #ec0c65
+}
+.bottInv{
+    color: #ec0c65;
+    border-color: #ec0c65;
+}
+.bottInv:hover{
+    color: white;
+}
+#floatingInput:hover{
+    border-color: #ec0c65;
+}
+h5{
+    color: #ec0c65;;
+}

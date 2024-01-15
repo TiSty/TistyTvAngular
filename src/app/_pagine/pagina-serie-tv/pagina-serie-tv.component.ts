@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, delay, map } from 'rxjs';
+import { NgbOffcanvas, OffcanvasDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { Observable, Subject, delay, map, take, takeUntil, tap } from 'rxjs';
 import { IRispostaServer } from 'src/app/Interfacce/IRispostaServer';
 import { Bottone } from 'src/app/Type/Bottone.type';
 import { Card } from 'src/app/Type/Card.type';
@@ -14,11 +15,18 @@ import { ApiService } from 'src/app/_servizi/api.service';
   templateUrl: './pagina-serie-tv.component.html',
   styleUrls: ['./pagina-serie-tv.component.scss']
 })
-export class PaginaSerieTvComponent implements OnInit {
+export class PaginaSerieTvComponent implements OnInit, OnDestroy {
   //richiamo per tirare fuori la singola (risorsa) categoria tramite l'id
   id: string | null = null
   serieTv$!: Observable<IRispostaServer>;
   seriesTv: serieTvVisualizzata[] = []
+  card!:serieTvVisualizzata
+
+  private offcanvasService = inject(NgbOffcanvas);
+  closeResult = ''
+
+
+  private distruggi$ = new Subject<void>()
 
   constructor(private route: ActivatedRoute, private api: ApiService) {
     this.elencoSerieTv$ = this.api.getSeriesTv()
@@ -33,7 +41,7 @@ export class PaginaSerieTvComponent implements OnInit {
     }
   }
 
-  //OBSERVER
+  //OBSERVER SERIE TV SIGNOLA
   private osservoSerieTv() {
 
     return {
@@ -53,7 +61,7 @@ export class PaginaSerieTvComponent implements OnInit {
           emitId: null,
           link: "/serieTv/" + elementi.idSerieTv
         }
-        const card: serieTvVisualizzata = {
+        this.card = {
           titolo: elementi.titolo,
           durata: elementi.durata,
           stagioni: elementi.stagioni,
@@ -65,7 +73,7 @@ export class PaginaSerieTvComponent implements OnInit {
           trailer: elementi.trailer,
           src: elementi.src,
         }
-        this.seriesTv.push(card)
+        
 
         // }
       },
@@ -84,12 +92,15 @@ export class PaginaSerieTvComponent implements OnInit {
     }
     this.elencoSerieTv$.pipe(delay(1000)).subscribe(this.osservoSeriesTv())
   }
+  ngOnDestroy(): void {
+    this.distruggi$.next()
+  }
 
 
   elencoSerieTv$: Observable<IRispostaServer>
   elencoSeriesTv: Card[] = []
 
-  //OBSERVER
+  //OBSERVER ELENCO SERIE
   private osservoSeriesTv() {
     return {
       next: (rit: IRispostaServer) => {
@@ -110,8 +121,8 @@ export class PaginaSerieTvComponent implements OnInit {
           const card: Card = {
             immagine: tmpImg,
             testo: elementi[i].trama,
-            titolo: elementi[i].nome,
-            bottone: undefined
+            titolo: elementi[i].titolo,
+            bottone: bott
           }
           this.elencoSeriesTv.push(card)
         }
@@ -122,7 +133,7 @@ export class PaginaSerieTvComponent implements OnInit {
   }
 
 
-  episodi: Card[] = []
+  episodii: Card[] = []
   episodio$!: Observable<IRispostaServer>;
   //OBSERVER
   private osservoEpisodi() {
@@ -149,11 +160,101 @@ export class PaginaSerieTvComponent implements OnInit {
             testo: elementi[i].datiEp,
             bottone: bott
           }
-          this.episodi.push(card)
+          this.episodii.push(card)
         }
       },
       errore: (err: any) => console.error("ERRORE in osservoEpisodi", err),
       complete: () => console.log("%c COMPLETATO episodi", "color:#00aa00")
+    }
+  }
+
+  //PER MODIFICARE LA SERIE TV
+
+  titolo: string = ''
+  durata!: number
+  stagioni!: number
+  episodi!: number
+  regista: string = ''
+  categoria: string = ''
+  anno!: number
+  trama: string = ''
+  trailer: string = ''
+  src: string = ''
+
+  modifica() {
+    console.log("Sono in modifica serie")
+    const parametro: serieTvVisualizzata = {
+      titolo: this.titolo,
+      durata: this.durata,
+      stagioni: this.stagioni,
+      episodi: this.episodi,
+      regista: this.regista,
+      categoria: this.categoria,
+      anno: this.anno,
+      trama: this.trama,
+      trailer: this.trailer,
+      src: this.src
+    }
+    this.obsModificaSerieTv(parametro).subscribe(this.osservatoreMod)
+  }
+
+
+  //funzione per creare un osservatore per modifica SerieTv
+  obsModificaSerieTv(dati: serieTvVisualizzata) {
+    return this.api.putSerieTvVisualizzata(dati).pipe(
+      take(1),
+      tap(x => console.log("OBS ", x)),
+      map(x => x.data),
+      takeUntil(this.distruggi$)
+    )
+  }
+
+  private osservatoreMod = {
+    next: () => console.log('SerieTv Modificata!'),
+    error: (err: string) => console.error(err),
+    complete: () => console.log("Completato"),
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //FUNZIONI PER UTILIZZARE LA MODAL OFFCANVAS
+  open(content: TemplateRef<any>) {
+    this.offcanvasService.open(content, { ariaLabelledBy: 'offcanvas-basic-title' }).result.then(
+      (result) => {
+        this.closeResult = `Closed with: ${result}`;
+      },
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      },
+    );
+  }
+
+
+  openEnd(content: TemplateRef<any>) {
+    this.offcanvasService.open(content, { position: 'end' });
+  }
+
+
+  private getDismissReason(reason: any): string {
+    switch (reason) {
+      case OffcanvasDismissReasons.ESC:
+        return 'by pressing ESC';
+      case OffcanvasDismissReasons.BACKDROP_CLICK:
+        return 'by clicking on the backdrop';
+      default:
+        return `with: ${reason}`;
     }
   }
 

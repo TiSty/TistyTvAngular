@@ -23,14 +23,14 @@ export class FilmComponent implements OnInit, OnDestroy {
   private offcanvasService = inject(NgbOffcanvas);
   closeResult = ''
 
-  titolo: string = ''
-  durata!: number
-  regista: string = ''
-  categoria: string = ''
-  anno!: number
-  trama: string = ''
-  trailer: string = ''
-  src: string = ''
+  titolo:string=''
+  durata!:number
+  regista:string=''
+  categoria:string=''
+  anno!:number
+  trama:string=''
+  trailer:string=''
+  src:string=''
 
   idFilm!: number;
 
@@ -80,9 +80,9 @@ export class FilmComponent implements OnInit, OnDestroy {
     this.distruggi$.next()
   }
 
-  //PER AGGIUNGERE UN FILM 
+  //PER AGGIUNGERE UN Film
   aggiungiFilm() {
-    console.log("Aggiungi Film")
+    console.log("Aggiungi Film", this.titolo)
     const parametro: Partial<Film> = {
       titolo: this.titolo,
       durata: this.durata,
@@ -104,43 +104,30 @@ export class FilmComponent implements OnInit, OnDestroy {
     )
   }
   private osservatore = {
-    next: (ritorno: Film) => console.log(ritorno),
+    next: (ritorno: Film) => {
+      console.log(ritorno);
+      if (ritorno.src !== undefined) {
+        const newCard: Card = {
+          titolo: ritorno.titolo,
+          testo: ritorno.trama,
+          immagine: { src: ritorno.src, alt: '' }
+        }
+        this.films.push(newCard)
+      } else {
+        console.error('Impossibile creare Categoria')
+      }
+    },
     error: (err: string) => console.error(err),
     complete: () => console.log("Completato"),
   }
 
-  //PER MODIFICARE UN FILM
-  modificaFilm() {
-    console.log("Modifica Film")
-    const parametro: Partial<Film> = {
-      titolo: this.titolo,
-      durata: this.durata,
-      regista: this.regista,
-      categoria: this.categoria,
-      anno: this.anno,
-      trama: this.trama,
-      trailer: this.trailer,
-      src: this.src
-    }
-    const id: number = this.idFilm
-    //funzione che sottoscrive un osservable 
-    this.obsModificaFilm(id, parametro).subscribe(this.osservatoreMod)
-  }
-  //funzione per creare un osservatore per modifica Film
-  obsModificaFilm(id: number, dati: Partial<Film>) {
-    return this.api.putFilm(id, dati).pipe(
-      take(1),
-      tap(x => console.log("OBS ", x)),
-      map(x => x.data),
-      takeUntil(this.distruggi$)
-    )
-  }
 
-  private osservatoreMod = {
-    next: () => console.log('Film Modificato!'),
-    error: (err: string) => console.error(err),
-    complete: () => console.log("Completato"),
-  }
+
+
+
+
+
+
 
   //PER ELIMINARE UN FILM
   eliminaFilm(id: number | null) {
@@ -197,3 +184,44 @@ export class FilmComponent implements OnInit, OnDestroy {
 
 
 
+
+
+
+
+
+
+
+
+
+  //PER MODIFICARE UN FILM     TOLTO PERCHE RITENUTO INUTILE, LA MODIFICA SU PUò ESEGUIRE DA DENTRO LA PAGINA DI VISUALIZZAZIONE DEL FILM
+  // modificaFilm() {
+  //   console.log("Modifica Film")
+  //   const parametro: Partial<Film> = {
+  //     titolo: this.titolo,
+  //     durata: this.durata,
+  //     regista: this.regista,
+  //     categoria: this.categoria,
+  //     anno: this.anno,
+  //     trama: this.trama,
+  //     trailer: this.trailer,
+  //     src: this.src
+  //   }
+  //   const id: number = this.idFilm
+  //   //funzione che sottoscrive un osservable 
+  //   this.obsModificaFilm(id, parametro).subscribe(this.osservatoreMod)
+  // }
+  // //funzione per creare un osservatore per modifica Film
+  // obsModificaFilm(id: number, dati: Partial<Film>) {
+  //   return this.api.putFilm(id, dati).pipe(
+  //     take(1),
+  //     tap(x => console.log("OBS ", x)),
+  //     map(x => x.data),
+  //     takeUntil(this.distruggi$)
+  //   )
+  // }
+
+  // private osservatoreMod = {
+  //   next: () => console.log('Film Modificato!'),
+  //   error: (err: string) => console.error(err),
+  //   complete: () => console.log("Completato"),
+  // }

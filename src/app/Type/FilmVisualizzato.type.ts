@@ -1,4 +1,5 @@
 export type FilmVisualizzato ={
+    idFilm?:number
     titolo:string,
     durata:number,
     regista:string,

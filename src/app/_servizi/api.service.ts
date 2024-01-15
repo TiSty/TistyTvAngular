@@ -10,6 +10,8 @@ import { UtilityService } from "./utility.service";
 import { Credenziali } from "../Type/Credenziali.type";
 import { Form1 } from "../Type/Form1.type";
 import { Form2 } from "../Type/Form2.type";
+import { serieTvVisualizzata } from "../Type/serieTvVisualizzata.type";
+import { FilmVisualizzato } from "../Type/FilmVisualizzato.type";
 
 
 @Injectable({ providedIn: 'root' })
@@ -223,7 +225,7 @@ export class ApiService {
      * @returns 
      */
     public postFilm(parametri: Partial<Categorie>): Observable<IRispostaServer> {
-        const risorsa: string[] = ["Film"]
+        const risorsa: string[] = ["film"]
         return this.richiestaGenerica(risorsa, "POST", parametri)
     }
 
@@ -242,9 +244,18 @@ export class ApiService {
         const risorsa: [string, number] = ["categorie", idRisorsa]
         return this.richiestaGenerica(risorsa, "PUT", parametri)
     }
+    public putCategoriaSignola(parametri: Partial<Categorie>): Observable<IRispostaServer> {
+        const risorsa:string [] = ["categorie"]
+        return this.richiestaGenerica(risorsa, "PUT", parametri)
+    }
+
 
     public putFilm(idRisorsa: number, parametri: Partial<Film>): Observable<IRispostaServer> {
-        const risorsa: [string, number] = ["Film", idRisorsa]
+        const risorsa: [string, number] = ["film", idRisorsa]
+        return this.richiestaGenerica(risorsa, "PUT", parametri)
+    }
+    public putFilmVisualizzato(parametri: FilmVisualizzato): Observable<IRispostaServer> {
+        const risorsa:string [] = ["film"]
         return this.richiestaGenerica(risorsa, "PUT", parametri)
     }
 
@@ -252,6 +263,11 @@ export class ApiService {
         const risorsa: [string, number] = ["serieTv", idRisorsa]
         return this.richiestaGenerica(risorsa, "PUT", parametri)
     }
+    public putSerieTvVisualizzata(parametri: serieTvVisualizzata): Observable<IRispostaServer> {
+        const risorsa:string [] = ["serieTv"]
+        return this.richiestaGenerica(risorsa, "PUT", parametri)
+    }
+
 
 
     // RICHIESTE DELETE  --------------------------------------------------
