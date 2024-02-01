@@ -12,6 +12,8 @@ import { Form1 } from "../Type/Form1.type";
 import { Form2 } from "../Type/Form2.type";
 import { serieTvVisualizzata } from "../Type/serieTvVisualizzata.type";
 import { FilmVisualizzato } from "../Type/FilmVisualizzato.type";
+import { EpisodioVisualizzato } from "../Type/EpisodioVisualizzato.type";
+import { identifierName } from "@angular/compiler";
 
 
 @Injectable({ providedIn: 'root' })
@@ -89,6 +91,7 @@ export class ApiService {
 
 
     // RICHIESTE GET  --------------------------------------------------
+    
 
     /**
      * Funzione per richiamare l'elenco di categorie
@@ -184,7 +187,7 @@ export class ApiService {
         return this.richiestaGenerica(risorsa, "GET")
     }
 
-    public getEpisodio(id:string): Observable<IRispostaServer> {
+    public getEpisodio(id: string): Observable<IRispostaServer> {
         const risorsa: string[] = ["episodi", id]
         return this.richiestaGenerica(risorsa, "GET")
     }
@@ -239,13 +242,28 @@ export class ApiService {
         return this.richiestaGenerica(risorsa, "POST", parametri)
     }
 
+    /**
+     * FUNZIONE PER L'UPLOAD DI IMMAGINI
+     * @param dati 
+     * @returns 
+     */
+    public upload(dati: FormData): Observable<IRispostaServer> {
+        const risorsa: string[] = ["upload"]
+        return this.richiestaGenerica(risorsa, "POST", dati)
+    }
+
+
+
+
+
+
     // RICHIESTE PUT  --------------------------------------------------
     public putCategoria(idRisorsa: number, parametri: Partial<Categorie>): Observable<IRispostaServer> {
         const risorsa: [string, number] = ["categorie", idRisorsa]
         return this.richiestaGenerica(risorsa, "PUT", parametri)
     }
     public putCategoriaSignola(parametri: Partial<Categorie>): Observable<IRispostaServer> {
-        const risorsa:string [] = ["categorie"]
+        const risorsa: string[] = ["categorie"]
         return this.richiestaGenerica(risorsa, "PUT", parametri)
     }
 
@@ -254,20 +272,27 @@ export class ApiService {
         const risorsa: [string, number] = ["film", idRisorsa]
         return this.richiestaGenerica(risorsa, "PUT", parametri)
     }
-    public putFilmVisualizzato(parametri: FilmVisualizzato): Observable<IRispostaServer> {
-        const risorsa:string [] = ["film"]
+
+    public putFilmVisualizzato(idRisorsa: number, parametri: Partial<Film>): Observable<IRispostaServer> {
+        const risorsa: [string, number] = ["film", idRisorsa]
         return this.richiestaGenerica(risorsa, "PUT", parametri)
     }
+
+
 
     public putSerieTv(idRisorsa: number, parametri: Partial<SerieTv>): Observable<IRispostaServer> {
         const risorsa: [string, number] = ["serieTv", idRisorsa]
         return this.richiestaGenerica(risorsa, "PUT", parametri)
     }
-    public putSerieTvVisualizzata(parametri: serieTvVisualizzata): Observable<IRispostaServer> {
-        const risorsa:string [] = ["serieTv"]
+    public putSerieTvVisualizzata(idRisorsa: number, parametri: Partial<serieTvVisualizzata>): Observable<IRispostaServer> {
+        const risorsa: [string, number] = ["serieTv", idRisorsa]
         return this.richiestaGenerica(risorsa, "PUT", parametri)
     }
 
+    public putEpisodioVisualizzato(idRisorsa:number, parametri: Partial<EpisodioVisualizzato>): Observable<IRispostaServer> {
+        const risorsa: [string, number] = ["episodi", idRisorsa]
+        return this.richiestaGenerica(risorsa, "PUT", parametri)
+    }
 
 
     // RICHIESTE DELETE  --------------------------------------------------
@@ -287,7 +312,10 @@ export class ApiService {
         const risorsa: string[] = ["serieTv", id]
         return this.richiestaGenerica(risorsa, "DELETE")
     }
-
+    public deleteEpisodio(id: string): Observable<IRispostaServer> {
+        const risorsa: string[] = ["episodi", id]
+        return this.richiestaGenerica(risorsa, "DELETE")
+    }
     //FASI DI LOGIN ------------------------------------------------------------    PER ME STESSO, EMAIL E HASHEMAIL sono per rino UTENTE E HASHUTENTE
 
 

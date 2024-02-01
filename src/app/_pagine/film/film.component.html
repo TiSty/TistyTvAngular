@@ -13,7 +13,7 @@
     <ng-container *ngIf="films.length>0">
 
         <ul class="row m-2 p-3 pt-0 mt-0">
-            <li *ngFor="let film of films" class="col p-2">
+            <li *ngFor="let film of films" class="col-sm-12 col-md-6 col-lg-4 col-xl-2  p-2">
                 <div class="card">
                     <div class="front">
                         <!-- Contenuto frontale della card -->
@@ -77,14 +77,16 @@
                             <label for="floatingInput film">Trama</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" name="trailer" id="floatingInput"
-                                placeholder="Trailer" [(ngModel)]="trailer">
-                            <label for="floatingInput film">Trailer</label>
+                            <input type="file" (change)="onChangeInputFile($event)" class="form-control" name="trailer"
+                                id="floatingInput" placeholder="Trailer" [(ngModel)]="trailer" required>
+                            <label for="floatingInput">Trailer </label>
+                            <p *ngIf="errore!=='' ">{{errore}}</p>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" name="src" id="floatingInput" placeholder="src"
-                                [(ngModel)]="src">
-                            <label for="floatingInput film">src</label>
+                            <input type="file" (change)="onChangeInputFile($event)" class="form-control" name="trc"
+                                id="floatingInput" placeholder="Src" [(ngModel)]="src" required>
+                            <label for="floatingInput">src </label>
+                            <p *ngIf="errore!=='' ">{{errore}}</p>
                         </div>
                     </form>
                     <div class="text-end">
@@ -100,7 +102,7 @@
 
         <div class="bottDel">
             <input type="number" class="form-control input" placeholder="id" [(ngModel)]="idFilm">
-            <button class="btn btn-danger" type="button" id="button-addon2" (click)="eliminaFilm(idFilm)">Cancella
+             <button class="btn btn-danger" type="button" id="button-addon2" (click)="eliminaFilm(idFilm)">Cancella 
                 Film</button>
         </div>
 

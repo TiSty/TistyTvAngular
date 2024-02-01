@@ -163,6 +163,20 @@ export class UtilityService {
 
 
 
+
+    public static impostaFormData(dati: any): FormData {
+        const formData: FormData = new FormData();
+    
+        let tmp: any = {};
+        Object.keys(dati).forEach(key => {
+          const value = Object.getOwnPropertyDescriptor(dati, key)?.value;
+          if (value !== null && value !== undefined) {
+            formData.append(key, value)
+          }
+        });
+        return formData;
+      }
+
 }
 
 

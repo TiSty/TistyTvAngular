@@ -1,4 +1,5 @@
 export type serieTvVisualizzata ={
+    idSerie:number
     titolo:string,
     durata:number,
     stagioni:number,

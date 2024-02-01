@@ -59,6 +59,7 @@ export class PaginaPrincipaleComponent implements OnInit {
             link: "/film/" + elementi[i].idFilm,
           }
           const card: Card = {
+            id:elementi[i].idFilm,
             immagine: tmpImg,
             testo:elementi[i].trama,
             titolo: elementi[i].titolo,
@@ -95,6 +96,7 @@ export class PaginaPrincipaleComponent implements OnInit {
             link: "/serieTv/" + elementi[i].idSerieTv,
           }
           const card: Card = {
+            id:elementi[i].idSerieTv,
             immagine: tmpImg,
             testo: elementi[i].trama,
             titolo: elementi[i].titolo,

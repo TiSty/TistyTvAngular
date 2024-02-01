@@ -4,20 +4,6 @@
 
 <main>
 
-
-    <!-- 
-                    CONTINUA A CARICARE ALL'INFINITO
-         <ng-container *ngIf="!(films.length>0)">
-        <div class="spinner-grow text-danger" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-    </ng-container> -->
-
-
-
-
-
-
     <ng-container>
         <div class="card text-white bg-dark">
             <img [src]=card.src class="card-img m-0 p-4 imgPrinc" alt="card.alt">
@@ -38,10 +24,9 @@
 
 
     <div class="ms-4 mt-2">
-        <button type="button" class="button-1 m-1">Riproduci</button>
+        <button (click)="openVideo()" type="button" class="button-1 m-1">Riproduci</button>
 
-
-
+        <!-- BOTTONE + MODAL PER MODIFICARE UN FILM -->
         <ng-template #contentModifica let-offcanvas>
             <div class="offcanvas-header bg-dark">
                 <h4 class="offcanvas-title" id="offcanvas-basic-title">Modifica SerieTv</h4>
@@ -83,14 +68,16 @@
                         <label for="floatingInput SerieTv">Categoria/Genere</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="trailer" id="floatingInput" placeholder="Trailer"
-                            [(ngModel)]="card.trailer">
-                        <label for="floatingInput SerieTv">Trailer</label>
+                        <input type="file" (change)="onChangeInputFile($event)" class="form-control" name="trailer"
+                            id="floatingInput" placeholder="trailer" [(ngModel)]="trailer" required>
+                        <label for="floatingInput">Trailer</label>
+                        <p *ngIf="errore!=='' ">{{errore}}</p>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="src" id="floatingInput" placeholder="src"
-                            [(ngModel)]="card.src">
-                        <label for="floatingInput SerieTv">src</label>
+                        <input type="file" (change)="onChangeInputFile($event)" class="form-control" name="src"
+                            id="floatingInput" placeholder="src" [(ngModel)]="src" required>
+                        <label for="floatingInput">Src</label>
+                        <p *ngIf="errore!=='' ">{{errore}}</p>
                     </div>
                 </form>
 
@@ -100,22 +87,16 @@
                 </div>
             </div>
         </ng-template>
-        <button class="button-2  m-1" type="button" (click)="openEnd(contentModifica)">Modifica</button>
-        <button type="button" class="button-2">Elimina</button>
-        <div class="form-check text-white">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-            <label class="form-check-label" for="flexCheckDefault">
-                <small> Facendo clic su riproduci accetti i nostri Termini di
-                    utilizzo.</small>
-            </label>
-        </div>
+
+        <button class="button-2  m-1" type="button" (click)="apriModifica(card.idFilm)">Modifica</button>
+        <button (click)="eliminaFilm()" type="button" class="button-2">Elimina</button>
     </div>
 
 
 
     <hr>
 
-    
+
     <h2 class="text-white ms-5">Altri Film</h2>
     <ng-container *ngIf="elencofilms.length > 0">
         <ul class="row m-2 p-3 pt-0 mt-0 mb-0">
@@ -145,3 +126,13 @@
 
 
 </main>
+
+
+
+
+
+
+
+
+
+

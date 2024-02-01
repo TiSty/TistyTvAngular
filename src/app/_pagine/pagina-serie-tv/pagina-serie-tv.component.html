@@ -13,7 +13,7 @@
     </ng-container> -->
 
 
-    <ng-container >
+    <ng-container>
         <div class="card text-white bg-dark">
             <img [src]="card.src" class="card-img m-0 p-4 imgPrinc" alt="card.alt">
             <div class="card-img-overlay">
@@ -27,15 +27,17 @@
                     <small> stagioni: {{card.stagioni}}</small><br>
                     <small> episodi: {{card.episodi}}</small><br>
                 </p>
+                <p class="card-text mt-5 ms-5">Trailer:</p>
+                <video controls class="trailer p-3 ps-5" [src]="card.trailer"></video>
             </div>
         </div>
     </ng-container>
 
 
     <div class="ms-4 mt-2">
-        <button type="button" class="button-1 m-1">Riproduci</button>
+        <button (click)="openVideo()" type="button" class="button-1 m-1">Riproduci</button>
 
-        <!-- BOTTONE + MODAL PER MODIFICARE UNA CATEGORIA -->
+        <!-- BOTTONE + MODAL PER MODIFICARE UNA Serie -->
         <ng-template #contentModifica let-offcanvas>
             <div class="offcanvas-header bg-dark">
                 <h4 class="offcanvas-title" id="offcanvas-basic-title">Modifica SerieTv</h4>
@@ -46,74 +48,70 @@
                 <form>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="titolo" id="floatingInput" placeholder="Titolo" 
-                        [(ngModel)]="titolo">
+                        <input type="text" class="form-control" name="titolo" id="floatingInput" placeholder="Titolo"
+                            [(ngModel)]="card.titolo">
                         <label for="floatingInput SerieTv">Titolo</label>
                     </div>
 
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="durata" id="floatingInput" placeholder="Durata"
-                            [(ngModel)]="durata">
+                            [(ngModel)]="card.durata">
                         <label for="floatingInput SerieTv">Durata</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="anno" id="floatingInput" placeholder="Anno"
-                            [(ngModel)]="anno">
+                            [(ngModel)]="card.anno">
                         <label for="floatingInput SerieTv">Anno</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="trama" id="floatingInput" placeholder="Trama"
-                            [(ngModel)]="trama">
+                            [(ngModel)]="card.trama">
                         <label for="floatingInput SerieTv">Trama</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="regista" id="floatingInput" placeholder="Regista"
-                            [(ngModel)]="regista">
+                            [(ngModel)]="card.regista">
                         <label for="floatingInput SerieTv">Regista</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="categoria" id="floatingInput"
-                            placeholder="Categoria" [(ngModel)]="categoria">
+                            placeholder="Categoria" [(ngModel)]="card.categoria">
                         <label for="floatingInput SerieTv">Categoria/Genere</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="stagioni" id="floatingInput"
-                            placeholder="Stagioni" [(ngModel)]="stagioni">
+                            placeholder="Stagioni" [(ngModel)]="card.stagioni">
                         <label for="floatingInput SerieTv">Stagioni</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="episodi" id="floatingInput" placeholder="Episodi"
-                            [(ngModel)]="episodi">
+                            [(ngModel)]="card.episodi">
                         <label for="floatingInput SerieTv">Episodi</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="trailer" id="floatingInput" placeholder="Trailer"
-                            [(ngModel)]="trailer">
-                        <label for="floatingInput SerieTv">Trailer</label>
+                        <input type="file" (change)="onChangeInputFile($event)" class="form-control" name="trailer"
+                            id="floatingInput" placeholder="trailer" [(ngModel)]="trailer" required>
+                        <label for="floatingInput">Trailer</label>
+                        <p *ngIf="errore!=='' ">{{errore}}</p>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="src" id="floatingInput" placeholder="src"
-                            [(ngModel)]="src">
-                        <label for="floatingInput SerieTv">src</label>
+                        <input type="file" (change)="onChangeInputFile($event)" class="form-control" name="src"
+                            id="floatingInput" placeholder="src" [(ngModel)]="src" required>
+                        <label for="floatingInput">Src</label>
+                        <p *ngIf="errore!=='' ">{{errore}}</p>
                     </div>
                 </form>
 
                 <div class="text-end">
-                    <button type="button" class="btn btn-outline-dark bottInv" (click)="modifica()">Modifica</button>
+                    <button type="button" class="btn btn-outline-dark bottInv" (click)="modificaSerie()">Modifica</button>
                 </div>
             </div>
         </ng-template>
-        
-        <button class="button-2  m-1" type="button" (click)="openEnd(contentModifica)">Modifica</button>
 
-        <button type="button" class="button-2">Elimina</button>
-        <div class="form-check text-white">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-            <label class="form-check-label" for="flexCheckDefault">
-                <small> facendo clic su riproduci accetti i nostri Termini di
-                    utilizzo.</small>
-            </label>
-        </div>
+        <button class="button-2  m-1" type="button" (click)="apriModifica(card.idSerie)">Modifica</button>
+
+        <button (click)="eliminaSerie()" type="button" class="button-2">Elimina</button>
+
 
 
     </div>
@@ -145,7 +143,7 @@
                         <div class="front">
                             <!-- Contenuto frontale della card -->
                             <img src="{{ elencoSerieTv.immagine?.src }}" alt="{{ elencoSerieTv.immagine?.alt }}" />
-    
+
                         </div>
                         <div class="back bg-black text-white">
                             <!-- Contenuto posteriore della card -->

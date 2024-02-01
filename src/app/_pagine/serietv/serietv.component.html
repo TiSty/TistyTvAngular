@@ -24,7 +24,7 @@
                         <!-- Contenuto posteriore della card -->
                         <div class="card-content">
                             <h5>{{ serieTv.titolo }}</h5>
-                            <p>{{ serieTv.testo }}</p>
+                            <!-- <p>{{ serieTv.testo }}</p> -->
                             <button routerLink="{{serieTv.bottone?.link}}"
                                 class="btn btn-danger">{{serieTv.bottone?.testo}}</button>
                             <!-- Aggiungi qui il resto del contenuto posteriore della card -->
@@ -88,14 +88,16 @@
                             <label for="floatingInput SerieTv">Trama</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" name="trailer" id="floatingInput"
-                                placeholder="Trailer" [(ngModel)]="trailer">
-                            <label for="floatingInput SerieTv">Trailer</label>
+                            <input type="file" (change)="onChangeInputFile($event)" class="form-control" name="trailer"
+                                id="floatingInput" placeholder="Trailer" [(ngModel)]="trailer" required>
+                            <label for="floatingInput">Trailer </label>
+                            <p *ngIf="errore!=='' ">{{errore}}</p>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" name="src" id="floatingInput" placeholder="src"
-                                [(ngModel)]="src">
-                            <label for="floatingInput SerieTv">src</label>
+                            <input type="file" (change)="onChangeInputFile($event)" class="form-control" name="trc"
+                                id="floatingInput" placeholder="Src" [(ngModel)]="src" required>
+                            <label for="floatingInput">src </label>
+                            <p *ngIf="errore!=='' ">{{errore}}</p>
                         </div>
                     </form>
 
