@@ -3,10 +3,6 @@ main{
     margin: 0;
 }
 
-.container{
-    margin: 10px;
-    padding: 15px;
-}
 .media {
     display: flex;
     align-items: center;
@@ -22,18 +18,18 @@ main{
     margin-top: 20px;
 }
 
-.media-content{
-    padding: 20px;
-}
-h2{
-    padding-bottom: 30px ;
-}
-h2, h3{
-    padding-left: 40px;
-}
 
 .content{
     padding-top: 20px;
     padding: 10px;
     margin-left: 25px;
+}
+
+.modifica{
+   background-color: transparent;
+   color:  #ec0c65;
+}
+.modifica:hover{
+    background-color: #ec0c65;
+    color: black;
 }

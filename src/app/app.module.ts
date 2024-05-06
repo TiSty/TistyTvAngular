@@ -26,6 +26,7 @@ import { AuthIntercept } from './_intercettatori/auth.inteceptor';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { PaginaProfiloComponent } from './_pagine/pagina-profilo/pagina-profilo.component';
 import { PaginaEpisodioComponent } from './_pagine/pagina-episodio/pagina-episodio.component';
+import { CardCarouselComponent } from './_componenti/card-carousel/card-carousel.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { PaginaEpisodioComponent } from './_pagine/pagina-episodio/pagina-episod
     PaginaFilmComponent,
     PaginaSerieTvComponent,
     PaginaProfiloComponent,
-    PaginaEpisodioComponent
+    PaginaEpisodioComponent,
+    CardCarouselComponent
   ],
   imports: [
     BrowserModule,

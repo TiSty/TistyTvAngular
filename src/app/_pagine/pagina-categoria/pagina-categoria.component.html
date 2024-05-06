@@ -2,32 +2,17 @@
     <menu-principale></menu-principale>
 </header>
 
-
-
-
 <main>
-
-
-
-    <ng-container *ngIf="!(films.length>0)">
-        <div class="spinner-grow text-danger" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-    </ng-container>
-
-
-
-
+  
 
     <ng-container *ngIf="films.length>0">
-        <h2>Film</h2>
+        <h2 class="text-white ps-4 pt-3">Film</h2>
         <ul class="row m-2 p-3 pt-0 mt-0">
             <li *ngFor="let film of films" class="col p-2">
                 <div class="card">
                     <div class="front">
                         <!-- Contenuto frontale della card -->
                         <img src="{{ film.immagine?.src }}" alt="{{ film.immagine?.alt }}" />
-
                     </div>
                     <div class="back bg-black text-white">
                         <!-- Contenuto posteriore della card -->
@@ -35,8 +20,7 @@
                             <h5>{{ film.titolo }}</h5>
                             <p>{{ film.testo }}</p>
                             <button routerLink="{{film.bottone?.link}}"
-                                class="btn btn-danger">{{film.bottone?.testo}}</button>
-                            
+                                class="btn btn-danger">{{film.bottone?.testo}}</button>                   
                         </div>
                     </div>
                 </div>
@@ -44,15 +28,14 @@
         </ul>
     </ng-container>
 
-    <ng-container *ngIf="seriesTv.length>0">
-        <h2>SerieTv</h2>
-        <ul class="row m-2 p-3 pt-0 mt-0">
+    <ng-container *ngIf="seriesTv.length>0" >
+        <h2 class="text-white ps-4">SerieTv</h2>
+        <ul class="row m-2 p-3 pt-0 mt-0 mb-0">
             <li *ngFor="let serieTv of seriesTv" class="col p-2">
                 <div class="card">
                     <div class="front">
                         <!-- Contenuto frontale della card -->
                         <img src="{{ serieTv.immagine?.src }}" alt="{{ serieTv.immagine?.alt }}" />
-
                     </div>
                     <div class="back bg-black text-white">
                         <!-- Contenuto posteriore della card -->

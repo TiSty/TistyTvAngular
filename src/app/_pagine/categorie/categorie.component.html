@@ -9,34 +9,26 @@
         </div>
     </ng-container>
 
-   
-
     <ng-container *ngIf="categorie.length>0">
-
-
-
-
         <ul class="row m-2 p-3 pt-0 mt-0 mb-0">
             <li *ngFor="let categoria of categorie" class="col-sm-12 col-md-6 col-lg-4 col-xl-2 p-2">
                 <div class="card">
                     <div class="front">
                         <!-- Contenuto frontale della card -->
                         <img src="{{ categoria.immagine?.src }}" alt="{{ categoria.immagine?.alt }}" />
-
                     </div>
                     <div class="back bg-black text-white">
                         <!-- Contenuto posteriore della card -->
                         <div class="card-content">
                             <h5>{{ categoria.titolo }}</h5>
-
-                            <button routerLink="{{categoria.bottone?.link}}"
-                                class="btn btn-danger">{{categoria.bottone?.testo}}
-                            </button>
-
-
-
-
-
+                            <div class="col-sm-12">
+                                <button routerLink="{{categoria.bottone?.link}}"
+                                    class="btn btn-danger">{{categoria.bottone?.testo}}
+                                </button>
+                                <button *ngIf="auth.isAdmin()" class="btn btn-danger bottAgg mt-1"
+                                    (click)="apriModifica(categoria.id)"  >Modifica
+                                    Categoria</button>
+                            </div>
                             <!-- BOTTONE + MODAL PER MODIFICARE UNA CATEGORIA -->
                             <div class="float-end me-3">
                                 <ng-template #contentModifica let-offcanvas>
@@ -46,60 +38,46 @@
                                             (click)="offcanvas.dismiss('Cross click')"></button>
                                     </div>
                                     <div class="offcanvas-body bg-dark">
-                                        <form>
+                                        <form name="formMod" (ngSubmit)="modificaCategoria(formMod)" #formMod
+                                            [formGroup]="reactiveFormMod">
                                             <div class="form-floating mb-3">
-                                                <input type="text" class="form-control" name="nomeCategoria"
-                                                    id="floatingInput" placeholder="Nome Categoria"
-                                                    [(ngModel)]="nomeCategoria">
-                                                <label for="floatingInput Categoria">Nome Categoria</label>
+                                                <input type="text" class="form-control" id="nomeCategoriaMod"
+                                                    formControlName="nomeCategoriaMod" placeholder="Nome Categoria">
+                                                <label for="nomeCategoriaMod">Nome Categoria</label>
                                             </div>
                                             <div class="form-floating mb-3">
-                                                <input type="text" class="form-control" name="srcCategoria"
-                                                    id="floatingInput" placeholder="Src Categoria"
-                                                    [(ngModel)]="srcCategoria">
-                                                <label for="floatingInput srcCategoria">Scr categoria</label>
+                                                <input type="file" #fileInput (change)="onChangeInputFile($event)"
+                                                    formControlName="imgCat">
+
+                                                <p class="errore" *ngIf="errore!=='' ">{{errore}}</p>
+                                                <p class="ok" *ngIf="fileOk">file caricati correttamente</p>
+                                            </div>
+                                            <div class="text-end">
+                                                <button type="submit" class="btn btn-outline-dark bottInv"
+                                                    [disabled]="reactiveFormAgg.errors!==null">Modifica</button>
                                             </div>
                                         </form>
-                                        <div class="text-end">
-                                            <button type="button" class="btn btn-outline-dark bottInv"
-                                                (click)="modificaCategoria()">Modifica</button>
-                                        </div>
-
                                         <div class="custom-line-container">
                                             <hr class="custom-line">
-                                            <span class="custom-text text-white" >oppure</span>
+                                            <span class="custom-text text-white">oppure</span>
                                             <hr class="custom-line">
-                                          </div>
-                                        
-
+                                        </div>
                                         <!-- bottone per l'eliminazione -->
                                         <div class="text-end mt-2">
-                                            <button class="btn btn-outline-dark bottInv" type="button" id="button-addon2"
-                                            (click)="eliminaCategoria(categoria.id)">Cancella Categoria
-                                        </button>
+                                            <button class="btn btn-outline-dark bottInv" type="button"
+                                                id="button-addon2" (click)="eliminaCategoria(categoria.id)">Cancella
+                                                Categoria
+                                            </button>
                                         </div>
-                                        
                                     </div>
                                 </ng-template>
-                                <button class="btn btn-danger bottAgg mt-1"
-                                    (click)="apriModifica(categoria.id)">Modifica
-                                    Categoria</button>
                                 <!-- fine modal per la modifica -->
-
-
-
-
                             </div>
                         </div>
                     </div>
                 </div>
             </li>
         </ul>
-
-
-
-
-
 
 
         <!-- BOTTONE + MODAL PER AGGIUNGERE UNA CATEGORIA -->
@@ -110,35 +88,27 @@
                     (click)="offcanvas.dismiss('Cross click')"></button>
             </div>
             <div class="offcanvas-body bg-dark">
-
-                <form name="formAgg" [formGroup]="reactiveForm" (ngSubmit)="aggiungiCategoria()">
+                <form name="formAgg" (ngSubmit)="aggiungiCategoria(formAgg)" #formAgg [formGroup]="reactiveFormAgg">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="nomeCategoria" id="floatingInput" formControlName="nomeCategoria"
-                            placeholder="Nome Categoria" [(ngModel)]="nomeCategoria" required>
-                        <label for="floatingInput">Nome Categoria</label>
+                        <input type="text" class="form-control" id="nomeCategoria" formControlName="nomeCategoria"
+                            placeholder="Nome Categoria" required>
+                        <label for="nomeCategoria">Nome Categoria</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="file" (change)="onChangeInputFile($event)" class="form-control" name="srcCategoria" formControlName="srcCategoria"
-                            id="floatingInput" placeholder="SRC categoria" [(ngModel)]="srcCategoria" required>
-                        <label for="floatingInput">src Categoria</label>
-                        <p *ngIf="errore!=='' ">{{errore}}</p>
-
+                        <input type="file" #fileInput (change)="onChangeInputFile2($event)" formControlName="imgCat">
+                        <p class="errore" *ngIf="errore!=='' ">{{errore}}</p>
+                        <p class="ok" *ngIf="fileOk">file caricati correttamente</p>
                     </div>
                     <div class="text-end">
-                        <button type="submit" class="btn btn-outline-dark bottInv">Aggiungi</button>
+                        <button type="submit" class="btn btn-outline-dark bottInv"
+                            [disabled]="daCaricare.length<=0 || reactiveFormAgg.errors!==null">Aggiungi</button>
                     </div>
                 </form>
-
             </div>
         </ng-template>
-
-        <div class="bottAgg text-end p-3">
+        <div class="bottAgg text-end p-3" *ngIf="auth.isAdmin()">
             <button class="btn btn-danger" (click)="openEnd(contentAggiungi)">Aggiungi Categoria</button>
         </div>
-
-
-
     </ng-container>
 
 </main>
-

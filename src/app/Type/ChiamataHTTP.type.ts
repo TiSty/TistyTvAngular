@@ -1,1 +1,1 @@
-export type ChiamataHTTP = 'GET' | 'POST' | 'PUT' | 'DELETE'
+export type ChiamataHTTP = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PUT-BUG'

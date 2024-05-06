@@ -75,6 +75,18 @@ export class ApiService {
                     const obs$ = new Observable<IRispostaServer>(subscriber => subscriber.next(objErrore))
                     return obs$
                 }
+                break;
+
+            case "PUT-BUG":
+                console.log("passo da qui PUT-BUG", url)
+                //i parametri potrebbero essre nulli e quindi faccio un controllop
+                if (parametri !== null) {
+                    return this.http.post<IRispostaServer>(url, parametri) //dentro i parametri ci saranno i dati/oggetto che voglio inserire  
+                } else {
+                    const objErrore = { data: null, message: null, error: "NO_PARAMETRI" }
+                    const obs$ = new Observable<IRispostaServer>(subscriber => subscriber.next(objErrore))
+                    return obs$
+                }
                 break
 
             case "DELETE":
@@ -91,7 +103,7 @@ export class ApiService {
 
 
     // RICHIESTE GET  --------------------------------------------------
-    
+
 
     /**
      * Funzione per richiamare l'elenco di categorie
@@ -101,6 +113,11 @@ export class ApiService {
         const risorsa: string[] = ["categorie"]
         return this.richiestaGenerica(risorsa, "GET")
     }
+    public getFiles(): Observable<IRispostaServer> {
+        const risorsa: string[] = ["file"]
+        return this.richiestaGenerica(risorsa, "GET")
+    }
+
     /**
      * funzione per chiamare la singola risorsa
      * 
@@ -186,6 +203,11 @@ export class ApiService {
         const risorsa: string[] = ["episodi"]
         return this.richiestaGenerica(risorsa, "GET")
     }
+    public getEpisodiConID(idSerieTv: number): Observable<IRispostaServer> {
+        const risorsa: (string | number)[] = ["episodio", "serieTv", idSerieTv]
+        return this.richiestaGenerica(risorsa, "GET")
+    }
+
 
     public getEpisodio(id: string): Observable<IRispostaServer> {
         const risorsa: string[] = ["episodi", id]
@@ -194,15 +216,29 @@ export class ApiService {
 
 
     public getEpisodiDaSerie(idSerieTv: number): Observable<IRispostaServer> {
-        const risorsa: (string | number)[] = ["serieTv", "episodio", idSerieTv]
+        const risorsa: (string | number)[] = ["episodi", "serieTv", idSerieTv]
+        return this.richiestaGenerica(risorsa, "GET")
+    }
+
+    public getEpisodiDaEpisodio(idEpisodio: number): Observable<IRispostaServer> {
+        const risorsa: (string | number)[] = [idEpisodio, "episodi"]
+        // console.log('ID EPISODIO' ,idEpisodio)
         return this.richiestaGenerica(risorsa, "GET")
     }
 
 
 
 
+    //funzione per ceercare l'id utente
+    public getIdUtente(): Observable<IRispostaServer> {
+        const risorsa: string[] = ["cercaId"]
+        return this.richiestaGenerica(risorsa, "GET")
+    }
 
-
+    public getUtente(id: number): Observable<IRispostaServer> {
+        const risorsa: (string | number)[] = ["utente", id]
+        return this.richiestaGenerica(risorsa, "GET")
+    }
 
 
 
@@ -216,8 +252,9 @@ export class ApiService {
      * @param parametri 
      * @returns 
      */
-    public postCategoria(parametri: Partial<Categorie>): Observable<IRispostaServer> {
+    public postCategoria(parametri: FormData): Observable<IRispostaServer> {
         const risorsa: string[] = ["categorie"]
+        console.log('postCategorie', parametri);
         return this.richiestaGenerica(risorsa, "POST", parametri)
     }
 
@@ -227,8 +264,9 @@ export class ApiService {
      * @param parametri 
      * @returns 
      */
-    public postFilm(parametri: Partial<Categorie>): Observable<IRispostaServer> {
+    public postFilm(parametri: FormData): Observable<IRispostaServer> {
         const risorsa: string[] = ["film"]
+        console.log('postFilm', parametri);
         return this.richiestaGenerica(risorsa, "POST", parametri)
     }
 
@@ -237,7 +275,7 @@ export class ApiService {
    * @param parametri 
    * @returns 
    */
-    public postSerieTv(parametri: Partial<Categorie>): Observable<IRispostaServer> {
+    public postSerieTv(parametri: FormData): Observable<IRispostaServer> {
         const risorsa: string[] = ["serieTv"]
         return this.richiestaGenerica(risorsa, "POST", parametri)
     }
@@ -252,15 +290,23 @@ export class ApiService {
         return this.richiestaGenerica(risorsa, "POST", dati)
     }
 
+    public uploadFiles(dati: FormData): Observable<IRispostaServer> {
+        const risorsa: string[] = ["uploadFiles"]
+        return this.richiestaGenerica(risorsa, "POST", dati)
+    }
+
+
+
+
 
 
 
 
 
     // RICHIESTE PUT  --------------------------------------------------
-    public putCategoria(idRisorsa: number, parametri: Partial<Categorie>): Observable<IRispostaServer> {
+    public putCategoria(idRisorsa: number, parametri: FormData): Observable<IRispostaServer> {
         const risorsa: [string, number] = ["categorie", idRisorsa]
-        return this.richiestaGenerica(risorsa, "PUT", parametri)
+        return this.richiestaGenerica(risorsa, "PUT-BUG", parametri)
     }
     public putCategoriaSignola(parametri: Partial<Categorie>): Observable<IRispostaServer> {
         const risorsa: string[] = ["categorie"]
@@ -268,14 +314,20 @@ export class ApiService {
     }
 
 
+    
     public putFilm(idRisorsa: number, parametri: Partial<Film>): Observable<IRispostaServer> {
         const risorsa: [string, number] = ["film", idRisorsa]
         return this.richiestaGenerica(risorsa, "PUT", parametri)
     }
-
-    public putFilmVisualizzato(idRisorsa: number, parametri: Partial<Film>): Observable<IRispostaServer> {
+    public putFilmVisualizzato(idRisorsa: number, parametri: FormData): Observable<IRispostaServer> {
         const risorsa: [string, number] = ["film", idRisorsa]
-        return this.richiestaGenerica(risorsa, "PUT", parametri)
+        return this.richiestaGenerica(risorsa, "PUT-BUG", parametri)
+    }
+    
+// QUESTO ERA IL PRIMO PUT FILM visualizzato
+    public putFilmVisualizzato2(idRisorsa: number, parametri: Partial<Film>): Observable<IRispostaServer> {
+        const risorsa: [string, number] = ["film", idRisorsa]
+        return this.richiestaGenerica(risorsa, "PUT-BUG", parametri)
     }
 
 
@@ -284,12 +336,25 @@ export class ApiService {
         const risorsa: [string, number] = ["serieTv", idRisorsa]
         return this.richiestaGenerica(risorsa, "PUT", parametri)
     }
+ 
+   public putSerieVisualizzato(idRisorsa:number, parametri:FormData):Observable<IRispostaServer>{
+    const risorsa: [string, number] = ["serieTv", idRisorsa]
+    return this.richiestaGenerica(risorsa, "PUT-BUG", parametri)
+   }
+
+    // QUESTO ERA IL PRIMO PUT serie visualizzato
     public putSerieTvVisualizzata(idRisorsa: number, parametri: Partial<serieTvVisualizzata>): Observable<IRispostaServer> {
         const risorsa: [string, number] = ["serieTv", idRisorsa]
         return this.richiestaGenerica(risorsa, "PUT", parametri)
     }
 
-    public putEpisodioVisualizzato(idRisorsa:number, parametri: Partial<EpisodioVisualizzato>): Observable<IRispostaServer> {
+
+    public putEpisodioVisualizzato(idRisorsa: number, parametri: FormData): Observable<IRispostaServer> {
+        const risorsa: [string, number] = ["episodi", idRisorsa]
+        return this.richiestaGenerica(risorsa, "PUT-BUG", parametri)
+    }
+    // QUESTO ERA IL PRIMO PUT episodio visualizzato
+    public putEpisodioVisualizzato2(idRisorsa: number, parametri: Partial<EpisodioVisualizzato>): Observable<IRispostaServer> {
         const risorsa: [string, number] = ["episodi", idRisorsa]
         return this.richiestaGenerica(risorsa, "PUT", parametri)
     }

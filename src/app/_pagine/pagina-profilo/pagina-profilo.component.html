@@ -1,87 +1,63 @@
 <menu-principale></menu-principale>
 <main>
-    <div class="container ">
+    <div class="container pt-5 pb-5">
         <div class="card bg-dark text-white">
             <div class="card-content ">
                 <div class="media">
-                    <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+                    <img src="../../assets/immagini/imgProfilo.jpeg" alt="Placeholder image">
                     <div class="media-content">
-                        <h2 class="title is-4">{{dati.nome}}</h2>
+                        <h2 class="ms-4 mb-5">{{utente?.nome}}<br>{{utente?.cognome}}</h2>
+                        <button class="btn btn-danger modifica ms-4" (click)="logout()"> Logout </button>
                     </div>
+
                 </div>
 
-                <div class="content text-black">
+
+                <div *ngIf="utente" class="content text-black">
                     <form>
                         <div class="row m-0 p-0  text-center g-3">
                             <div class="form-floating mb-3 col-12 col-xxl-6 col-lg-6 col-md-6 col-sm-3">
-                                <input type="text" class="form-control" name="nome" id="floatingInput"
+                                <input disabled type="text" class="form-control" name="nome" id="floatingInput"
                                     placeholder="Nome">
-                                <label for="floatingInput film">{{dati.nome}}</label>
+                                <label for="floatingInput nome">{{utente.nome}}</label>
                             </div>
                             <div class="form-floating mb-3 col-12 col-xxl-6 col-lg-6 col-md-6 col-sm-3">
-                                <input type="text" class="form-control" name="cognome" id="floatingInput"
+                                <input disabled type="text" class="form-control" name="cognome" id="floatingInput"
                                     placeholder="cognome">
-                                <label for="floatingInput film">{{dati.cognome}}</label>
+                                <label for="floatingInput film">{{utente.cognome}}</label>
                             </div>
                         </div>
 
                         <div class="row m-0 p-0  text-center g-3">
                             <div class="form-floating mb-3  col-12 col-xxl-6 col-lg-6 col-md-6 col-sm-3">
-                                <input type="text" class="form-control" name="data di nascita" id="floatingInput"
-                                    placeholder="data di nascita">
-                                <label for="floatingInput film">{{dati.dataNascita}}</label>
+                                <input disabled type="text" class="form-control" name="data di nascita"
+                                    id="floatingInput" placeholder="data di nascita">
+                                <label for="floatingInput film">{{utente.dataNascita}}</label>
                             </div>
                             <div class="form-floating mb-3  col-12 col-xxl-6 col-lg-6 col-md-6 col-sm-3">
-                                <input type="text" class="form-control" name="sesso" id="floatingInput"
+                                <input disabled type="text" class="form-control" name="sesso" id="floatingInput"
                                     placeholder="sesso">
-                                <label for="floatingInput film">{{dati.sesso}}</label>
-                            </div>
-                        </div>
-
-                        <div class="row m-0 p-0  text-center g-3">
-                            <div class="form-floating mb-3  col-12 col-xxl-6 col-lg-6 col-md-6 col-sm-3">
-                                <input type="text" class="form-control" name="residenza" id="floatingInput"
-                                    placeholder="residenza">
-                                <label for="floatingInput film">{{dati.residenza}}</label>
-                            </div>
-                            <div class="form-floating mb-3  col-12 col-xxl-6 col-lg-6 col-md-6 col-sm-3">
-                                <input type="text" class="form-control" name="domicilio" id="floatingInput"
-                                    placeholder="Domicilio">
-                                <label for="floatingInput film">{{dati.domicilio}}</label>
+                                <label for="floatingInput film">{{utente.sesso === 1 ? 'Maschio' : 'Femmina'}}</label>
                             </div>
                         </div>
 
                         <div class="row m-0 p-0  text-center g-3">
 
                             <div class="form-floating mb-3  col-12 col-xxl-6 col-lg-6 col-md-6 col-sm-3">
-                                <input type="text" class="form-control" name="cittadinanza" id="floatingInput"
+                                <input disabled type="text" class="form-control" name="cittadinanza" id="floatingInput"
                                     placeholder="cittadinanza">
-                                <label for="floatingInput film">{{dati.cittadinanza}}</label>
+                                <label for="floatingInput film">{{utente.cittadinanza}}</label>
                             </div>
                             <div class="form-floating mb-3  col-12 col-xxl-6 col-lg-6 col-md-6 col-sm-3">
-                                <input type="text" class="form-control" name="ragioneSociale" id="floatingInput"
-                                    placeholder="ragioneSociale">
-                                <label for="floatingInput film">{{dati.ragioneSociale}}</label>
+                                <input disabled type="text" class="form-control" name="ragioneSociale"
+                                    id="floatingInput" placeholder="ragioneSociale">
+                                <label for="floatingInput film">{{utente.ragioneSociale === 1 ? 'Privato' :
+                                    'Aziendale'}}</label>
                             </div>
                         </div>
-
-                        <!-- <div class="row m-0 p-0  text-center g-3">
-                            <div class="form-floating mb-3  col-12 col-xxl-6 col-lg-6 col-md-6 col-sm-3">
-                                <input type="text" class="form-control" name="email" id="floatingInput"
-                                    placeholder="email">
-                                <label for="floatingInput film">{{Email}}</label>
-                            </div>
-                            <div class="form-floating mb-3  col-12 col-xxl-6 col-lg-6 col-md-6 col-sm-3">
-                                <input type="text" class="form-control" name="password" id="floatingInput"
-                                    placeholder="password">
-                                <label for="floatingInput film">{{Password}}</label>
-                            </div>
-                        </div> -->
 
 
                     </form>
-
-
                 </div>
             </div>
         </div>

@@ -29,7 +29,8 @@ export class AccediComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private authService: AuthService,
     private api: ApiService,
-    private router: Router
+    private router: Router,
+    private utility: UtilityService
   ) {
     this.reactiveForm = this.fb.group({
       'user': ['', [Validators.required, Validators.email, Validators.minLength(5), Validators.maxLength(40)]],//validazioni
@@ -103,6 +104,10 @@ export class AccediComponent implements OnInit, OnDestroy {
           
           this.authService.settaObsAuth(auth)
           this.authService.scriviAuthSuLocalStorage(auth)
+          if(auth!==null && auth.nome!== null){
+            this.utility.setUtente(auth.nome)
+          }
+          
           //posso mettere anche delle rotte per il reindirizzamento
           this.router.navigateByUrl('/paginaPrincipale')
         }

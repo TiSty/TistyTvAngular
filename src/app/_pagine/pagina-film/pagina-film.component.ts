@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, OnDestroy, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbOffcanvas, OffcanvasDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subject, delay, map, take, takeUntil, tap, throwError } from 'rxjs';
 import { IRispostaServer } from 'src/app/Interfacce/IRispostaServer';
@@ -11,6 +11,8 @@ import { Film } from 'src/app/Type/Film.type';
 import { FilmVisualizzato } from 'src/app/Type/FilmVisualizzato.type';
 import { Immagine } from 'src/app/Type/Immagine.type';
 import { ApiService } from 'src/app/_servizi/api.service';
+import { AuthService } from 'src/app/_servizi/auth.service';
+import { UtilityService } from 'src/app/_servizi/utility.service';
 
 @Component({
   selector: 'pagina-film',
@@ -26,24 +28,36 @@ export class PaginaFilmComponent implements OnInit, OnDestroy {
   film$!: Observable<IRispostaServer>;
   films: FilmVisualizzato[] = []
 
-  card!: FilmVisualizzato
+  card: FilmVisualizzato={
+    idFilm:0,
+    titolo: '',
+    durata: 0,
+    regista: '',
+    categoria: '',
+    anno:0,
+    trama:'',
+    trailer: '',
+    src:  '',
+  }
   IdCorr = 0
 
   idFilm!: number
   private distruggi$ = new Subject<void>()
-
-
 
   private offcanvasService = inject(NgbOffcanvas);
   closeResult = ''
 
   selectedFile: File | undefined;
   fileContent: string | undefined;
+  reactiveFormMod: FormGroup
 
-  constructor(private route: ActivatedRoute, private api: ApiService, private fb: FormBuilder, private httpClient: HttpClient) {
+  constructor(private route: ActivatedRoute, private api: ApiService, private fb: FormBuilder, private httpClient: HttpClient, private router: Router, private UtilityService : UtilityService, public auth:AuthService
+  ) {
     this.elencoFilm$ = this.api.getFilms()
     this.id = this.route.snapshot.paramMap.get("id")
     console.log("ID", this.id)
+
+    this.reactiveFormMod = this.impostaForm()
   }
 
   //OBSERVER PER IL FILM SINGOLO
@@ -73,14 +87,28 @@ export class PaginaFilmComponent implements OnInit, OnDestroy {
           categoria: elementi.categoria,
           anno: elementi.anno,
           trama: elementi.trama,
-          trailer: elementi.trailer,
-          src: elementi.src,
+          trailer:UtilityService.urlServer()+  elementi.trailer,
+          src: UtilityService.urlServer()+ elementi.src,
         }
       },
       errore: (err: any) => console.error("ERRORE in osservoFilm", err),
       complete: () => console.log("%c COMPLETATO Film", "color:#00aa00")
     }
   }
+
+  impostaForm() {
+    const tmp= this.fb.group({
+      'titoloMod': [this.card.titolo, [Validators.maxLength(60)]],
+      'registaMod': [this.card.regista, [Validators.maxLength(60)]],
+      'durataMod': [this.card.durata, [Validators.maxLength(3)]],
+      'categoriaMod': [this.card.categoria, [Validators.maxLength(60)]],
+      'annoMod': [this.card.anno, [Validators.maxLength(5)]],
+      'tramaMod': [this.card.trama, [Validators.maxLength(350)]],
+      'filesDaCaricare': ['', []],
+    })
+    return tmp;
+  }
+
 
   ngOnInit(): void {
     if (this.id !== null) {
@@ -142,36 +170,80 @@ export class PaginaFilmComponent implements OnInit, OnDestroy {
 
 
 
-  titolo = ''
-  durata!: number
-  regista = ''
-  categoria = ''
-  anno!: number
-  trama = ''
-  trailer = ''
-  src = ''
+  titoloMod = ''
+  durataMod!: number
+  registaMod = ''
+  categoriaMod = ''
+  annoMod!: number
+  tramaMod = ''
+  filesDaCaricare = ''
+  //PER MODIFICARE UN FILM
+  modificaFilm(form: HTMLFormElement): void {
+    if (this.reactiveFormMod.valid) {
+      const formData: FormData = new FormData()
+      this.titoloMod = this.reactiveFormMod.value.titoloMod;
+      this.registaMod = this.reactiveFormMod.value.registaMod;
+      this.durataMod = this.reactiveFormMod.value.durataMod;
+      this.categoriaMod = this.reactiveFormMod.value.categoriaMod;
+      this.annoMod = this.reactiveFormMod.value.annoMod;
+      this.tramaMod = this.reactiveFormMod.value.tramaMod;
 
+      if (this.titoloMod !== null && this.titoloMod !== '') {
+        formData.append('titolo', this.titoloMod)
+      }
+      if (this.registaMod !== null && this.registaMod !== '') {
+        formData.append('regista', this.registaMod)
+      }
+      if (this.durataMod !== null && this.durataMod > 0) {
+        formData.append('durata', this.durataMod.toString())
+      }
+      if (this.categoriaMod !== null && this.categoriaMod !== '') {
+        formData.append('categoria', this.categoriaMod)
+      }
+      if (this.annoMod !== null && this.annoMod > 0) {
+        formData.append('anno', this.annoMod.toString())
+      }
+      if (this.tramaMod !== null && this.tramaMod !== '') {
+        formData.append('trama', this.tramaMod)
+      }
 
-  modificaFilm() {
-    console.log("sono in modifica film id ", this.IdCorr)
-    console.log('Dati da modificare:', this.card);
-    const parametro: Partial<FilmVisualizzato> = {
-      titolo: this.card.titolo,
-      durata: this.card.durata,
-      regista: this.card.regista,
-      categoria: this.card.categoria,
-      anno: this.card.anno,
-      trama: this.card.trama,
-      trailer: this.card.trailer,
-      src: this.card.src
+      if (this.daCaricare !== null) {
+        for (let i = 0; i < this.daCaricare.length; i++) {
+          formData.append('filesDaCaricare[]', this.daCaricare[i])
+        }
+      }
+      formData.append('_method', 'PUT');
+      const obs$ = this.obsModificaFilm(this.IdCorr, formData).subscribe({
+        next: (ritorno) => {
+          console.log('ritorno della funzione modifica FILM', ritorno)
+          this.fileOk = ritorno
+          const card2 = {
+            idFilm: ritorno.idFilm,
+            titolo: ritorno.titolo,
+            durata: ritorno.durata,
+            regista: ritorno.regista,
+            categoria: ritorno.categoria,
+            anno:ritorno.anno,
+            trama:ritorno.trama,
+            trailer: UtilityService.urlServer()+ ritorno.trailer,
+            src: UtilityService.urlServer()+ ritorno.src,
+          }
+          this.card= card2
+          
+        },
+        error: (err) => {
+          console.error('Errore in Modifica', err)
+        },
+        complete: () => {
+          console.log('Completato')
+        }
+      });
+    } else {
+      console.log('form non valido', this.reactiveFormMod.errors)
     }
-    this.obsModificaFilm(this.IdCorr, parametro).subscribe(this.osservatoreMod)
   }
-
-  obsModificaFilm(id: number, dati: Partial<FilmVisualizzato>) {
-    let idFilm = this.id
-    console.log('ID in obsModificaFilm:', idFilm);
-    console.log('Dati in obsModificaFilm:', idFilm, dati);
+  // //funzione per creare un osservatore per modifica film
+  obsModificaFilm(id: number, dati: FormData) {
     return this.api.putFilmVisualizzato(id, dati).pipe(
       take(1),
       tap(x => console.log("OBS ", x)),
@@ -181,39 +253,12 @@ export class PaginaFilmComponent implements OnInit, OnDestroy {
   }
 
 
-
-  private osservatoreMod = {
-    next: () => {
-      console.log('Film Modificato!')
-    },
-    error: (err: string) => console.error(err),
-    complete: () => console.log("Completato"),
-  }
-
-
   public apriModifica(id: number): void {
     console.log("ID FILM", this.id)
+    this.reactiveFormMod=this.impostaForm()
     this.IdCorr = id
 
     let film = this.films.find(elemento => elemento.idFilm === this.IdCorr)
-    if (film !== undefined && film.titolo !== null && film.titolo !== undefined &&
-      film.durata !== null && film.durata !== undefined &&
-      film.regista !== null && film.regista !== undefined &&
-      film.categoria !== null && film.categoria !== undefined &&
-      film.anno !== null && film.anno !== undefined &&
-      film.trama !== null && film.trama !== undefined &&
-      film.trailer !== null && film.trailer !== undefined &&
-      film.src !== null && film.src !== undefined) {
-
-      this.titolo = film.titolo,
-        this.durata = film.durata,
-        this.regista = film.regista,
-        this.categoria = film.categoria,
-        this.anno = film.anno,
-        this.trama = film.trama,
-        this.trailer = film.trailer,
-        this.src = film.src
-    }
     this.openEnd(this.contentModifica)
   }
 
@@ -240,7 +285,10 @@ export class PaginaFilmComponent implements OnInit, OnDestroy {
   }
 
   private osservatoreDelete = {
-    next: () => console.log('Film Eliminato!'),
+    next: () => {
+      console.log('Film Eliminato!')
+      this.router.navigate(['film']);
+    },
     error: (err: string) => console.error(err),
     complete: () => console.log("Completato"),
   }
@@ -275,9 +323,11 @@ export class PaginaFilmComponent implements OnInit, OnDestroy {
 
   //PER INSERIRE IL FILE DI TIPO SRC
   errore: string = ''
-  readonly maxFileNumber: number = 1
-  readonly maxFileSize: number = 1
+  readonly maxFileNumber: number = 2
+  readonly maxFileSize: number = 2
+  readonly maxFileSizeMp4: number = 2
   daCaricare: File[] = []
+  fileOk: boolean = false
 
   //funzione che richiama l'observable della funzione apiService per Upload 
   inviaImg(dati: FormData): Observable<any> {
@@ -301,33 +351,51 @@ export class PaginaFilmComponent implements OnInit, OnDestroy {
 
   ctrlFileList(fileList: FileList): void {
     if (fileList !== null) {
-      if (fileList.length > this.maxFileNumber) {
-        this.errore = 'Puoi caricare' + this.maxFileNumber + 'immagine'
-      } else {
-        for (let i = 0; i < fileList.length; i++) {
-          if (!this.ctrlEstensione(fileList[i].name, "jpg")) {
-            this.errore = fileList[i].name + 'non ha estensione corretta, solo JPEG'
-            break
-          }
-          else if (!this.ctrlSize(fileList[i].size, this.maxFileSize)) {
-            this.errore = fileList[i].name + 'il file è troppo grande(' + Math.round(fileList[i].size / (1024 * 1024)) + 'MB)'
-            break
-          }
+      for (let i = 0; i < fileList.length; i++) {
+        const file = fileList[i];
+        const isImage = this.ctrlEstensione(file.name, "jpg, jpeg");
+        const isMp4 = this.controllaEstensioneMp4(file.name, "mp4");
+        if (!isImage && !isMp4) {
+          this.errore = file.name + ' non ha estensione corretta, solo JPEG o MP4';
+          break;
+        } else if (isImage && !this.ctrlSize(file.size, this.maxFileSize)) {
+          this.errore = file.name + ' il file è troppo grande (' + Math.round(file.size / (1024 * 1024)) + 'MB)';
+          break;
+        } else if (isMp4 && !this.ctrlSizeMp4(file.size, this.maxFileSizeMp4)) {
+          this.errore = file.name + ' il file è troppo grande (' + Math.round(file.size / (4080 * 4080)) + 'MB)';
+          break;
+        } else if (!this.ctrlInArray(file)) {
+          this.daCaricare.push(file);
         }
       }
+      console.log('FILE INSERITI', this.daCaricare);
     }
   }
 
   ctrlEstensione(nome: string, ext: string): boolean {
-    const tmp = nome.split(".")
-    return (tmp[tmp.length - 1] !== ext) ? false : true
+    const estensioniPermesse = ["jpg", "jpeg"]; // Aggiungi "jpeg" all'elenco delle estensioni permesse
+    const tmp = nome.split(".");
+    const estensione = tmp[tmp.length - 1].toLowerCase(); // Converte l'estensione in minuscolo per la comparazione
+    return estensioniPermesse.includes(estensione); // Verifica se l'estensione è tra quelle permesse
+  }
+  controllaEstensioneMp4(nome: string, ext: string): boolean {
+    const estensioniPermesse = ["mp4"];
+    const tmp = nome.split(".");
+    const estensione = tmp[tmp.length - 1].toLowerCase();
+    return estensioniPermesse.includes(estensione);
   }
   ctrlSize(size: number, maxSizeMB: number): boolean {
     const tmp = maxSizeMB * 1024 * 1024
     return (size > tmp) ? false : true
   }
 
-
+  ctrlSizeMp4(size: number, maxSizeMB: number): boolean {
+    const tmp = maxSizeMB * 3072 * 3072
+    return (size > tmp) ? false : true
+  }
+  ctrlInArray(file: File): boolean {
+    return false
+  }
   onFileSelected(event: any): void {
     const inputElement = event.target;
     if (inputElement.files && inputElement.files.length > 0) {
@@ -348,28 +416,6 @@ export class PaginaFilmComponent implements OnInit, OnDestroy {
     fileReader.readAsText(this.selectedFile!);
   }
 
-  onUpload(): void {
-    if (this.fileContent) {
-      const payload = {
-        titolo: this.titolo,
-        regista: this.regista,
-        durata: this.durata,
-        categoria: this.categoria,
-        anno: this.anno,
-        trama: this.trama,
-        trailer: this.trailer,
-        src: this.src
-      };
-
-      // Invia la richiesta HTTP POST al server
-      this.httpClient.post('http://localhost:4200/api/v1/film', payload)
-        .subscribe(response => {
-          console.log('File caricato con successo', response);
-        }, error => {
-          console.error('Errore durante il caricamento del file', error);
-        });
-    }
-  }
 
   //PER RIPRODURRE IL FILM
   openVideo() {
@@ -384,6 +430,16 @@ export class PaginaFilmComponent implements OnInit, OnDestroy {
       console.error('Impossibile aprire una nuova finestra/popup.');
     }
   }
+
+  eliminaFile(file: File): void {
+    this.daCaricare.splice(this.daCaricare.indexOf(file), 1)
+    console.log('Elimino Dati', this.daCaricare)
+  }
+
+  ricaricaPagina() {
+    window.location.reload();
+  }
+
 
 }
 

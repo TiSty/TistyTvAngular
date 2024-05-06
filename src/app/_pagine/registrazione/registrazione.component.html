@@ -31,7 +31,7 @@
 
                     <div class="row m-0 p-0 text-center g-3">
                         <div class="col-12 col-xxl-6 col-lg-6 col-md-6 col-sm-3 ">
-                            <input class="form-control form-control-sm col-3 " type="text" placeholder="Data di Nascita"
+                            <input class="form-control form-control-sm col-3 " type="text" placeholder="Nascita (aaaa-mm-dd)"
                                 id="dataNascita" required max="10" minlength="8" name="dataNascita"
                                 formControlName="dataNascita"
                                 [ngClass]="{'is-invalid':reactiveForm.controls['dataNascita'].errors}">
@@ -39,10 +39,10 @@
                         </div>
 
                         <div class="col-12 col-xxl-6 col-lg-6 col-md-6 col-sm-3 ">
-                            <select class="form-select form-select-sm" aria-label="Small select example" id="sesso"
+                            <select class="form-select form-select-sm" aria-label="Small select example" id="sesso" placeholder="Sesso"
                                 name="sesso" formControlName="sesso"
                                 [ngClass]="{'is-invalid':reactiveForm.controls['sesso'].errors}">
-                                <option selected>Sesso</option>
+                                <option value="" disabled selected>Sesso</option>
                                 <option value="1">Maschio</option>
                                 <option value="2">Femmina</option>
                             </select>
@@ -71,10 +71,10 @@
                                 [ngClass]="{'is-invalid':reactiveForm.controls['cittadinanza'].errors}">
                         </div>
                         <div class="col-12 col-xxl-6 col-lg-6 col-md-6 col-sm-3 ">
-                            <select class="form-select form-select-sm" id="ragioneSociale"
+                            <select class="form-select form-select-sm" id="ragioneSociale" placeholder="Ragione Sociale"
                                 formControlName="ragioneSociale"
                                 [ngClass]="{'is-invalid':reactiveForm.controls['ragioneSociale'].errors}">
-                                <option selected>Ragione sociale</option>
+                                <option value="" disabled selected>Ragione sociale</option>
                                 <option value="1">Privato</option>
                                 <option value="2">Azienda</option>
                             </select>

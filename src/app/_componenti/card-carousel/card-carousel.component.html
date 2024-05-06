@@ -1,0 +1,40 @@
+<!-- <div class="card text-left">
+    <img *ngIf="cardCarousel.immagine!==null && cardCarousel.immagine!==undefined" [src]="cardCarousel.immagine.src"
+        class="cardCarousel-img-top" [alt]="cardCarousel.immagine.alt">
+    <div class="cardCarousel-body">
+        <h5 class="cardCarousel-title">{{cardCarousel.titolo}}</h5>
+        <p class="cardCarousel-text">{{cardCarousel.datiEp}}</p>
+
+        <a *ngIf="cardCarousel.link!==null && cardCarousel.link!==undefined && cardCarousel.emitId!==null
+            && cardCarousel.emitId>0 && cardCarousel.link===null" href="javascript:void(0);"
+            title="{{cardCarousel.titolo}}" (click)="clickButton(cardCarousel.emitId)">{{cardCarousel.datiEp}}</a>
+
+
+
+
+         {{cardCarousel.bottone | json }} , {{cardCarousel.titolo|json}} -->
+<!--<a *ngIf="cardCarousel!==null && cardCarousel!==undefined && cardCarousel.emitId===null && cardCarousel.link!==null"
+            href="javascript:void(0)" title="{{cardCarousel.titolo}}"
+            [routerLink]="[cardCarousel.link]">{{cardCarousel.datiEp}}</a>
+    </div>
+</div> -->
+
+
+<div class="cardCaro text-bg-dark">
+    <a *ngIf="cardCarousel!==null && cardCarousel!==undefined && cardCarousel.emitId===null && cardCarousel.link!==null"
+        href="javascript:void(0)" title="{{cardCarousel.titolo}}" [routerLink]="[cardCarousel.link]"><img
+            *ngIf="cardCarousel.immagine!==null && cardCarousel.immagine!==undefined" [src]="cardCarousel.immagine.src"
+            class="cardCarousel-img-top" [alt]="cardCarousel.immagine.alt">
+
+
+        <a *ngIf="cardCarousel.link!==null && cardCarousel.link!==undefined && cardCarousel.emitId!==null
+            && cardCarousel.emitId>0 && cardCarousel.link===null" href="javascript:void(0);"
+            title="{{cardCarousel.titolo}}" (click)="clickButton(cardCarousel.emitId)"></a>
+
+        <div class="card-img-overlay">
+            <h5 class="cardCarousel-title">{{cardCarousel.titolo}}</h5>
+            <p class="cardCarousel-text">{{cardCarousel.datiEp}}</p>
+
+        </div>
+    </a>
+</div>

@@ -9,22 +9,22 @@ import { AuthService } from '../_servizi/auth.service';
 })
 export class AuthIntercept implements HttpInterceptor {
 
-    constructor(private auth:AuthService) { }
+    constructor(private auth: AuthService) { }
 
     //---------------------------------------------------------------------------------------------------------------
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         // let richiestaModificata = req.clone({
         //     headers: new HttpHeaders().set("Language", AppConfigService.auth.idLingua.toString())
         // });
-let richiestaModificata=req;
+        let richiestaModificata = req;
         // const utenteToken = AppConfigService.auth.tk;
 
         let tmp = this.auth.leggiAuthDaLocalStorage();
-        let utenteToken=tmp.token
-        console.log("INTERCEPTOR" , tmp)
+        let utenteToken = tmp.token
+        console.log("INTERCEPTOR", tmp)
         if (utenteToken !== null) {
-             richiestaModificata = req.clone({
-                 headers: new HttpHeaders().set("Authorization", `Bearer ${utenteToken}`)
+            richiestaModificata = req.clone({
+                headers: new HttpHeaders().set("Authorization", `Bearer ${utenteToken}`)
                 // headers: new HttpHeaders().set("Authorization", "Basic " + btoa("0:" + utenteToken))
             });
         }

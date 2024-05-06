@@ -9,16 +9,13 @@
         </div>
     </ng-container>
 
-
     <ng-container *ngIf="films.length>0">
-
         <ul class="row m-2 p-3 pt-0 mt-0">
             <li *ngFor="let film of films" class="col-sm-12 col-md-6 col-lg-4 col-xl-2  p-2">
                 <div class="card">
                     <div class="front">
                         <!-- Contenuto frontale della card -->
                         <img src="{{ film.immagine?.src }}" alt="{{ film.immagine?.alt }}" />
-
                     </div>
                     <div class="back bg-black text-white">
                         <!-- Contenuto posteriore della card -->
@@ -27,7 +24,6 @@
                             <p>{{ film.testo }}</p>
                             <button routerLink="{{film.bottone?.link}}"
                                 class="btn btn-danger">{{film.bottone?.testo}}</button>
-
                         </div>
                     </div>
                 </div>
@@ -35,149 +31,74 @@
         </ul>
 
 
-        <div class="float-end me-3">
-            <!-- BOTTONE + MODAL PER AGGIUNGERE UN FILM -->
-            <ng-template #contentAggiungi let-offcanvas>
-                <div class="offcanvas-header bg-dark">
-                    <h4 class="offcanvas-title" id="offcanvas-basic-title">Aggiungi Film</h4>
-                    <button type="button" class="btn-close" aria-label="Close"
-                        (click)="offcanvas.dismiss('Cross click')"></button>
-                </div>
-                <div class="offcanvas-body bg-dark">
-                    <form>
+        <!-- BOTTONE + MODAL PER AGGIUNGERE UN FILM -->
+        <ng-template #contentAggiungi let-offcanvas>
+            <div class="offcanvas-header bg-dark">
+                <h4 class="offcanvas-title" id="offcanvas-basic-title">Aggiungi Film</h4>
+                <button type="button" class="btn-close" aria-label="Close"
+                    (click)="offcanvas.dismiss('Cross click')"></button>
+            </div>
+            <div class="offcanvas-body bg-dark">
 
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" name="titolo" id="floatingInput"
-                                placeholder="titolo" [(ngModel)]="titolo">
-                            <label for="floatingInput film">Titolo</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" name="regista" id="floatingInput"
-                                placeholder="Regista" [(ngModel)]="regista">
-                            <label for="floatingInput film">Regista</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" name="durata" id="floatingInput"
-                                placeholder="Durata" [(ngModel)]="durata">
-                            <label for="floatingInput film">Durata</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" name="categoria" id="floatingInput"
-                                placeholder="Categoria" [(ngModel)]="categoria">
-                            <label for="floatingInput film">Categoria</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" name="anno" id="floatingInput" placeholder="Anno"
-                                [(ngModel)]="anno">
-                            <label for="floatingInput film">Anno</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" name="trama" id="floatingInput" placeholder="Trama"
-                                [(ngModel)]="trama">
-                            <label for="floatingInput film">Trama</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="file" (change)="onChangeInputFile($event)" class="form-control" name="trailer"
-                                id="floatingInput" placeholder="Trailer" [(ngModel)]="trailer" required>
-                            <label for="floatingInput">Trailer </label>
-                            <p *ngIf="errore!=='' ">{{errore}}</p>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="file" (change)="onChangeInputFile($event)" class="form-control" name="trc"
-                                id="floatingInput" placeholder="Src" [(ngModel)]="src" required>
-                            <label for="floatingInput">src </label>
-                            <p *ngIf="errore!=='' ">{{errore}}</p>
-                        </div>
-                    </form>
-                    <div class="text-end">
-                        <button type="button" class="btn btn-outline-dark bottInv"
-                            (click)="aggiungiFilm()">Aggiungi</button>
+                <form name="formAgg" (ngSubmit)="aggiungiFilm(formAgg)" #formAgg [formGroup]="reactiveForm">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="titolo" placeholder="titolo"
+                            formControlName="titolo" required>
+                        <label for="titolo">Titolo</label>
                     </div>
-                </div>
-            </ng-template>
-            <button class="btn btn-danger bottAgg" (click)="openEnd(contentAggiungi)">Aggiungi Film</button>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="regista" placeholder="Regista"
+                            formControlName="regista" required>
+                        <label for="regista">Regista</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="durata" placeholder="Durata"
+                            formControlName="durata" required>
+                        <label for="durata">Durata</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="categoria" formControlName="categoria"
+                            placeholder="Categoria" required>
+                        <label for="categoria">Categoria</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="anno" placeholder="Anno" formControlName="anno"
+                            required>
+                        <label for="anno">Anno</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="trama" placeholder="Trama" formControlName="trama"
+                            required>
+                        <label for="trama">Trama</label>
+                    </div>
 
+                    <div class="form-floating mb-3 text-white">
+                        <input type="file" #fileInput (change)="onChangeInputFile($event)" multiple
+                            formControlName="filesDaCaricare"> 
+
+                        <p class="errore" *ngIf="errore!=='' ">{{errore}}</p>
+                        <p class="ok" *ngIf="fileOk">file caricati correttamente</p>
+                    </div>
+                    <div class="row text-white" *ngFor="let file of daCaricare">
+                        <div class="col-12">{{file.name}}</div>
+                        <div class=" m-2">
+                            <button type="button" class="btn btn-outline-dark bottInv" (click)="eliminaFile(file)">Elimina file</button>
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-outline-dark bottInv"
+                            [disabled]="daCaricare.length<=0 || reactiveForm.errors!==null">Aggiungi</button>
+                    </div>
+
+                </form>
+
+              
+            </div>
+        </ng-template>
+
+
+        <div class="bottAgg text-end p-3">
+            <button class="btn btn-danger bottAgg" (click)="openEnd(contentAggiungi)" *ngIf="auth.isAdmin()">Aggiungi Film</button>
         </div>
-
-
-        <div class="bottDel">
-            <input type="number" class="form-control input" placeholder="id" [(ngModel)]="idFilm">
-             <button class="btn btn-danger" type="button" id="button-addon2" (click)="eliminaFilm(idFilm)">Cancella 
-                Film</button>
-        </div>
-
-
-
     </ng-container>
-
 </main>
-
-
-
-
-
-
-
-
-
-
-<!-- BOTTONE + MODAL PER MODIFICARE UN FILM       TOLTO PERCHE RITENUTO INUTILE, LA MODIFICA SU PUò ESEGUIRE DA DENTRO LA PAGINA DI VISUALIZZAZIONE DEL FILM
-<ng-template #contentModifica let-offcanvas>
-    <div class="offcanvas-header bg-dark">
-        <h4 class="offcanvas-title" id="offcanvas-basic-title">Modifica Film</h4>
-        <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
-    </div>
-    <div class="offcanvas-body bg-dark">
-        <form>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="idFilm" id="floatingInput" placeholder="ID Film"
-                    [(ngModel)]="idFilm">
-                <label for="floatingInput film">ID Film</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="titolo" id="floatingInput" placeholder="titolo"
-                    [(ngModel)]="titolo">
-                <label for="floatingInput film">Titolo</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="regista" id="floatingInput" placeholder="Regista"
-                    [(ngModel)]="regista">
-                <label for="floatingInput film">Regista</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="durata" id="floatingInput" placeholder="Durata"
-                    [(ngModel)]="durata">
-                <label for="floatingInput film">Durata</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="categoria" id="floatingInput" placeholder="Categoria"
-                    [(ngModel)]="categoria">
-                <label for="floatingInput film">Categoria</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="anno" id="floatingInput" placeholder="Anno"
-                    [(ngModel)]="anno">
-                <label for="floatingInput film">Anno</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="trama" id="floatingInput" placeholder="Trama"
-                    [(ngModel)]="trama">
-                <label for="floatingInput film">Trama</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="trailer" id="floatingInput" placeholder="Trailer"
-                    [(ngModel)]="trailer">
-                <label for="floatingInput film">Trailer</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="src" id="floatingInput" placeholder="src"
-                    [(ngModel)]="src">
-                <label for="floatingInput film">src</label>
-            </div>
-        </form>
-        <div class="text-end">
-            <button type="button" class="btn btn-outline-dark bottInv" (click)="modificaFilm()">Modifica</button>
-        </div>
-    </div>
-</ng-template>
-<button class="btn btn-primary bottAgg" (click)="openEnd(contentModifica)">Modifica Film</button> -->

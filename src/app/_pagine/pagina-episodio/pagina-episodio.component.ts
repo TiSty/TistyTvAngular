@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NgbOffcanvas, OffcanvasDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subject, delay, map, take, takeUntil, tap } from 'rxjs';
@@ -9,6 +10,8 @@ import { Card } from 'src/app/Type/Card.type';
 import { EpisodioVisualizzato } from 'src/app/Type/EpisodioVisualizzato.type';
 import { Immagine } from 'src/app/Type/Immagine.type';
 import { ApiService } from 'src/app/_servizi/api.service';
+import { AuthService } from 'src/app/_servizi/auth.service';
+import { UtilityService } from 'src/app/_servizi/utility.service';
 
 @Component({
   selector: 'pagina-episodio',
@@ -21,9 +24,22 @@ export class PaginaEpisodioComponent implements OnInit, OnDestroy {
   id: string | null = null
   episodio$!: Observable<IRispostaServer>;
   episodi: EpisodioVisualizzato[] = []
-  card!: EpisodioVisualizzato
+  card: EpisodioVisualizzato = {
+    idEpisodio: 0,
+    titolo: '',
+    serieTv: '',
+    durata: 0,
+    stagione: 0,
+    datiEp: '',
+    anno: 0,
+    trama: '',
+    trailer: '',
+    src: ''
+  }
   IdCorr = 0
   idEpisodio!: number
+
+  slides: Card[] = []
 
   private offcanvasService = inject(NgbOffcanvas);
   closeResult = ''
@@ -33,11 +49,13 @@ export class PaginaEpisodioComponent implements OnInit, OnDestroy {
 
   private distruggi$ = new Subject<void>()
 
+  reactiveFormMod: FormGroup
 
-  constructor(private route: ActivatedRoute, private api: ApiService, private httpClient: HttpClient) {
+  constructor(private route: ActivatedRoute, private api: ApiService, private httpClient: HttpClient, private utility: UtilityService, private fb: FormBuilder, public auth:AuthService) {
     this.id = this.route.snapshot.paramMap.get("id")
     console.log("ID", this.id)
 
+    this.reactiveFormMod = this.impostaForm()
   }
 
 
@@ -50,7 +68,7 @@ export class PaginaEpisodioComponent implements OnInit, OnDestroy {
         // for (let i = 0; i < elementi.length; i++) {
         const tmpImg: Immagine = {
           src: elementi.src,
-          alt: elementi.alt,
+          alt: '',
         }
         //SE SERVE DECOMMENTA AL BOTTONE
         const bott: Bottone = {
@@ -69,8 +87,8 @@ export class PaginaEpisodioComponent implements OnInit, OnDestroy {
           datiEp: elementi.datiEp,
           anno: elementi.anno,
           trama: elementi.trama,
-          trailer: elementi.trailer,
-          src: elementi.src,
+          trailer: UtilityService.urlServer()+ elementi.trailer,
+          src:UtilityService.urlServer()+  elementi.src,
         }
       },
       errore: (err: any) => console.error("ERRORE in osservoepisodio", err),
@@ -79,6 +97,19 @@ export class PaginaEpisodioComponent implements OnInit, OnDestroy {
 
   }
 
+  impostaForm() {
+    const tmp = this.fb.group({
+      'titoloMod': [this.card.titolo, [Validators.maxLength(60)]],
+      'serieTvMod': [this.card.serieTv, [Validators.maxLength(60)]],
+      'durataMod': [this.card.durata, [Validators.maxLength(3)]],
+      'annoMod': [this.card.anno, [Validators.maxLength(60)]],
+      'stagioneMod': [this.card.stagione, [Validators.maxLength(5)]],
+      'episodioMod': [this.card.datiEp, [Validators.maxLength(5)]],
+      'tramaMod': [this.card.trama, [Validators.maxLength(350)]],
+      'filesDaCaricare': ['', []],
+    })
+    return tmp
+  }
 
   ngOnInit(): void {
     if (this.id !== null) {
@@ -88,8 +119,12 @@ export class PaginaEpisodioComponent implements OnInit, OnDestroy {
           const episodio$ = this.api.getEpisodio(id);
           episodio$.subscribe(this.osservoEpisodio())
 
-          const elencoEpisodio$ = this.api.getEpisodiDaSerie(parseInt(id))       //DA APPROFONDIRE PERCHE
-          elencoEpisodio$.pipe(delay(1000)).subscribe(this.osservoEpisodi())    // MI RICARCA SEMPRE UN SACCO DI EPISODI
+
+
+          const elencoEpisodio$ = this.api.getEpisodiDaEpisodio(parseInt(id))
+          elencoEpisodio$.subscribe(this.osservoEpisodi())
+
+
         }
       });
     }
@@ -101,35 +136,86 @@ export class PaginaEpisodioComponent implements OnInit, OnDestroy {
 
 
   //FUNZIONE PER MODIFICARE L'EPISODIO
-  titolo = ''
-  serieTv = ''
-  durata!: number
-  anno!: number
-  trama = ''
-  stagione!: number
-  datiEp = ''
+  titoloMod = ''
+  serieTvMod = ''
+  durataMod!: number
+  annoMod!: number
+  tramaMod = ''
+  stagioneMod!: number
+  episodioMod = ''
   src = ''
-  modificaEpisodio() {
-    console.log("Sono in modifica episodio", this.IdCorr)
-    const parametro: Partial<EpisodioVisualizzato> = {
-      serieTv: this.card.serieTv,
-      titolo: this.card.titolo,
-      durata: this.card.durata,
-      stagione: this.card.stagione,
-      datiEp: this.card.datiEp,
-      anno: this.card.anno,
-      trama: this.card.trama,
-      trailer: this.card.trailer,
-      src: this.card.src
+  fileOk: boolean = false
+  //PER MODIFICARE UN FILM
+  modificaEpisodio(form: HTMLFormElement): void {
+    if (this.reactiveFormMod.valid) {
+      const formData: FormData = new FormData()
+      this.titoloMod = this.reactiveFormMod.value.titoloMod;
+      this.serieTvMod = this.reactiveFormMod.value.serieTvMod;
+      this.durataMod = this.reactiveFormMod.value.durataMod;
+      this.stagioneMod = this.reactiveFormMod.value.stagioneMod;
+      this.annoMod = this.reactiveFormMod.value.annoMod;
+      this.tramaMod = this.reactiveFormMod.value.tramaMod;
+      this.episodioMod = this.reactiveFormMod.value.episodioMod;
+
+
+      if (this.titoloMod !== null && this.titoloMod !== '') {
+        formData.append('titolo', this.titoloMod)
+      }
+      if (this.serieTvMod !== null && this.serieTvMod !== '') {
+        formData.append('serieTv', this.serieTvMod.toString())
+      }
+      if (this.durataMod !== null && this.durataMod > 0) {
+        formData.append('durata', this.durataMod.toString())
+      }
+      if (this.stagioneMod !== null && this.stagioneMod > 0) {
+        formData.append('stagione', this.stagioneMod.toString())
+      }
+      if (this.annoMod !== null && this.annoMod > 0) {
+        formData.append('anno', this.annoMod.toString())
+      }
+      if (this.tramaMod !== null && this.tramaMod !== '') {
+        formData.append('trama', this.tramaMod)
+      }
+      if (this.episodioMod !== null && this.episodioMod != '') {
+        formData.append('episodio', this.episodioMod.toString())
+      }
+      if (this.daCaricare !== null) {
+        for (let i = 0; i < this.daCaricare.length; i++) {
+          formData.append('filesDaCaricare[]', this.daCaricare[i])
+        }
+      }
+      formData.append('_method', 'PUT');
+      const obs$ = this.obsModificaEp(this.IdCorr, formData).subscribe({
+        next: (ritorno) => {
+          console.log('ritorno della funzione modifica FILM', ritorno)
+          this.fileOk = ritorno
+          const card2 = {
+            idEpisodio: ritorno.idEpisodio,
+            titolo: ritorno.titolo,
+            durata: ritorno.durata,
+            serieTv: ritorno.serieTv,
+            stagione: ritorno.stagione,
+            datiEp: ritorno.datiEp,
+            anno: ritorno.anno,
+            trama: ritorno.trama,
+            trailer:UtilityService.urlServer()+ ritorno.trailer,
+            src: UtilityService.urlServer()+ ritorno.src,
+          }
+          this.card= card2
+        },
+        error: (err) => {
+          console.error('Errore in Modifica', err)
+        },
+        complete: () => {
+          console.log('Completato')
+        }
+      });
+    } else {
+      console.log('form non valido', this.reactiveFormMod.errors)
     }
-    this.obsModificaEp(this.IdCorr, parametro).subscribe(this.osservatoreMod)
   }
-
-
-  //funzione per creare un osservatore per modifica SerieTv
-  obsModificaEp(id: number, dati: Partial<EpisodioVisualizzato>) {
-    let idEpisodio = this.id
-    console.log('ID in obsModificaEp:', idEpisodio);
+  // //funzione per creare un osservatore per modifica film
+  obsModificaEp(id: number, dati: FormData) {
     return this.api.putEpisodioVisualizzato(id, dati).pipe(
       take(1),
       tap(x => console.log("OBS ", x)),
@@ -138,36 +224,14 @@ export class PaginaEpisodioComponent implements OnInit, OnDestroy {
     )
   }
 
-  private osservatoreMod = {
-    next: () => {
-      console.log('episodio Modificato!')
-    },
-    error: (err: string) => console.error('impossibile modificare episodio', err),
-    complete: () => console.log("Completato"),
-  }
+
+
   public apriModifica(id: number): void {
     console.log("ID FILM", this.id)
+    this.reactiveFormMod = this.impostaForm()
     this.IdCorr = id
 
     let episodio = this.episodi.find(elemento => elemento.idEpisodio === this.IdCorr)
-    if (episodio !== undefined && episodio.titolo !== null && episodio.titolo !== undefined &&
-      episodio.durata !== null && episodio.durata !== undefined &&
-      episodio.stagione !== null && episodio.stagione !== undefined &&
-      episodio.datiEp !== null && episodio.datiEp !== undefined &&
-      episodio.anno !== null && episodio.anno !== undefined &&
-      episodio.trama !== null && episodio.trama !== undefined &&
-      episodio.trailer !== null && episodio.trailer !== undefined &&
-      episodio.src !== null && episodio.src !== undefined) {
-
-      this.titolo = episodio.titolo,
-        this.serieTv = episodio.serieTv,
-        this.durata = episodio.durata,
-        this.anno = episodio.anno,
-        this.trama = episodio.trama,
-        this.stagione = episodio.stagione,
-        this.datiEp = episodio.datiEp,
-        this.src = episodio.src
-    }
     this.openEnd(this.contentModifica)
   }
 
@@ -196,7 +260,10 @@ export class PaginaEpisodioComponent implements OnInit, OnDestroy {
   }
 
   private osservatoreDelete = {
-    next: () => console.log('Episodio Eliminato!'),
+    next: () => {
+      console.log('Episodio Eliminato!')
+      this.ricaricaPagina()
+    },
     error: (err: string) => console.error(err),
     complete: () => console.log("Completato"),
   }
@@ -245,11 +312,12 @@ export class PaginaEpisodioComponent implements OnInit, OnDestroy {
   private osservoEpisodi() {
     return {
       next: (rit: IRispostaServer) => {
+        this.elencoEpisodi = [];
         const elementi = rit.data
-        console.log("DAti di:  OSSERVO Episodi", elementi)
+        console.log("Dati di:  OSSERVO Episodi", elementi)
         for (let i = 0; i < elementi.length; i++) {
           const tmpImg: Immagine = {
-            src: elementi[i].src,
+            src: UtilityService.urlServer() + elementi[i].src,
             alt: elementi[i].alt,
           }
           //SE SERVE DECOMMENTA AL BOTTONE
@@ -268,6 +336,7 @@ export class PaginaEpisodioComponent implements OnInit, OnDestroy {
             bottone: bott
           }
           this.elencoEpisodi.push(card)
+          console.log(this.elencoEpisodi)
         }
       },
       errore: (err: any) => console.error("ERRORE in osservoEpisodi", err),
@@ -275,10 +344,15 @@ export class PaginaEpisodioComponent implements OnInit, OnDestroy {
     }
   }
 
+
+
+
+
   //PER INSERIRE IL FILE DI TIPO SRC
   errore: string = ''
   readonly maxFileNumber: number = 1
   readonly maxFileSize: number = 1
+  readonly maxFileSizeMp4: number = 2
   daCaricare: File[] = []
 
   //funzione che richiama l'observable della funzione apiService per Upload 
@@ -303,20 +377,24 @@ export class PaginaEpisodioComponent implements OnInit, OnDestroy {
 
   ctrlFileList(fileList: FileList): void {
     if (fileList !== null) {
-      if (fileList.length > this.maxFileNumber) {
-        this.errore = 'Puoi caricare' + this.maxFileNumber + 'immagine'
-      } else {
-        for (let i = 0; i < fileList.length; i++) {
-          if (!this.ctrlEstensione(fileList[i].name, "jpg")) {
-            this.errore = fileList[i].name + 'non ha estensione corretta, solo JPEG'
-            break
-          }
-          else if (!this.ctrlSize(fileList[i].size, this.maxFileSize)) {
-            this.errore = fileList[i].name + 'il file è troppo grande(' + Math.round(fileList[i].size / (1024 * 1024)) + 'MB)'
-            break
-          }
+      for (let i = 0; i < fileList.length; i++) {
+        const file = fileList[i];
+        const isImage = this.ctrlEstensione(file.name, "jpg, jpeg");
+        const isMp4 = this.controllaEstensioneMp4(file.name, "mp4");
+        if (!isImage && !isMp4) {
+          this.errore = file.name + ' non ha estensione corretta, solo JPEG o MP4';
+          break;
+        } else if (isImage && !this.ctrlSize(file.size, this.maxFileSize)) {
+          this.errore = file.name + ' il file è troppo grande (' + Math.round(file.size / (1024 * 1024)) + 'MB)';
+          break;
+        } else if (isMp4 && !this.ctrlSizeMp4(file.size, this.maxFileSizeMp4)) {
+          this.errore = file.name + ' il file è troppo grande (' + Math.round(file.size / (4080 * 4080)) + 'MB)';
+          break;
+        } else if (!this.ctrlInArray(file)) {
+          this.daCaricare.push(file);
         }
       }
+      console.log('FILE INSERITI', this.daCaricare);
     }
   }
 
@@ -324,12 +402,23 @@ export class PaginaEpisodioComponent implements OnInit, OnDestroy {
     const tmp = nome.split(".")
     return (tmp[tmp.length - 1] !== ext) ? false : true
   }
+  controllaEstensioneMp4(nome: string, ext: string): boolean {
+    const estensioniPermesse = ["mp4"];
+    const tmp = nome.split(".");
+    const estensione = tmp[tmp.length - 1].toLowerCase();
+    return estensioniPermesse.includes(estensione);
+  }
   ctrlSize(size: number, maxSizeMB: number): boolean {
     const tmp = maxSizeMB * 1024 * 1024
     return (size > tmp) ? false : true
   }
-
-
+  ctrlSizeMp4(size: number, maxSizeMB: number): boolean {
+    const tmp = maxSizeMB * 3072 * 3072
+    return (size > tmp) ? false : true
+  }
+  ctrlInArray(file: File): boolean {
+    return false
+  }
   onFileSelected(event: any): void {
     const inputElement = event.target;
     if (inputElement.files && inputElement.files.length > 0) {
@@ -350,27 +439,12 @@ export class PaginaEpisodioComponent implements OnInit, OnDestroy {
     fileReader.readAsText(this.selectedFile!);
   }
 
-  onUpload(): void {
-    if (this.fileContent) {
-      const payload = {
-        titolo: this.card.titolo,
-        durata: this.card.durata,
-        stagione: this.card.stagione,
-        datiEp: this.card.datiEp,
-        anno: this.card.anno,
-        trama: this.card.trama,
-        src: this.card.src
-      };
 
-      // Invia la richiesta HTTP POST al server
-      this.httpClient.post('http://localhost:4200/api/v1/episodio', payload)
-        .subscribe(response => {
-          console.log('File caricato con successo', response);
-        }, error => {
-          console.error('Errore durante il caricamento del file', error);
-        });
-    }
+  eliminaFile(file: File): void {
+    this.daCaricare.splice(this.daCaricare.indexOf(file), 1)
+    console.log('Elimino Dati', this.daCaricare)
   }
+
 
 
 
@@ -389,6 +463,9 @@ export class PaginaEpisodioComponent implements OnInit, OnDestroy {
     }
   }
 
+  ricaricaPagina() {
+    window.location.reload();
+  }
 
 
 } 

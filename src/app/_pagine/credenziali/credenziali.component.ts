@@ -9,6 +9,7 @@ import { Form2 } from 'src/app/Type/Form2.type';
 import { Utente } from 'src/app/Type/Utente.type';
 import { ApiService } from 'src/app/_servizi/api.service';
 import { RegistrazioneService } from 'src/app/_servizi/registrazione.service';
+import { UtilityService } from 'src/app/_servizi/utility.service';
 
 @Component({
   selector: 'credenziali',
@@ -27,7 +28,8 @@ export class CredenzialiComponent implements OnInit {
     private fb: FormBuilder,
     private utenteService: RegistrazioneService,
     private api: ApiService,
-    private router: Router
+    private router: Router,
+    private utility:UtilityService
   ) {
     this.reactiveForm = this.fb.group({
       //validazioni
@@ -110,6 +112,8 @@ export class CredenzialiComponent implements OnInit {
     const osservatore: Observer<any> = {
       next: (rit: IRispostaServer) => {
         console.log("RITORNO", rit)
+        // this.utility.passwordCombaciano
+
         //reindirizzamento
         this.router.navigateByUrl('accedi')
       },

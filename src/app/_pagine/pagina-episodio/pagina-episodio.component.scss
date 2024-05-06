@@ -115,3 +115,36 @@ h4, h5{
 #floatingInput:hover{
     border-color: #ec0c65;
 }
+
+//card episodi
+.ulCardEp{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.liCardEp{
+    display: inline-block; /* Posizionare le card una di fianco all'altra */
+    margin-right: 1rem;    /* Aggiungere spazio tra le card */
+    
+}
+.cardEp{
+    margin: 0;
+    width: 100%;
+    height: 320px;
+    align-items: stretch;
+}
+//CARD EPISODI
+.liCardEp{
+    display: flex;
+    text-align: center;
+    background-color: black;
+}
+
+.ulCardEp{
+    display: flex;
+    background-color: black;
+}
+.scheda-nero {
+    background-color: transparent;
+    color: white;
+}

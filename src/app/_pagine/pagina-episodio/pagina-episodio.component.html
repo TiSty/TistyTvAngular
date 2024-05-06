@@ -12,7 +12,7 @@
     </ng-container>-->
 
 
-    <ng-container >
+    <ng-container *ngIf="card!== undefined">
         <div class="card text-white bg-dark">
             <img [src]="card.src" class="card-img m-0 p-4" alt="film.alt">
             <div class="card-img-overlay">
@@ -27,11 +27,14 @@
                 </p>
             </div>
         </div>
+    </ng-container>
 
-        <div class="ms-5 mt-2">
-            <button (click)="openVideo()" type="button" class="button-1 m-1">Riproduci</button>
+    <div class="ms-5 mt-2">
+        <button (click)="openVideo()" type="button" class="button-1 m-1">Riproduci</button>
 
-             <!-- BOTTONE + MODAL PER MODIFICARE UNA Serie -->
+
+
+        <!-- BOTTONE + MODAL PER MODIFICARE UN episodio -->
         <ng-template #contentModifica let-offcanvas>
             <div class="offcanvas-header bg-dark">
                 <h4 class="offcanvas-title" id="offcanvas-basic-title">Modifica SerieTv</h4>
@@ -39,83 +42,105 @@
                     (click)="offcanvas.dismiss('Cross click')"></button>
             </div>
             <div class="offcanvas-body bg-dark">
-                <form>
+                <form name="formMod" (ngSubmit)="modificaEpisodio(formMod)" #formMod [formGroup]="reactiveFormMod">
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="titolo" id="floatingInput" placeholder="Titolo"
-                            [(ngModel)]="card.titolo">
-                        <label for="floatingInput SerieTv">Titolo</label>
+                        <input type="text" class="form-control" id="titoloMod" formControlName="titoloMod"
+                            placeholder="Titolo">
+                        <label for="titoloMod">Titolo</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="SerieTv" id="floatingInput" placeholder="SerieTv"
-                            [(ngModel)]="card.serieTv">
-                        <label for="floatingInput SerieTv">SerieTv</label>
+                        <input type="text" class="form-control" formControlName="durataMod" id="durataMod"
+                            placeholder="Durata">
+                        <label for="durataMod">Durata</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="durata" id="floatingInput" placeholder="Durata"
-                            [(ngModel)]="card.durata">
-                        <label for="floatingInput SerieTv">Durata</label>
+                        <input type="text" class="form-control" formControlName="serieTvMod" id="serieTvMod"
+                            placeholder="Durata">
+                        <label for="serieTvMod">SerieTV</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="anno" id="floatingInput" placeholder="Anno"
-                            [(ngModel)]="card.anno">
-                        <label for="floatingInput SerieTv">Anno</label>
+                        <input type="text" class="form-control" formControlName="annoMod" id="annoMod"
+                            placeholder="Anno">
+                        <label for="annoMod">Anno</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="trama" id="floatingInput" placeholder="Trama"
-                            [(ngModel)]="card.trama">
-                        <label for="floatingInput SerieTv">Trama</label>
+                        <input type="text" class="form-control" formControlName="tramaMod" id="tramaMod"
+                            placeholder="Trama">
+                        <label for="tramaMod">Trama</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="stagione" id="floatingInput" placeholder="Stagione"
-                            [(ngModel)]="card.stagione">
-                        <label for="floatingInput SerieTv">Stagione</label>
+                        <input type="text" class="form-control" formControlName="stagioneMod" id="stagioneMod"
+                            placeholder="Regista">
+                        <label for="stagioneMod">Stagione</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="episodio" id="floatingInput"
-                            placeholder="Episodio" [(ngModel)]="card.datiEp">
-                        <label for="floatingInput SerieTv">Episodio</label>
+                        <input type="text" class="form-control" formControlName="episodioMod" id="episodioMod"
+                            placeholder="Categoria">
+                        <label for="episodioMod">Episodio</label>
                     </div>
-                    
-                    <div class="form-floating mb-3">
-                        <input type="file" (change)="onChangeInputFile($event)" class="form-control" name="src"
-                            id="floatingInput" placeholder="src" [(ngModel)]="src" required>
-                        <label for="floatingInput">Src</label>
-                        <p *ngIf="errore!=='' ">{{errore}}</p>
+
+
+
+                    <div class="form-floating mb-3 text-white">
+                        <input type="file" #fileInput (change)="onChangeInputFile($event)" multiple
+                            formControlName="filesDaCaricare">
+
+                        <p class="errore" *ngIf="errore!=='' ">{{errore}}</p>
+                        <p class="ok" *ngIf="fileOk">file caricati correttamente</p>
+                    </div>
+                    <div class="row text-white" *ngFor="let file of daCaricare">
+                        <div class="col-12">{{file.name}}</div>
+                        <div class=" m-2">
+                            <button type="button" class="btn btn-outline-dark bottInv"
+                                (click)="eliminaFile(file)">Elimina file</button>
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-outline-dark bottInv"
+                            [disabled]="reactiveFormMod.errors!==null">Modifica</button>
                     </div>
                 </form>
 
-                <div class="text-end">
-                    <button type="button" class="btn btn-outline-dark bottInv" (click)="modificaEpisodio()">Modifica</button>
-                </div>
             </div>
+
         </ng-template>
+        <button class="button-2  m-1" type="button" (click)="apriModifica(card.idEpisodio)" *ngIf="auth.isAdmin()">Modifica</button>
 
-        <button class="button-2  m-1" type="button" (click)="apriModifica(idEpisodio)">Modifica</button>
-
-            <button  (click)="eliminaEp()"  type="button" class="button-2">Elimina</button>
-        </div>
-
-    </ng-container>
+        <button (click)="eliminaEp()" type="button" class="button-2" *ngIf="auth.isAdmin()">Elimina</button>
 
 
 
 
+    </div>
 
 
-    <ng-container *ngIf="elencoEpisodi.length > 0">
-        <div class="text-white mt-3">
+    <!-- <ng-container *ngIf="elencoEpisodi.length > 0">
+        <div class="text-white mt-3 mb-0">
             <hr>
-            <h2 class="text-white ms-4 mt-4">Episodi</h2>
-            <ul class="row m-2 p-3 pt-0 mt-0">
-                <li *ngFor="let elencoEpisodio of elencoEpisodi" class="col">
-                    <card class="card" [opzioni]="elencoEpisodio"></card>
+            <h2 class="text-white ms-4 mt-4 ">Episodi</h2>
+            <ul class="row p-4 mb-0">
+                <li *ngFor="let elencoEpisodio of elencoEpisodi" class=" LiCardEp col-lg-2 g-2">
+                    <card class="cardEp" [opzioni]="elencoEpisodio"></card>
                 </li>
             </ul>
         </div>
+    </ng-container> -->
 
-
+    <hr class="text-white">
+    <ng-container *ngIf="elencoEpisodi.length > 0">
+        <div class="text-white mt-3 episodi">
+            <h2 class="text-white ms-4 mt-4">Episodi</h2>
+            <ul class="row m-0 p-4">
+                <li *ngFor="let elencoEpisodio of elencoEpisodi" class="liCardEp col-4 mt-2">
+                    <card class="card scheda-nero" [opzioni]="elencoEpisodio"></card>
+                </li>
+            </ul>
+        </div>
     </ng-container>
+
+
+
 
 
 

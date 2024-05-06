@@ -7,6 +7,8 @@ import { Card } from 'src/app/Type/Card.type';
 import { Categorie } from 'src/app/Type/Categorie.type';
 import { Immagine } from 'src/app/Type/Immagine.type';
 import { ApiService } from 'src/app/_servizi/api.service';
+import { UtilityService } from 'src/app/_servizi/utility.service';
+
 
 @Component({
   selector: 'pagina-categoria',
@@ -26,7 +28,7 @@ export class PaginaCategoriaComponent implements OnInit {
   //richiamo per tirare fuori la singola (risorsa) categoria tramite l'id
   id: string | null = null
 
-  constructor(private route: ActivatedRoute, private api: ApiService) {
+  constructor(private route: ActivatedRoute, private api: ApiService, private utility:UtilityService) {
 
     this.id = this.route.snapshot.paramMap.get("id")
     console.log("ID", this.id)
@@ -35,10 +37,9 @@ export class PaginaCategoriaComponent implements OnInit {
       const film$ = this.api.getFilmDaCategoria(parseInt(this.id));
       const serie$ = this.api.getSerieTvDaCategoria(parseInt(this.id));
     }
-
   }
 
-  //OBSERVER
+//OBSERVER PER LA SINGOLA CATEGORIA DI FILM
   private osservoFilms() {
     console.log("SONO IN OSSERVO FILM")
     return {
@@ -46,7 +47,7 @@ export class PaginaCategoriaComponent implements OnInit {
         const elementi = rit.data
         for (let i = 0; i < elementi.length; i++) {
           const tmpImg: Immagine = {
-            src: elementi[i].src,
+            src: UtilityService.urlServer()+elementi[i].src,
             alt: elementi[i].alt,
           }
           //SE SERVE DECOMMENTA AL BOTTONE
@@ -61,7 +62,7 @@ export class PaginaCategoriaComponent implements OnInit {
             id:elementi[i].idFilm ,
             immagine: tmpImg,
             titolo: elementi[i].titolo,
-            testo: elementi[i].trama,
+            // testo: elementi[i].trama,
             bottone: bott
           }
           this.films.push(card)
@@ -71,7 +72,8 @@ export class PaginaCategoriaComponent implements OnInit {
       complete: () => console.log("%c COMPLETATO Film", "color:#00aa00")
     }
   }
-
+  
+//OBSERVER PER LA SINGOLA CATEGORIA DI SERIE TV
   private osservoSeriesTv() {
     console.log("SONO IN OSSERVO SERIE")
     return {
@@ -79,7 +81,7 @@ export class PaginaCategoriaComponent implements OnInit {
         const elementi = rit.data
         for (let i = 0; i < elementi.length; i++) {
           const tmpImg: Immagine = {
-            src: elementi[i].src,
+            src: UtilityService.urlServer()+elementi[i].src,
             alt: elementi[i].alt,
           }
           //SE SERVE DECOMMENTA AL BOTTONE
@@ -94,7 +96,7 @@ export class PaginaCategoriaComponent implements OnInit {
             id:elementi[i].idSerieTv   ,
             immagine: tmpImg,
             titolo: elementi[i].titolo,
-            testo: elementi[i].trama,
+            // testo: elementi[i].trama,
             bottone: bott
           }
           this.seriesTv.push(card)

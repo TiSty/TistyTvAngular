@@ -19,7 +19,7 @@ export class PaginaPrincipaleComponent implements OnInit {
 
   elencoSerieTv$: Observable<IRispostaServer>;
   seriesTv: Card[] = []
- 
+
   myInterval: number = 3000;
   activeSlideIndex: number = 0;
   slides: { image: string; text?: string }[] = [
@@ -28,7 +28,7 @@ export class PaginaPrincipaleComponent implements OnInit {
     { image: '../../assets/immagini/Chuck.jpeg' },
     { image: '../../assets/immagini/FilmAzione.jpeg' },
     { image: '../../assets/immagini/FilmCommedia.jpeg' },
-    
+
   ];
 
   private distruggi$ = new Subject<void>()
@@ -39,7 +39,7 @@ export class PaginaPrincipaleComponent implements OnInit {
     this.elencoSerieTv$ = this.api.getSeriesTv()
   }
 
-  //OBSERVER
+//OBSERVE PER VISUALIZZARE I FILM
   private osservoFilm() {
     console.log("Sono in osservoFilm")
     return {
@@ -59,14 +59,12 @@ export class PaginaPrincipaleComponent implements OnInit {
             link: "/film/" + elementi[i].idFilm,
           }
           const card: Card = {
-            id:elementi[i].idFilm,
+            id: elementi[i].idFilm,
             immagine: tmpImg,
-            testo:elementi[i].trama,
+            testo: elementi[i].trama,
             titolo: elementi[i].titolo,
             bottone: bott
           }
-
-      
           this.films.push(card)
         }
       },
@@ -76,7 +74,7 @@ export class PaginaPrincipaleComponent implements OnInit {
   }
 
 
-
+//OBSERVE PER VISUALIZZARE LE SERIE TV
   private osservoSerieTv() {
     console.log("Sono in osservoSerieTv")
     return {
@@ -96,7 +94,7 @@ export class PaginaPrincipaleComponent implements OnInit {
             link: "/serieTv/" + elementi[i].idSerieTv,
           }
           const card: Card = {
-            id:elementi[i].idSerieTv,
+            id: elementi[i].idSerieTv,
             immagine: tmpImg,
             testo: elementi[i].trama,
             titolo: elementi[i].titolo,
@@ -115,20 +113,5 @@ export class PaginaPrincipaleComponent implements OnInit {
   ngOnInit(): void {
     this.elencoFilm$.subscribe(this.osservoFilm())
     this.elencoSerieTv$.subscribe(this.osservoSerieTv())
-
-
   }
-
-
-
-
-
-
-  
-
-
-
-
-
-
 }

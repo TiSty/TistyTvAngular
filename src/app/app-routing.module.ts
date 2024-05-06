@@ -14,6 +14,7 @@ import { PaginaFilmComponent } from './_pagine/pagina-film/pagina-film.component
 import { PaginaSerieTvComponent } from './_pagine/pagina-serie-tv/pagina-serie-tv.component';
 import { PaginaProfiloComponent } from './_pagine/pagina-profilo/pagina-profilo.component';
 import { PaginaEpisodioComponent } from './_pagine/pagina-episodio/pagina-episodio.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   { path: '', component:HomeComponent},
@@ -21,15 +22,21 @@ const routes: Routes = [
   { path: 'accedi', component:AccediComponent},
   { path: 'registrazione', component:RegistrazioneComponent},
   { path: 'credenziali', component:CredenzialiComponent},
-  { path: 'paginaProfilo', component:PaginaProfiloComponent},
-  { path: 'paginaPrincipale', component:PaginaPrincipaleComponent},
-  { path: 'categorie', component:CategorieComponent},
-  { path: 'categorie/:id', component:PaginaCategoriaComponent},
-  { path: 'film', component:FilmComponent},
-  { path: 'film/:id', component:PaginaFilmComponent},
-  { path: 'serieTv', component:SerietvComponent},
-  { path: 'serieTv/:id', component:PaginaSerieTvComponent},
-  { path: 'episodio/:id', component:PaginaEpisodioComponent},
+  { path: 'utente/:id', component:PaginaProfiloComponent},
+
+
+  // { path: 'paginaProfilo', component:PaginaProfiloComponent},
+  // { path: 'paginaProfilo/:id', component:PaginaProfiloComponent},
+
+  
+  { path: 'paginaPrincipale', component:PaginaPrincipaleComponent,canActivate: [AuthGuard]} ,
+  { path: 'categorie', component:CategorieComponent,canActivate: [AuthGuard]} ,
+  { path: 'categorie/:id', component:PaginaCategoriaComponent,canActivate: [AuthGuard]} ,
+  { path: 'film', component:FilmComponent,canActivate: [AuthGuard]} ,
+  { path: 'film/:id', component:PaginaFilmComponent,canActivate: [AuthGuard]} ,
+  { path: 'serieTv', component:SerietvComponent,canActivate: [AuthGuard]} ,
+  { path: 'serieTv/:id', component:PaginaSerieTvComponent,canActivate: [AuthGuard]} ,
+  { path: 'episodio/:id', component:PaginaEpisodioComponent,canActivate: [AuthGuard]} ,
 
 
   { path: '**', component:ErroreComponent},

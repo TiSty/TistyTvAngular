@@ -1,4 +1,5 @@
 export type Utente = {
+    idUtente?:number,
     nome: string | null,
     cognome: string | null,
     dataNascita: string | null,

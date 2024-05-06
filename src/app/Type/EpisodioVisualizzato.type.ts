@@ -1,4 +1,5 @@
 export type EpisodioVisualizzato ={
+   
     idEpisodio:number
     titolo:string,
     serieTv:string,

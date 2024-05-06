@@ -4,9 +4,9 @@
 
 <main>
 
-    <ng-container>
+    <ng-container *ngIf="card!==undefined">
         <div class="card text-white bg-dark">
-            <img [src]=card.src class="card-img m-0 p-4 imgPrinc" alt="card.alt">
+            <img [src]="card.src" class="card-img m-0 p-4 imgPrinc" alt="card.alt">
             <div class="card-img-overlay">
                 <h2 class="card-title mt-5 ms-5">{{card.titolo}}</h2>
                 <p class="card-text mt-3 ms-5"><small>Durata:{{card.durata}}min <br>
@@ -22,79 +22,84 @@
         </div>
     </ng-container>
 
-
-    <div class="ms-4 mt-2">
+    <div class="ms-4 mt-3">
         <button (click)="openVideo()" type="button" class="button-1 m-1">Riproduci</button>
 
         <!-- BOTTONE + MODAL PER MODIFICARE UN FILM -->
         <ng-template #contentModifica let-offcanvas>
             <div class="offcanvas-header bg-dark">
-                <h4 class="offcanvas-title" id="offcanvas-basic-title">Modifica SerieTv</h4>
+                <h4 class="offcanvas-title" id="offcanvas-basic-title">Modifica Film</h4>
                 <button type="button" class="btn-close" aria-label="Close"
                     (click)="offcanvas.dismiss('Cross click')"></button>
             </div>
             <div class="offcanvas-body bg-dark">
-                <form>
+                <form name="formMod" (ngSubmit)="modificaFilm(formMod)" #formMod [formGroup]="reactiveFormMod">
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="titolo" id="floatingInput" placeholder="Titolo"
-                            [(ngModel)]="card.titolo">
-                        <label for="floatingInput SerieTv">Titolo</label>
+                        <input type="text" class="form-control" id="titoloMod" formControlName="titoloMod"
+                            placeholder="Titolo">
+                        <label for="titoloMod">Titolo</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" formControlName="durataMod" id="durataMod"
+                            placeholder="Durata">
+                        <label for="durataMod">Durata</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" formControlName="annoMod" id="annoMod"
+                            placeholder="Anno">
+                        <label for="annoMod">Anno</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" formControlName="tramaMod" id="tramaMod"
+                            placeholder="Trama">
+                        <label for="tramaMod">Trama</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" formControlName="registaMod" id="registaMod"
+                            placeholder="Regista">
+                        <label for="registaMod">Regista</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" formControlName="categoriaMod" id="categoriaMod"
+                            placeholder="Categoria">
+                        <label for="categoriaMod">Categoria/Genere</label>
                     </div>
 
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="durata" id="floatingInput" placeholder="Durata"
-                            [(ngModel)]="card.durata">
-                        <label for="floatingInput SerieTv">Durata</label>
+
+
+                    <div class="form-floating mb-3 text-white">
+                        <input type="file" #fileInput (change)="onChangeInputFile($event)" multiple
+                            formControlName="filesDaCaricare">
+
+                        <p class="errore" *ngIf="errore!=='' ">{{errore}}</p>
+                        <p class="ok" *ngIf="fileOk">file caricati correttamente</p>
                     </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="anno" id="floatingInput" placeholder="Anno"
-                            [(ngModel)]="card.anno">
-                        <label for="floatingInput SerieTv">Anno</label>
+                    <div class="row text-white" *ngFor="let file of daCaricare">
+                        <div class="col-12">{{file.name}}</div>
+                        <div class=" m-2">
+                            <button type="button" class="btn btn-outline-dark bottInv"
+                                (click)="eliminaFile(file)">Elimina file</button>
+                        </div>
                     </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="trama" id="floatingInput" placeholder="Trama"
-                            [(ngModel)]="card.trama">
-                        <label for="floatingInput SerieTv">Trama</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="regista" id="floatingInput" placeholder="Regista"
-                            [(ngModel)]="card.regista">
-                        <label for="floatingInput SerieTv">Regista</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="categoria" id="floatingInput"
-                            placeholder="Categoria" [(ngModel)]="card.categoria">
-                        <label for="floatingInput SerieTv">Categoria/Genere</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="file" (change)="onChangeInputFile($event)" class="form-control" name="trailer"
-                            id="floatingInput" placeholder="trailer" [(ngModel)]="trailer" required>
-                        <label for="floatingInput">Trailer</label>
-                        <p *ngIf="errore!=='' ">{{errore}}</p>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="file" (change)="onChangeInputFile($event)" class="form-control" name="src"
-                            id="floatingInput" placeholder="src" [(ngModel)]="src" required>
-                        <label for="floatingInput">Src</label>
-                        <p *ngIf="errore!=='' ">{{errore}}</p>
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-outline-dark bottInv"
+                            [disabled]="reactiveFormMod.errors!==null">Modifica</button>
                     </div>
                 </form>
 
-                <div class="text-end">
-                    <button type="button" class="btn btn-outline-dark bottInv"
-                        (click)="modificaFilm()">Modifica</button>
-                </div>
+
+
             </div>
         </ng-template>
 
-        <button class="button-2  m-1" type="button" (click)="apriModifica(card.idFilm)">Modifica</button>
-        <button (click)="eliminaFilm()" type="button" class="button-2">Elimina</button>
+        <button class="button-2  m-1" type="button" (click)="apriModifica(card.idFilm)" *ngIf="auth.isAdmin()">Modifica</button>
+        <button (click)="eliminaFilm()" type="button" class="button-2" *ngIf="auth.isAdmin()">Elimina</button>
     </div>
 
 
 
-    <hr>
+    <hr class="text-white">
 
 
     <h2 class="text-white ms-5">Altri Film</h2>
@@ -126,13 +131,3 @@
 
 
 </main>
-
-
-
-
-
-
-
-
-
-

@@ -1,10 +1,17 @@
 import { Injectable } from "@angular/core";
 import { sha512 } from "js-sha512";
 import jwtDecode from "jwt-decode";
+import { Utente } from "../Type/Utente.type";
+import { BehaviorSubject, Subject } from "rxjs";
 
 
 @Injectable({ providedIn: 'root' })
 export class UtilityService {
+
+    utente!: Utente
+
+
+
     passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
     //qua dentro posso mettere le funzioni valide per tutta l'app dal root in poi
@@ -28,17 +35,23 @@ export class UtilityService {
      * @param token stringa che rappresenta il token
      * @returns un oggetto
      */
-    static leggiToken(token: string){
-        try{
+    static leggiToken(token: string) {
+        try {
             return jwtDecode(token)
-        } catch(error){
+        } catch (error) {
             console.error("Errore di lettura nel token", token)
             return null
         }
     }
 
-  
+
+    static urlServer(){
+        const url="http://localhost/Codex/public/files/"
+        return url
+    }
     
+
+
 
 
     /**
@@ -161,23 +174,42 @@ export class UtilityService {
         return true;
     }
 
+    path() {
+        const path = "assets/immagini/"
+        return path
+    }
 
+    obsUtente$: Subject<string> = new Subject<string>()
+    
+    setUtente(utente: string): void {
+       // this.utente = utente
+       console.log('SET UTENTE', utente)
+       this.obsUtente$.next(utente)
+    }
+    getUtente(): Subject<string> {
+        return this.obsUtente$
+    }
 
 
     public static impostaFormData(dati: any): FormData {
         const formData: FormData = new FormData();
-    
+
         let tmp: any = {};
         Object.keys(dati).forEach(key => {
-          const value = Object.getOwnPropertyDescriptor(dati, key)?.value;
-          if (value !== null && value !== undefined) {
-            formData.append(key, value)
-          }
+            const value = Object.getOwnPropertyDescriptor(dati, key)?.value;
+            if (value !== null && value !== undefined) {
+                formData.append(key, value)
+            }
         });
         return formData;
-      }
+    }
+
+
+
 
 }
+
+
 
 
 
